@@ -1,0 +1,563 @@
+\chapter{Zufallsstichproben}\label{ch:stichproben}
+
+In Kapitel \ref{ch:descriptives} sind wir davon
+ausgegangen, dass die Daten, die uns zur Verfügung
+standen, die ganze Population, für die wir uns
+interessierten, darstellten. 
+Eine Population kann eine endliche Menge von tatsächlichen
+oder potenziellen Beobachtungen sein, wie zum Beispiel
+die Wahlpräferenz aller AmerikanerInnen, die vorhaben, 
+zur Urne zu gehen.
+Öfters sollte man die Population von Interesse
+aber eher als einen abstrakteren datengenerierenden Mechanismus
+zu verstehen. Ein simples Beispiel hierfür ist die Kreisscheibe aus Abbildung
+\ref{fig:kreis}, die Daten aus einer kontinuierlichen Gleichverteilung generiert.
+
+In der Regel stellen die Daten,
+die gesammelt wurden, aber nur einen kleinen Teil
+der Population von Interesse da bzw.\ sie besteht aus
+endlich vielen Belegen, die von einem Mechanismus
+generiert wurden, der theoretisch unendlich viele solche
+Belege generieren könnte.
+Man sagt, dass solche Daten eine \term{Stichprobe}
+der Population von Interesse bilden.
+Diese Stichprobe gibt einem notwendigerweise ein
+unvollständiges Bild der Population, aus der sie stammt.
+Das Ziel ist es dann,
+anhand der Stichprobe Rückschlüsse über die
+Population, aus der die Stichprobe stammt, zu ziehen.
+Von Interesse sind also nicht sosehr etwa die zentrale Tendenz
+und Streuung in der Stichprobe, sondern die
+zentrale Tendenz und Streuung in der Population.
+
+Im Folgenden gehen wir davon aus, dass uns eine
+\term{(einfache) Zufallsstichprobe} (\textit{(simple) random sample}) zur Verfügung steht
+und dass die relevante Population als unendlich gross aufgefasst werden kann.
+Genauer sei $P$ die Verteilung der Population, über die wir Aussagen machen möchten.
+Dann besteht eine einfache Zufallsstichprobe aus Beobachtungen
+$X_1, X_2, \dots, X_n$, die identische und unabhängig nach $P$ verteilt sind.\footnote{Eine 
+etwas kompliziertere Art Stichprobe wäre die \term{geschichtete Zufallsstichprobe}
+(\textit{stratified random sample}). Hierzu teilt man die Population von Interesse 
+(z.B.\ Studierende an der Universität Freiburg) in Teilpopulationen auf 
+(z.B.\ Studierende an der Philosophischen Fakultät, an der Theologischen Fakulät, an der
+Naturwissenschaftlichen Fakultät usw.). Dann zieht man zufällige
+Stichproben innerhalb jeder Gruppe. Somit hat man in
+der Stichprobe garantiert aus jeder Gruppe einige Beobachtungen
+(z.B.\ würde die Stichprobe sowieso Studierende an der Theologischen
+Fakultät beinhalten), aber ist es dennoch möglich, Aussagen über
+das Mittel und die Streuung in der Gesamtpopulation zu machen.
+Letzteres tut man grundsätzlich, indem man die Gruppenergebnisse nach
+der Gesamtgruppengrösse gewichtet. Geschichtete Zufallsstichproben
+werden wir in diesem Skript nicht behandeln.}
+Dieses Kapitel widmet sich der Frage, wie wir anhand einer (einfachen)
+Zufallsstichprobe Rückschlüsse über die Population machen können.
+Insbesonders die \term{Schätzung} der zentralen Tendenz (vor allem des Mittels) 
+und der Streuung (Varianz und Standardabweichungen) steht dabei im Fokus.
+
+Fünf Sekunden kritisches Überlegen zeigen aber, dass wir es in der Praxis
+nie wirklich mit Zufallsstichproben zu tun haben. Auf dieses Problem
+wird am Ende dieses Kapitels näher eingegangen. 
+Bis dahin bitte ich um etwas \textit{willing suspension of disbelief}.
+ 
+\section{Stichprobenfehler}
+Zufallsstichproben widerspiegeln nicht perfekt
+jeden Aspekt der Population, aus der sie stammen.
+Um dies besser einzusehen, lohnt es sich,
+Zufallsstichproben aus Populationen zu ziehen,
+deren Eigenschaften wir kennen. So können wir sehen,
+wie stark diese von der Population und voneinander
+abweichen. Dies können wir tun, indem wir
+am Computer Stichproben simulieren.
+
+\mypar[Daten aus Normalverteilung]{Aufgabe}
+Mit dem R-Code unten können Sie einschätzen,
+wie Stichproben aus einer normalverteilten
+Population mit Mittel 3 und Standardabweichung 7
+aussehen. Zunächst habe ich hier
+die Stichprobengrösse auf 20 festgelegt,
+aber mit dieser Zahl sollten Sie selber
+herumspielen.
+Führen Sie diese Befehle aus und zwar nicht ein Mal, sondern
+mehrmals. Bemerken Sie dabei, wie (un)ähnlich
+sich die Histogramme von Stichproben aus einer Normalverteilung sind.
+
+<<eval = FALSE>>=
+groesse <- 20
+x <- rnorm(n = groesse, mean = 3, sd = 7)
+hist(x, col = "lightgrey", xlim = c(3 - 4*7, 3 + 4*7))
+@
+\parend
+
+\mypar[Daten aus Gleichverteilung]{Aufgabe}
+Passen Sie den Code oben so an, dass
+er Stichproben aus einer Gleichverteilung mit
+Bereich $[-5, 5]$ statt aus einer Normalverteilung
+generiert. Die Funktion, die Sie dazu brauchen,
+ist \texttt{runif()}. Neben dem \texttt{n}-Parameter
+hat diese Funktion einen \texttt{min}- und
+\texttt{max}-Parameter, mit denen der Bereich
+der Gleichverteilung eingestellt wird.
+Passen Sie die \texttt{xlim}-Werte beim Histogramm
+entsprechend an.
+Lassen Sie den angepassten Code dann mehrmals
+laufen. Sehen die einzelnen Histogramme
+wie Gleichverteilungen aus? Was ist, wenn Sie
+die Stichprobengrösse vergrössern?
+\parend
+
+Fazit: Zufallsstichproben sind imperfekte
+Abbildungen der Population, aus der sie stammen.
+Diese Gegebenheit bezeichnet man als
+\term{Stichprobenfehler} (\textit{sampling error}).
+Rückschlüsse über die Population verstehen sich
+also als \term{Schätzungen}. Sowohl das Schätzen
+selbst als auch das Quantifizieren ihrer Genauigkeit
+sind das Ziel der \term{Inferenzstatistik}.
+
+\section{Die zentrale Tendenz und Streuung schätzen}
+In Kapiteln \ref{ch:descriptives} und \ref{ch:stochastik}
+wurden das Mittel (Erwartungswert) und die Varianz als Masse
+der zentralen Tendenz und der Streuung
+einer Population eingeführt. Wenn uns nun eine Stichprobe aus dieser Population
+$P$ (also Beobachtungen $X_1, \dots, X_n$ mit $P$ Verteilung) zur Verfügung steht, so ist
+es naheliegend, die \term{empirische Verteilung} $\widehat{P}$ durch die
+empirische Verteilungsfunktion $\widehat{F}$ zu definieren, wo
+\[
+  \widehat{F}(r) := \frac{1}{n}\sum_{i=1}^{n} \mathbb{1}\{X_i \leq r\}
+\]
+für alle reellen Zahlen $r$. In Worten: Wir betrachten die Stichprobe als eine
+eigene, endliche Verteilung. Wir können nun das Mittel (den Erwartungswert)
+und die Varianz und Standardabweichung von $\widehat{P}$ mit den Formeln
+aus Kapitel \ref{ch:descriptives} berechnen und diese als unsere Schätzung
+für die entsprechenden Merkmale von $P$ verwenden.
+
+Hierbei stellt sich die Frage, wie gut solche sogenannte \textit{plug-in}-Schätzer sind.
+
+\mypar[Estimand, Schätzung und Schätzer]{Definition}
+  Ein \term{Estimand} $\mu$ ist eine numerische Eigenschaft einer Population,
+  die wir anhand von Daten schätzen wollen.
+  
+  Eine \term{Schätzung} ist eine in der Regel auf Daten und Vorwissen
+  basierte Zahl, die eine Annäherung des Estimanden darstellt.
+  
+  Ein \term{Schätzer} ist eine Vorschrift (Funktion), die festlegt, 
+  wie Daten und Vorwissen zu einer Schätzung kombiniert werden sollen.
+\parend
+
+Beispielsweise wäre das (unbekannte) Mittel der Population, aus der die
+Daten generiert wurden, ein Estimand. Ein Schätzer wäre eine Vorschrift
+wie `summiere alle Beobachtungen und teile durch die Anzahl Beobachtungen'.
+Wird dieser Schätzer auf eine konkrete Stichprobe angewandt, so erhält man
+eine konkrete Zahl -- die Schätzung.
+
+Über einzelne Schätzungen können wir keine allgemeinen Aussagen machen,
+aber wir können schon die Eigenschaften von Schätzern untersuchen.
+Beim Vergleichen von Schätzern sind die wichtigsten Gütekriterien die \term{Verzerrung},
+die \term{Konsistenz} und die \term{Varianz} der Schätzer.
+
+\mypar[Verzerrung]{Definition}
+  Sei $g$ ein Schätzer und sei $\theta$ ein Estimand einer Population $P$.
+  Die Verzerrung (oder das \term{Bias}) von $g$ als Schätzer von $\theta$ ist
+  \[
+    \E(g(X_1, \dots, X_n)) - \theta,
+  \]
+  wo $X_1, \dots, X_n$ unabhängig und nach $P$ verteilt sind.
+  
+  Gilt $\E(g(X_1, \dots, X_n)) = \theta$ für jeden möglichen Wert von $\theta$,
+  so nennen wir $g$ einen \term{unverzerrten} oder \term{erwartungstreuen} Schätzer.
+  Anders gesagt: Ein Schätzer ist unverzerrt, wenn er, gemittelt über 
+  zahllose Zufallsstichproben der gleichen Grösse, die richtige Antwort liefert.
+\parend
+
+Eine genaue Definition von Konsistenz ist etwas schwieriger zu geben, ohne weitere
+mathematische Konzepte einzuführen. Daher soll eine konzeptuelle Definition hier genügen.
+
+\mypar[Konsistenz]{Definition}
+  Ein Schätzer $g$ heisst konsistent (als Schätzer von $\theta$), falls
+  die Grösse 
+  \[
+    \E\left(|g(X_1, \dots, X_n) - \theta|\right)
+  \]
+  beliebig klein wird für grosse $n$.
+  Anders gesagt ist ein Schätzer konsistent für $\theta$, wenn 
+  die Unterschiede zwischen den resultierenden Schätzungen und $\theta$
+  beliebig klein gemacht werden, wenn die Stichprobengrösse wächst.
+\parend
+
+\mypar[Varianz eines Schätzers]{Definition}
+  Die Varianz eines Schätzers $g$ ist definiert als 
+  \[
+    \Var(g(X_1, \dots, X_n)).
+  \]
+  Sie erfasst, wie sehr die resultierenden Schätzungen je nach Zufallsstichprobe
+  voneinander abweichen.
+\parend
+
+Im Idealfall sind Schätzer unverzerrt und konsistent; zudem sollte ihre Varianz
+niedrig sein. Wie wir (spätestens im Ausblick) sehen werden, kann man jedoch
+oft die Varianz eines Schätzers senken, indem man bei der Verzerrung Abstriche 
+macht (\term{bias--variance tradeoff}).
+
+\mypar[unverzerrt, aber nutzlos]{Beispiel}
+  Unverzerrtheit ist kein ausreichendes Kriterium, denn in manchen Situationen
+  ist der einzige unverzerrte Schätzer ziemlich nutzlos. 
+  Sei beispielsweise $P = \textrm{Binomial}(n, p)$ und definiere $\theta := (1-p)^n$
+  \citep[][S.\ 49]{Duembgen2016}.
+  Wir beobachten $X \sim P$. Man kann nun zeigen, dass es nur einen 
+  erwartungstreuen Schätzer $g(X)$ von $\theta$ gibt, und zwar
+  \[
+    g(X) := 
+    \begin{cases}
+      1, & \textrm{falls $X = 0$}, \\
+      0, & \textrm{sonst}.
+    \end{cases}
+  \]
+  Während $\theta$ je nach $p$ alle Werte im Intervall $[0, 1]$ haben kann,
+  liefert $g$ immer $0$ oder $1$ als Schätzung. Folglich ist dieser
+  erwartungstreue Schätzer nicht konsistent.
+\parend
+
+\subsection{Das Stichprobenmittel}
+Das \term{Stichprobenmittel} ist der plug-in-Schätzer des Populationsmittels $\mu$:
+\[
+  \widehat{\mu} := \overline{X} := \frac{1}{N}(X_1 + \dots + X_n).
+\]
+In Abschnitt \ref{sec:clt} haben wir gezeigt, dass 
+\[
+  \E(\overline{X}) = \mu.
+\]
+Also ist das Stichprobenmittel ein unverzerrter Schätzer des Populationsmittels.
+Ausserdem wissen wir, dass die Varianz von $\overline{X}$ gleich $\frac{\sigma^2}{n}$ ist,
+mit $\sigma^2$ der Varianz von $P$.
+Also wird die Varianz von $\overline{X}$ für grosse $n$ beliebig klein. Folglich
+ist $\overline{X}$ auch ein konsistenter Schätzer von $\mu$.
+Laut dem Satz von Gauss ist das Stichprobenmittel unter allen unverzerrten
+Schätzern des Populationsmittels ausserdem der Schätzer mit der niedrigsten Varianz.
+
+\mypar[Gauss]{Satz}
+  Sei $X_1, \dots, X_n$ eine einfache Stichprobe aus der Verteilung $P$.
+  Dann gilt für jeden unverzerrten Schätzer $g(X_1, \dots, X_n)$ von $\mu$,
+  dass
+  \[
+    \Var(\overline{X}) \leq \Var(g(X_1, \dots, X_n)).
+  \]
+  
+  Es ist unter Umständen aber möglich, unverzerrte Schätzer mit niedrigerer
+Varianz zu konstruieren, wenn die Stichprobe keine einfache Stichprobe ist.
+\parend
+
+\mypar{Beispiel}
+  Seien $X_1, \dots, X_n$ unabhängige Bernoulli($p$)-verteilte Zufallsvariablen.
+  Dann ist $\frac{1}{n}(X_1 + \dots + X_n)$ ein unverzerrter und konsistenter
+  Schätzer von $p$. Unter allen unverzerrten Schätzern von $p$ hat er ausserdem
+  die geringste Varianz.
+\parend
+
+\mypar[gewichtetes Mittel]{Beispiel}
+  Wir nehmen an, dass $P_1$ und $P_2$ Normalverteilungen mit gleichem,
+  aber unbekanntem Mittel und ungleichen, aber bekannten Varianzen sind:
+  $P_1 = \mathcal{N}(\mu, 1), P_2 = \mathcal{N}(\mu, 4)$.
+  Wir beobachten nun die unabhängigen Zufallsvariablen
+  $X_1 \sim P_1, X_2 \sim P_2$ und wollen anhand dieser $\mu$ schätzen.
+  
+  Eine erste Möglichkeit ist, $\mu$ durch das Mittel von $X_1$ und $X_2$ zu
+  schätzen. Dieser Schätzer ist unverzerrt, denn
+  \[
+    \E\left(\frac{X_1 + X_2}{2}\right) = \frac{1}{2}(\E(X_1) + \E(X_2)) = \mu.
+  \]
+  Dank der Unabhängigkeit von $X_1, X_2$ lässt sich seine Varianz leicht
+  berechnen:
+  \[
+    \Var\left(\frac{X_1 + X_2}{2}\right)
+    = \frac{1}{4}(\Var(X_1) + \Var(X_2)) = \frac{5}{4}.
+  \]
+  Eine zweite Möglichkeit ist, $X_2$ einfach zu ignorieren und den Wert
+  von $X_1$ als Schätzung von $\mu$ zu verwenden. Auch dieser Schätzer
+  ist unverzerrt, denn $\E(X_1) = \mu$. Ausserdem ist seine Varianz
+  niedriger, denn $\Var(X_1) = 1 < 5/4$.
+  
+  Noch besser wäre jedoch, die Beobachtungen $X_1, X_2$ passend zu
+  gewichten, etwa mit der Inversen ihrer Varianz:
+  \[
+    g(X_1, X_2) := \frac{1}{1 + \frac{1}{4}}\left(X_1 + \frac{1}{4}X_2\right) = \frac{4}{5}\left(X_1 + \frac{1}{4}X_2\right).
+  \]
+  Auch dieser Schätzer ist erwartungstreu, denn
+  \[
+   \E(g(X_1, X_2)) = \frac{4}{5}\left(\E(X_1) + \frac{1}{4}\E(X_2)\right) = \mu.
+  \]
+  Seine Varianz ist aber niedriger:
+  \[
+    \Var(g(X_1, X_2)) 
+    = \frac{4^2}{5^2}\left(\Var(X_1) + \frac{1}{4^2}\Var(X_2)\right)
+    = \frac{4}{5}.
+  \]
+  Der Satz von Gauss trifft hier nicht zu, da $X_1, X_2$ keine einfache
+  Zufallsstichprobe darstellt: Die Beobachtungen stammen aus unterschiedlichen
+  Verteilungen.
+\parend
+
+\mypar[Vergleich von Schätzern von $\mu$]{Aufgabe}
+  Sei $X_1, \dots, X_n$ eine einfache Zufallsstichprobe aus der Verteilung
+  $P$ und sei $\mu$ das Mittel (Erwartungswert) von $P$.
+  Entscheiden Sie für die folgenden Schätzer, ob sie $\mu$ unverzerrt schätzen,
+  ob sie konsistent sind und ob ihre Varianz kleiner oder grösser als jene
+  von $\overline{X}$ ist. Sie dürfen der Einfachkeit halber
+  annehmen, dass $\Prob(X_1 = X_2) = 0$.
+  \begin{align*}
+    g_1(X_1, \dots, X_n) &:= X_1; \\
+    g_2(X_1, \dots, X_n) &:= \overline{X} + \frac{1}{n}; \\
+    g_3(X_1, \dots, X_n) &:= \frac{n-1}{n}\overline{X}; \\
+    g_4(X_1, \dots, X_n) &:=
+    \begin{cases}
+      \overline{X} - 1, & \textrm{falls $X_1 < X_2$}, \\
+      \overline{X},     & \textrm{falls $X_1 = X_2$}, \\
+      \overline{X} + 1, & \textrm{falls $X_1 > X_2$}.
+    \end{cases}
+  \end{align*}
+  
+  Definieren Sie ausserdem einen Schätzer $g_5$, der $\mu$ unverzerrt schätzt
+  und konsistent ist, aber eine höhere Varianz als das Stichprobenmittel hat.
+\parend
+
+\subsection{Die Stichprobenvarianz}\label{sec:stichprobenvarianz}
+Bei der Schätzung des Populationsmittels schneidet der plug-in-Schätzer
+hervorragend ab. Wir überprüfen nun, ob man die Populationsvarianz $\sigma^2$
+ebenso mit diesem Ansatz schätzen kann. Wir verzichten hier auf formale Beweise
+und gehen dieser Frage mittels einer Simulation nach.
+Dazu betrachten wir eine Zufallsstichprobe $X_1, \dots, X_n$
+aus der \textrm{Unif}($[-5, 5]$)-Verteilung. Dies Varianz dieser Verteilung
+beträgt 
+\[
+\sigma^2  = \frac{(5 - (-5))^2}{12} \approx 8.33.
+\]
+Wie in Abschnitt \ref{sec:clt} definieren wir zunächst eine R-Funktion,
+die eine Stichprobe der Grösse \texttt{n} aus der \textrm{Unif}($[-5, 5]$)-Verteilung
+generiert und die selbst geschriebene \texttt{pop\_var()}-Funktion (siehe Aufgabe
+\ref{ex:popvar}) auf sie anwendet. Dann führen wir diese Funktion 10'000 Mal
+aus, zunächst mit $n = 25$, und ermitteln den Schnitt der berechneten Varianzschätzungen:
+<<>>=
+var_one_run <- function(n, min = -5, max = 5) {
+  x <- runif(n, min = min, max = max)
+  pop_var(x)
+}
+simulation <- replicate(10000, var_one_run(n = 25))
+mean(simulation)
+@
+
+\mypar[unterschiedliche $n$]{Aufgabe}\label{ex:estimate_var}
+  Führen Sie die gleiche Simulation für $n = 16, 9, 4, 1$ durch.
+  Vergleichen Sie jeweils die durchschnittliche Varianzschätzung
+  mit dem Populationswert $\sigma^2 \approx 8.33$.
+\parend
+
+Wie diese Simulation belegt, ist der plug-in-Schätzer der Populationsvarianz
+\emph{nicht} erwartungstreu: Im Schnitt liefert er zu tiefe Schätzungen.
+Diese Verzerrung ist ausgeprägter für kleinere Stichproben und lässt sich
+intuitiv so verstehen: Wenn wir Zufallsstichproben von je nur einer
+Beobachtung aus einer Population ziehen, dann gibt es keine Streuung innerhalb
+der Stichprobe -- die Beobachtung kann ja nicht von sich selbst abweichen.
+Bei der kleinst möglichen Stichprobe ist die Unterschätzung der Populationsvarianz
+also maximal. In grösseren Stichproben ist dieses Problem in stets geringerem
+Ausmass vorhanden.\footnote{Etwas genauer ist der Grund des Problems, dass wir mit
+der \texttt{pop\_var()}-Funktion zuerst das Mittel der Population durch
+das Stichprobenmittel schätzen. Wenn wir das Populationsmittel als bekannt
+voraussetzen würden (hier: $\mu = 0$), so würde die Formel schon einen
+unverzerrten Schätzer darstellen.} Der plug-in-Schätzer ist jedoch schon konsistent.
+
+Die Unterschätzung der Populationsvarianz lässt sich einfach korrigieren.
+Wie Sie anhand von Aufgabe \ref{ex:estimate_var} ergibt die plug-in-Schätzung
+von $\sigma^2$ im Schnitt den Wert $\frac{n-1}{n}\sigma^2$. Um diese Unterschätzung
+zu korrigieren, wird die \term{Stichprobenvarianz}
+(Kürzel: $s^2$) nicht wie die Populationsvarianz ($\sigma^2$),
+sondern folgendermassen berechnet:
+\begin{equation*}
+  S^2 := \frac{1}{n-1} \sum_{i = 1}^{n} (X_i - \overline{X})^2 = \frac{n}{n-1}\left(\frac{1}{n} \sum_{i = 1}^{n} (X_i - \overline{X})^2\right).
+\end{equation*}
+Wegen des Korrekturfaktors kann $S^2$ nur berechnet werden, wenn $n \geq 2$;
+sonst wird eben durch 0 geteilt.
+So erhält man einen erwartungstreuen und konsistenten Schätzer der Populationsvarianz.
+Den Konsistenznachweis schenken wir uns.
+
+Die Stichprobenvarianz kann mit der R-Funktion \texttt{var()} berechnet werden.
+
+\mypar[Verteilung der Stichprobenvarianz im Falle normalverteilter Daten]{Bemerkung}\label{bem:chisq}
+  Der zentrale Grenzwertsatz (Abschnitt \ref{sec:clt}) erlaubt es uns, 
+  ungefähre Wahrscheinlichkeitsaussagen über Stichprobenmittel von genügend 
+  grossen Stichproben zu machen. Für die Varianz besteht ein ähnliches Resultat,
+  worauf wir hier aber nicht näher eingehen. Für den Spezialfall, dass
+  die Zufallsstichprobe $X_1, \dots, X_n$ aus unabhängigen Beobachtungen
+  aus einer $\mathcal{N}(\mu, \sigma^2)$-Verteilung stammen, kann man jedoch
+  genaue Aussagen über die Stichprobenvarianz $S^2$ machen. Es gilt nämlich,
+  dass die Grösse
+  \[
+    (n-1)\frac{S^2}{\sigma^2}
+  \]
+  die gleiche Verteilung hat wie
+  \[
+    Z_1^2 + \dots + Z_{n-1}^2,
+  \]
+  wo $Z_1, \dots, Z_{n-1}$ unabhängige Zufallsvariablen mit Verteilung $\mathcal{N}(0,1)$
+  sind. Die Verteilung von $Z_1^2 + \dots + Z_{n-1}^2$ nennt man die \term{Chi-Quadrat-Verteilung}
+  mit $n-1$ Freiheitsgraden ($\chi_{n-1}^2$). Abbildung \ref{fig:dchisq} zeigt 
+  die Wahrscheinlichkeitsdichten einiger $\chi^2$-Verteilungen.
+  
+<<echo = FALSE, warning = FALSE, fig.cap = "Wahrscheinlichkeitsdichten der $\\chi^2$-Verteilungen mit 4, 9 und 16 Freiheitsgraden.\\label{fig:dchisq}", fig.width = 4, fig.height = 2.8, out.width=".4\\textwidth">>=
+my_col <- RColorBrewer::brewer.pal(3, "Set1")
+ggplot(data.frame(x = c(0, 40)),
+             aes(x)) +
+  stat_function(fun = function(x) dchisq(x, 4),
+                colour = my_col[1]) +
+  annotate("text", x = 2 + 2, y = dchisq(2, 4), label = bquote(chi[4]^2),
+           color = my_col[1]) +
+  stat_function(fun = function(x) dchisq(x, 9),
+                colour = my_col[2]) +
+  annotate("text", x = 7 + 1.5, y = dchisq(7, 9) + 0.005, label = bquote(chi[9]^2),
+           color = my_col[2]) +
+  stat_function(fun = function(x) dchisq(x, 16),
+                color = my_col[3]) +
+  annotate("text", x = 14, y = dchisq(14, 16) + 0.01, label = bquote(chi[16]^2),
+           color = my_col[3]) +
+  ylab("Wahrscheinlichkeitsdichte")
+@
+  
+  Diese Tatsache können wir verwenden, um Wahrscheinlichkeitsaussagen über die
+  Stichprobenvarianz normalverteilter Daten zu machen.
+  Wenn wir beispielsweise $n = 10$ unabhängige Beobachtungen 
+  aus einer $\mathcal{N}(3, 12)$-Verteilung generieren und wissen wollen,
+  wie gross die Wahrscheinlichkeit ist, dass $S^2 \leq 14$, so bemerken wir,
+  dass
+  \begin{align*}
+    \Prob\left(S^2 \leq 14)\right)
+    &= \Prob\left(\frac{10-1}{12} S^2 \leq \frac{(10-1)14}{12}\right) \\
+    &= \Prob\left(\frac{n-1}{\sigma^2} S^2 \leq 10.5\right) \\
+    &= \Prob(H^2 \leq 10.5),
+  \end{align*}
+  wo $H^2 \sim \chi_{9}^2$. Mit R berechnen wir den genauen Wert:
+<<>>=
+pchisq(10.5, df = 9)
+@
+Also etwa 69\%.
+\parend
+
+\subsection{Die Stichprobenstandardabweichung}\label{sec:sd}
+Aus dem gleichen Grund, weshalb die Stichprobenvarianz
+nicht wie die Populationsvarianz berechnet wird, wird die
+\term{Stichprobenstandardabweichung} ($S$)
+nicht wie die Populationsstandardabweichung
+berechnet, sondern wie folgt:
+\begin{equation*}
+S := \sqrt{S^2} = \sqrt{\frac{1}{n-1} \sum_{i = 1}^{n} (x_i - \bar{x})^2}.
+\end{equation*}
+
+In R kann hierfür die \texttt{sd()}-Funktion verwendet werden.
+Die Stichproben\-standard\-abweichung ist ein konsistenter Schätzer der
+Populationsstandardabweichung. Sie ist im Gegensatz zur Stichprobenvarianz
+jedoch \emph{kein} erwartungstreuer Schätzer: Die Stich\-proben\-standard\-abweichung
+unterschätzt die Populationsstandardabweichung ganz leicht. Diese Schätzung
+zu korrigieren, ist im besten Fall schwierig und meistens unmöglich, weshalb
+man sie einfach in Kauf nimmt.\footnote{Nur weil $g(X_1, \dots, X_n)$ einen
+Estimanden $\theta$ unverzerrt schätzt, heisst das nicht, dass $h(g(X_1, \dots, X_n))$
+den Estimanden $h(\theta)$ unverzerrt schätzt. Beispielsweise
+schätzt das Stichprobenmittel $\overline{X}$ das Populationsmittel $\mu$ unverzerrt,
+aber die Grösse $(\overline{X})^2$ überschätzt $\mu^2$. Hiervon kann man sich
+überzeugen, indem man eine Population mit $\mu = 0$ betrachtet. Im Allgemeinen
+handelt es sich um eine Überschätzung, wenn $h$ konvex ist, und um eine 
+Unterschätzung, wenn $h$ konkav ist.}
+
+Es kommt eigentlich quasi nie vor, dass man für einen Datensatz
+die Populationsvarianz und -standardabweichung berechnet.
+Spricht man in diesem Kontext von der Varianz
+und Standardabweichung, meint man also die Stichprobenvarianz und die
+Stichprobenstandardabweichung. Bei grossen Populationen oder Stichproben
+ergeben beide Berechnungsmethoden ohnehin nahezu das gleiche Resultat.
+
+\mypar[Verteilung der Stichprobenstandardabweichung normalverteilter Daten]{Aufgabe}
+  Sei $X_1, \dots, X_{10}$ eine Zufallsstichprobe aus einer $\mathcal{N}(-4, 8)$-Verteilung.
+  Berechnen Sie die Wahrscheinlichkeit, dass die Stichprobenstandardabweichung $S$
+  mindestens 3.5 beträgt. Dazu können Sie wie in Bemerkung \ref{bem:chisq} vorgehen.
+\parend
+
+\section{Nicht-zufällige Stichproben}
+Wir haben uns in diesem Kapitel mit Zufallsstichproben
+Zwei grosse Vorteile von Zufallsstichproben sind,
+dass sie unverzerrte Schätzungen des Populationsmittels und der
+Populationsvarianz liefern und dass der zentrale Grenzwertsatz
+auf sie zutrifft.
+
+In der Praxis ist es jedoch schwierig, eine Zufallsstichprobe
+aus einer einigermassen interessanten Population zu ziehen.
+Wenn wir etwa anhand einer Zufallsstichprobe die Englischkenntnisse
+bei Erwachsenen kosovarischer Herkunft im Kanton Sankt-Gallen
+charakterisieren möchten, brauchen wir zuerst eine vollständige
+Liste aller Erwachsenen kosovarischer Herkunft in SG.
+Dann müssten wir zufällig eine Stichprobe von ihnen auswählen
+und die Ausgewählten alle von einer Teilnahme an der Studie überzeugen:
+Sobald sich eine Person weigert, mitzumachen, hätten wir keine
+Zufallsstichprobe aus der ursprünglichen Population mehr.
+Stattdessen hätten wir eine Stichprobe aus der Population
+der in SG wohnhaften Erwachsenen kosovarischer Herkunft, die
+bei einer solchen Studie mitmachen möchten. Unsere Schätzungen
+würden sich in erster Linie auf diese neue Population beziehen, nicht
+auf die Population, für die wir uns anfangs interessierten.
+Ausserdem bestünde die Stichprobe nicht aus unabhängigen 
+Beobachtungen, denn eine Person kann nur ein Mal ausgewählt werden.
+
+Das Beispiel macht auch klar, was die Konsequenz hiervon ist:
+Während eine Zufallsstichprobe eine unverzerrte Schätzung des
+Mittels der Population, die eigentlich von Interesse ist, liefert,
+wäre es bei einigen Weigerungen möglich, dass einige der ausgewählten
+Personen nicht zur Teilnahme bereit sind, gerade weil sie ihre
+Englischkenntnisse als ungenügend einschätzen oder weil sie
+sprachwissenschaftliche Forschung für uninteressant halten.
+Die Übrigen dürften also tendenziell eher gut im Englischen sein
+oder sich eher für Sprachen interessieren.
+Das Mittel dieser Stichprobe dürfte entsprechend das
+Mittel der Population, die ursprünglich von Interesse war,
+eher über- als unterschätzen.
+
+Fazit: Statt Zufallsstichproben werden in den Sozialwissenschaften
+meistens nicht-zu\-fäll\-ige Stichproben verwendet. Die Konsequenz
+davon ist, dass man sich bei der Interpretation der Ergebnisse
+mehr Gedanken machen muss, wenn man Rückschlüsse über eine Population
+ziehen möchte, als wenn die Stichprobe zufällig ausgewählt worden wäre.
+
+\begin{itemize}
+\item Eine Meinungsumfrage auf Twitter erreicht
+tendenziell Menschen ähnlicher Meinung. Aber sogar die angesehensten Meinungs\-forschungs\-institute können keine
+Zufallsstichproben organisieren: Bei Telefonumfragen in den USA
+nehmen nur \href{http://www.pewresearch.org/2017/05/15/what-low-response-rates-mean-for-telephone-surveys/}{etwa 10\%} der Ausgewählten teil.
+
+\item Wer ohne Entgelt einen langen Fragebogen
+zu seinem mehrsprachigen
+Verhalten ausfüllt, findet Mehrsprachigkeit tendenziell wichtiger
+als jemand, der nach der dritten Frage das Browserfenster schliesst
+oder den Fragebogen nicht einmal erhalten hat
+(bei einer Erhebung nach dem Schneeballprinzip).
+
+\item Muster in einer gut ausgebildeten Stichprobe
+mit überdurchschnittlichem
+sozioökonomischem Status (z.B.\ Universitätsstudierende)
+dürften nicht auf Populationen mit niedrigerem
+Bildungsniveau oder sozioökonomischen Status generalisieren
+lassen.
+Dies ist natürlich vor allem relevant, wenn
+Bildung und der sozioökonomische Status wichtig für
+den Forschungsgegenstand sind. Wenn man bereit ist, anzunehmen,
+dass diese Faktoren nur einen minimalen Effekt auf die Befunde haben,
+kann man zuversichtlicher generalisieren.
+Ob eine solche Annahme berechtigt ist,
+ist eine sachlogische -- keine statistische -- Frage.
+\end{itemize}
+
+Soll man jetzt verzweifelt dieses Skriptum bereits in der Mitte des 
+Semesters ins Lagerfeuer werfen? Meines Erachtens sollte man damit bis zum
+Semesterende warten.
+Einerseits liefert die Betrachtung des idealisierten Falles der Zufallsstichprobe ein \emph{Modell}
+für den Umgang mit Zufallsdaten. Entspricht der \textit{data-generating mechanism}
+in einer spezifischen Studie diesem Idealfall nicht, so kann es trotzdem möglich sein,
+dieses Modell zu verfeinern, sodass es besser zum konkreten Fall passt.
+Andererseits stellt es sich heraus, dass sich unsere Erkenntnisse recht gut
+auf einige häufige Situationen übertragen lassen -- beispielsweise
+auf Experimente, in denen die Versuchspersonen zwar keine Zufallsstichprobe
+aus irgendeiner Population darstellen, aber in denen diese schon zufällig den Konditionen
+des Experiments zugeordnet werden.

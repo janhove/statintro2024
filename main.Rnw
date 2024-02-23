@@ -1,0 +1,175 @@
+\documentclass[oneside]{book}
+
+% Allgemeines Lay-Out
+\usepackage[a4paper]{geometry}
+\usepackage{lmodern}
+
+% Deutsch
+\usepackage[ngerman]{babel, varioref}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\hyphenation{Stich-proben-standard-abweichung Populations-standard-abweichung Standard-abweichung Stichproben-mittel Populations-mittel Ver-trauens-schranke Kon-fi-denz-inter-vall}
+
+% Absätze formattieren
+\usepackage{setspace}
+\setstretch{1.15}
+\usepackage{parskip}
+\usepackage{microtype}
+
+% Mathe-Notation
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{tgpagella}
+\usepackage[sc]{mathpazo}
+
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\textrm{Var}}
+\newcommand{\Cov}{\textrm{Cov}}
+\newcommand{\Std}{\textrm{Std}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\im}{\textrm{i}}
+\newcommand{\df}{\,\textrm{d}}
+
+% Abbildungen und Tabellen
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[margin=10pt, labelfont=bf, width=.8\textwidth]{caption}
+
+\usepackage[small, explicit]{titlesec}
+\usepackage{fancyhdr}
+
+% Referenzen
+\usepackage[sort]{natbib}
+
+% For writing German
+\usepackage[ngerman]{babel, varioref}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% Define a new counter for theorems, lemmas, remarks, etc.
+\newcounter{mycounter}[chapter] % Reset counter at the start of each chapter
+\renewcommand{\themycounter}{\thechapter.\arabic{mycounter}}
+\NewDocumentCommand{\mypar}{som}{%
+  \refstepcounter{mycounter}%
+  \par\medskip\noindent\textbf{#3 \themycounter}%
+    \IfBooleanF{#1}{\IfValueT{#2}{\space(#2)}}\textbf{.}%
+}
+
+% Schlüsselbegriffe
+\newcommand{\term}[1]{\textbf{#1}}
+
+% Nebenbei
+\newenvironment{nebenbei}{\scriptsize}{\par}
+
+% Hyperlinks
+\usepackage{hyperref}
+\usepackage{varioref}
+
+% After proofs
+\newcommand*{\QED}[1][$\diamondsuit$]{%
+\leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill
+    \quad\hbox{#1}%
+}
+
+% After comments / exercises
+\newcommand*{\parend}[1][$\diamondsuit$]{%
+\leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill
+    \quad\hbox{#1}%
+}
+
+\title{Einführung in die quantitative Datenanalyse}
+\date{Universität Freiburg \\ Frühlingssemester 2024}
+\author{Jan Vanhove}
+
+% KNITR options -----------------------------------
+<<setup, include=FALSE, cache=FALSE>>=
+library(knitr)
+
+# set global chunk options
+opts_chunk$set(fig.path = 'generated_figs/',
+               fig.align = 'center',
+               fig.show = 'hold',
+               fig.pos = "tp",
+               tidy = FALSE,
+               prompt = FALSE,
+               comment = '',
+               highlight = TRUE,
+               dev = 'cairo_pdf',
+               cache = FALSE,
+               fig.width = 4,
+               fig.height = 4,
+               out.width = '.5\\textwidth')
+opts_knit$set(global.par = TRUE)
+
+options(formatR.arrow = TRUE,
+        width = 60, 
+        show.signif.stars = FALSE, 
+        tibble.print_max = 7,
+        tibble.print_min = 7)
+
+set.seed(2024)
+@
+
+<<echo = FALSE>>=
+par(las = 1,
+    bty = "l",
+    mar = c(3,3.5,2,1),
+    mgp = c(2,0.3, 0),
+    tck = -.01,
+    cex = 0.8)
+op <- par(no.readonly = TRUE)
+@
+
+\begin{document}
+
+\frontmatter
+\maketitle
+
+% \chapter{Vorwort}
+% \setcounter{tocdepth}{1}
+% \tableofcontents
+
+\mainmatter
+\part{Grundlagen}
+
+<<Software, child='01_software.Rnw'>>=
+@
+
+<<Datensaetze, child='02_datasets.Rnw'>>=
+@
+
+<<Datensaetze, child='03_univariate.Rnw'>>=
+@
+
+<<Wahrscheinlichkeit, child='04_probability.Rnw'>>=
+@
+
+\part{Schätzungen}
+<<Stichproben, child = '05_samples.Rnw'>>=
+@
+
+<<Unsicherheit, child = '06_uncertainty.Rnw'>>=
+@
+
+
+\appendix
+\part{Anhänge}
+
+<<Errors, child = '99_errormessages.Rnw'>>=
+@
+
+\chapter{Softwareversionen}\label{app:versions}
+Ich arbeite auf zwei Computern an diesem Skript.
+Die hier aufgeführten Softwareversionen und die Systemeinstellungen
+variieren je nachdem, auf welchem Computer ich das Skript das letzte Mal
+kompiliert habe.
+<<>>=
+devtools::session_info()
+@
+
+\bibliographystyle{../Documents/unified}
+\bibliography{../Documents/bibliography}
+
+\end{document}

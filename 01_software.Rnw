@@ -1,0 +1,776 @@
+\chapter{Software}\label{ch:software}
+Unsere erste Priorität ist es, die Software, die wir in diesem Kurs verwenden
+werden, zu installieren und zu konfigurieren. 
+Wir werden auch sehen, 
+wie man diese Software als Rechenmaschine verwenden kann 
+und wie man ihre Funktionalität um selbst geschriebene Funktionen erweitern kann.
+
+\section{R und RStudio installieren und konfigurieren}
+Um alle Schritte in diesem Skript mitverfolgen zu können,
+brauchen Sie die Gratis-Software R. 
+Zwar gibt es noch andere Gratis-Software, mit der man gut
+Daten analysieren kann 
+(z.B.\ 
+\href{https://www.python.org/}{Python}, 
+\href{https://julialang.org/}{Julia}, 
+\href{https://jasp-stats.org/}{JASP}), 
+aber im Vergleich zu diesen Alternativen hat R die Vorteile, 
+dass es in den Geistes- und Sozialwissenschaften stärker verbreitet ist
+und dass ich mich eben selber mit R am besten auskenne.
+Auf das weitere Preisen von R verzichte ich hier, siehe dazu 
+\url{https://adv-r.hadley.nz/introduction.html#why-r}.
+
+\mypar[R installieren]{Aufgabe}
+Wenn Sie noch nicht über R verfügen (mindestens Version 4.2.0),
+so laden Sie es unter \url{https://www.r-project.org} herunter
+und installieren Sie es. \parend
+
+Übrigens zeigt das Symbol $\diamondsuit$, wo eine Aufgabe oder Bemerkung
+aufhört.
+
+\mypar[RStudio installieren]{Aufgabe}
+Nachdem Sie R installiert haben, lohnt es sich, RStudio zu installieren.
+Dies ist ein benutzerfreundlicheres und kostenloses Interface,
+in dem Sie mit R arbeiten können.
+Laden Sie die Open Source Desktop-Version von RStudio unter \url{https://posit.co} 
+herunter und installieren Sie diese. \parend
+
+Öffnen Sie RStudio. Ihr Bildschirm soll jetzt
+so aussehen wie in Abbildung \ref{fig:rstudio}.
+Wenn Sie statt vier Quadranten nur drei sehen,
+klicken Sie auf \texttt{File, New File, R Script}.
+
+\begin{itemize}
+\item Links unten sehen Sie die R-Konsole.
+Befehle, die hier eingetragen werden,
+werden von R ausgeführt.
+Auch der Output dieser Befehle erscheint hier.
+
+\item Links oben sehen Sie einen Texteditor.
+ Anstatt Ihre Befehle direkt in die Konsole (links unten)
+ einzutragen, sollten Sie diese zunächst hier eintragen.
+ Dies macht es einfacher, die Befehle klar zu strukturieren
+ und zu formattieren und
+ Tippfehler aufzudecken. Ausserdem können Sie diese
+ Skripts als .R-Datei
+ speichern, sodass Sie Ihre Analyse nachher
+ reproduzieren können.
+
+\item Rechts oben werden alle Objekte in der R-Arbeitsumgebung aufgelistet.
+ Da Sie noch keine Daten eingelesen oder kreiert haben,
+ ist diese Umgebung momentan leer.
+
+\item Wenn Sie eine Grafik zeichnen, sehen Sie diese rechts unten. Wenn Sie eine Hilfeseite abfragen, erscheint diese ebenfalls hier. Dieses Fenster kann auch als Dateimanager
+ (wie Windows-Explorer) verwendet werden.
+\end{itemize}
+
+\begin{figure}
+ \centering
+ \includegraphics[width = \textwidth]{figs/RStudio.png}
+ \caption{RStudio mit links unten der R-Konsole, links oben einem Texteditor, rechts oben dem Verzeichnis über die Arbeitsumgebung (jetzt noch leer) und rechts unten allfälligen Hilfeseiten und Grafiken.}
+ \label{fig:rstudio}
+\end{figure}
+
+\mypar[RStudio konfigurieren]{Aufgabe}
+Klicken Sie dazu in RStudio auf \texttt{Tools} und wählen Sie
+\texttt{Global options\dots} aus.
+Stellen Sie sicher, dass unter \texttt{General, Basic} die Option
+`Restore .RData into workspace at startup' \emph{nicht} angekreuzt ist
+und dass bei `Save workspace to .RData on exit' die Option `never'
+ausgewählt wurde.
+Mit diesen Einstellungen vermeiden Sie, dass bei einem Neustart noch
+alte Resultate und Objekte in der Arbeitsumgebung herumliegen,
+die Ihre neuen Berechnungen beeinflussen, ohne dass Sie sich dessen
+bewusst sind.
+
+Weiter sollten Sie unter \texttt{Code, Editing} das Kästchen
+`Use native pipe operator, |>' ankreuzen.
+Was dieser `pipe operator' vermag, werden Sie schon bald merken.
+Zum Schluss empfehle ich Ihnen, dass Sie unter \texttt{Code > Saving}
+noch die `Default text encoding' auf UTF-8 wechseln. Das sollte
+die Wahrscheinlichkeit erhöhen, dass Ihre Skripts auf anderen
+Computern richtig angezeigt werden, wenn diese Sonderzeichen (wie Umlaute)
+enthalten. \parend
+
+\section{R als Rechenmaschine}\label{sec:calculator}
+\subsection{Rechenoperationen} \label{sec:rechenoperationen}
+Mit R verfügen Sie über eine Rechenmaschine.
+Summen, Produkte und Quotienten können Sie
+berechnen, indem Sie Befehle wie die unten stehenden
+auf die Konsole (unten links) eintragen.
+Die Ergebnisse gehören nicht zu
+den Befehlen; diese werden auf der Konsole
+angezeigt, sobald Sie den Befehl eingetragen
+haben und mit \textsc{enter} bestätigt haben.
+Alles, was rechts von einem Doppelkreuz (\#) steht,
+wird von R ignoriert. So können wir Befehle mit Kommentaren versehen:
+<<>>=
+10 + 7     # Addition
+12 - 28    # Subtraktion
+7 * 3.5    # Multiplikation
+11 / 3     # übliche Division
+6^3        # Potenz
+10^(-2)    # = 1/10^2 = 1/100
+4^0        # x^0 = 1; für R auch 0^0 = 1.
+sqrt(16)   # Quadratwurzel
+log(16, 2) # 2er-Logarithmus von 16, d.h., 2^4 = 16
+
+ceiling(2.3) # aufrunden
+floor(11.7)  # abrunden
+round(2.3)   # symmetrische Rundung
+round(2.7)
+round(2.5)   # falls ~.5: auf nächstgelegene gerade Zahl runden
+round(3.5)
+
+abs(-3)  # Absolutbetrag
+sign(-3) # Vorzeichen
+sign(3)
+sign(0)
+@
+
+R respektiert die übliche Reihenfolge, in der Rechenoperationen durchgeführt
+werden. Um eine andere Reihenfolge festzulegen, werden runde oder 
+geschweifte Klammern verwendet,
+wie auch in einigen der Beispiele oben:
+<<>>=
+4 + 8 * 2
+(4 + 8) * 2
+{4 + 8} * 2
+@
+
+\mypar[Wurzeln]{Bemerkung}
+Wenn wir $\sqrt{-3}$ berechnen wollen, so erhalten wir als Resultat
+\texttt{NaN} (\textit{not a number}), denn es gibt keine reelle Zahl
+$x$ mit $x^2 = -3$.
+<<>>=
+sqrt(-3)
+@
+In den komplexen Zahlen gibt es schon eine Zahl $x$, sodass $x^2 = -3$.
+(Genau gesagt gibt es zwei solche Zahlen, nämlich $0 \pm \sqrt{3}\textrm{i}$.)
+Mit komplexen Zahlen wollen wir uns hier aber nicht befassen.
+
+Fürs Ziehen von beliebigen Wurzeln von nicht-negativen Zahlen
+ist zu bemerken, dass $\sqrt[n]{x} = x^{1/n}$ gilt.
+Somit lässt sich $\sqrt[3]{216}$ als $216^{1/3}$ berechnen:
+<<>>=
+216 ^ (1/3)
+@
+Fürs Ziehen von beliebigen Wurzeln von negativen Zahlen 
+(z.B. $\sqrt[3]{-8}$) müssten wir aber
+wieder einen Umweg über die komplexen Zahlen machen, worauf wir hier verzichten. \parend
+
+\mypar[Wissenschaftliche Notation]{Bemerkung}
+Manchmal wird das Ergebnis einer Berechnung in einem anderen Format dargestellt.
+Berechnen wir beispielsweise $3328^{27}$, so erhalten wir als Ergebnis
+\texttt{1.26e+95}. (Die Zahlen im Fliesstext stimmen übrigens nicht immer mit den
+Zahlen im R-Output überein, da ich sie stärker runde.)
+<<>>=
+3328^27
+@
+Diese Schreibweise nennt man \term{wissenschaftliche Notation}
+und ist zu lesen als $1.26 \cdot 10^{95}$ -- also als $1.26$, aber
+mit dem Dezimaltrennzeichen 95 Stellen nach rechts verschoven.
+Das Ergebnis von $2^{-21}$ wird als \texttt{4.8e-07} angezeigt,
+was $4.8 \cdot 10^{-7}$ heisst -- also als $4.8$, aber
+mit dem Dezimaltrennzeichen sieben Stellen nach links verschoben, d.h., $0.00000048$.
+<<>>=
+2^(-21)
+@
+
+\parend
+
+\mypar[Hilfeseiten]{Bemerkung}
+Im Prinzip gibt es für jede R-Funktion eine Hilfeseite.
+Diese können Sie anzeigen, indem Sie \texttt{?Funktionsname} in die Konsole
+eintippen. Das Lesen der Hilfeseiten will gelernt sein. Nehmen wir uns also
+doch einmal die Rundungsfunktion \texttt{round()} genauer unter die Lupe:
+<<eval = FALSE>>=
+?round # Output nicht gezeigt im Skript
+@
+Diese Hilfeseite besteht aus neun Abschnitten; fünf von diesen findet
+man auf den meisten Hilfeseiten:
+\begin{enumerate}
+  \item Description: Kurze Beschreibung der Funktion.
+  
+  \item Usage: Welche Parameter hat die Funktion?
+  Die Funktion \texttt{round()} hat zwei Parameter: \texttt{x}
+  und \texttt{digits}. Wird kein Wert für \texttt{digits} angegeben,
+  so wird die Defaulteinstellung von 0 verwendet.
+  
+  \item Arguments: Kurze Angaben zu den erwarteten Parameterwerten.
+  
+  \item Details: Eben detailliertere Angaben zur Funktion. Bei \texttt{round()}
+  wird beispielsweise erklärt, wie und wieso 1.5 gerundet wird und wie und wieso
+  der Befehl \texttt{round(0.15, 1)} zu unerwarteteten Ergebnissen führen kann.
+  
+  \item Examples: Beispiele zur Anwendung der Funktion. Sie können auf
+  `Run examples' klicken, um zu sehen, welchen Output die Beispiele generieren.
+\end{enumerate}
+
+Die Hilfeseite für etwa den Additionsoperator \texttt{+} können Sie übrigens
+mit \texttt{?"+"} abrufen. \parend
+
+\subsection{Funktionsgraphen}
+Mit dem unten stehenden Befehl kann man den Graphen einer mathematischen Funktion
+zeichnen; siehe Abbildung \ref{fig:curve}.
+Tippen Sie diesen Befehl in RStudio ins
+Fenster links oben ein.
+Und ich meine tatsächlich `tippen', nicht `selektieren, kopieren und einkleben':
+Sie werden viel mehr lernen, wenn Sie die Befehle in diesem Skript
+abtippen als wenn Sie diese einfach aus dem PDF kopieren und einkleben!
+Selektieren Sie dann eine Zeile dieses Befehls
+und drücken Sie \textsc{ctrl + enter} (Windows und Linux)
+oder \textsc{cmd + enter} (macOS).
+Der Befehl wird nun an die Konsole (links unten)
+weitergeleitet.
+Im Prinzip können Sie diesen kurzen Befehl auch
+sofort in die Konsole eintragen, aber Sie sollten es sich angewöhnen,
+im Texteditor zu arbeiten. Fehler können so wesentlich einfacher
+aufgedeckt und behoben werden.
+Ausserdem erleichtert das Arbeiten im Texteditor
+das Dokumentieren Ihrer Analyse, da Sie Ihre Scripts abspeichern können.
+<<Curve, fig.cap = "Der Graph der Funktion $x \\mapsto 2^{-\\frac{x^2}{2}}\\frac{x}{1 + x^2}$.\\label{fig:curve}", fig.asp=0.7>>=
+curve(2^(-x^2/2) * x/(1 + x^2), 
+      from = -5, to = 5,
+      xlab = "x", ylab = "f(x)")
+@
+
+Jeder mit \texttt{curve()} gezeichnete Funktionsgraph sieht 
+stetig, also lückenlos, aus. 
+Aber beispielsweise die Vorzeichen- (oder Signum-)Funktion,
+\[
+  \textrm{sgn}(x) := \begin{cases} -1,  & \textrm{falls $x < 0$,} \\
+                                  0,    & \textrm{falls $x = 0$,} \\
+                                  1,    & \textrm{falls $x > 0$,}
+                    \end{cases}
+\]
+hat eine Unstetigkeitsstelle bei $x = 0$. Wenn Sie den Graphen
+dieser Funktion zeichnen würden, so würde es aussehen, als wäre dieser zwar 
+stark wachsend um den Nullpunkt herum, 
+aber schon ununterbrochen. Um den richtigen Graphen dieser Funktion zu berechnen,
+müsste man sich etwas mehr Mühe machen. Darauf verzichten wir hier aber
+erst mal.
+
+Auch kann ein mit \texttt{curve()} gezeichneter Graph es aussehen lassen,
+als ob die gezeichnete Funktion überall definiert ist, während dies nicht so ist.
+So ist die Funktion $x \mapsto \frac{\sin(x)}{x}$ bei $x = 0$ nicht definiert,
+denn durch 0 kann man nicht teilen. Zeichnet man jedoch den Graphen dieser
+Funktion, so könnte man denken, dass $0 \mapsto 1$. Man könnte daher im 
+Graphen ein Kreischen bei den Koordinaten $(0, 1)$ zeichnen, um deutlich
+zu machen, dass die Funktion bei $x = 0$ nicht definiert ist:
+<<eval = FALSE>>=
+curve(sin(x)/x, 
+      from = -8, to = 8,
+      xlab = "x", ylab = "f(x)")
+# Mit 'cex' (character expansion) kann die Grösse geregelt werden.
+points(0, 1, cex = 2) 
+@
+
+\subsection{Vektorisierte Rechenoperationen}
+In R ist ein \term{Vektor} eine bestimmte Anzahl von Zahlen (oder anderen 
+Objekten), die zusammen gruppiert werden. Mit der Funktion \texttt{c()}
+(für \textit{concatenate}) kann man (unter anderem) 
+Zahlen zu einem Vektor zusammenfügen. 
+Mit dem  \textit{assignment operator} \texttt{<-} kann man diesem 
+Vektor einen Namen geben (hier \texttt{a}):
+<<>>=
+a <- c(-4, 2, 0.3, 2014)
+@
+Der Vektor \texttt{a} enthält nun die vier aufgeführten Zahlen.
+Wir können den Vektor ganz anzeigen, indem wir seinen Namen eintippen:
+<<>>=
+a
+@
+Wir können bestimmte Komponenten nach ihrer Position aus dem Vektor herauslesen.
+Mit \texttt{a[i]} lesen wir den $i$-ten Eintrag von $a$ heraus, also $a_i$,
+$1 \leq i \leq n$. Die folgenden Beispiele zeigen weitere Möglichkeiten,
+um Einträge abzufragen.
+<<>>=
+a[1]         # 1. Komponente
+a[-3]        # Alle ausser der 3. Komponente
+a[c(2, 4)]   # Verwendung von c() um mehrere Elemente herauszulesen
+a[-c(2, 4)]  # Alle ausser der 2. und der 4. Komponente
+@
+Falls Sie bereits Erfahrung mit anderen Computersprachen haben, so sollten
+Sie aus diesem Beispiel mitnehmen, dass R kein \textit{zero-based indexing}
+verwendet: Die erste Komponente von \texttt{a} 
+wird anders als vielen anderen Programmiersprachen mit \texttt{a[1]}, nicht mit \texttt{a[0]}, abgefragt.
+
+Die Summe aller Einträge eines Vektors $a$ -- in sog.\ \term{Gross-Sigma-Notation}
+\[
+  \sum_{i=1}^n a_i := a_1 + a_2 + \dots + a_n,
+\]
+mit $n$ der Anzahl Einträge im Vektor,
+können wir einfach mit \texttt{sum()} berechnen:
+<<>>=
+sum(a)
+@
+Das Produkt aller Einträge eines Vektors, also
+\[
+  \prod_{i=1}^n a_i := a_1 \cdot a_2 \cdot \dots \cdot a_n,
+\]
+können wir mit \texttt{prod()} berechnen:
+<<>>=
+prod(a)
+@
+
+Die Länge eines Vektors kann mit \texttt{length()} abgefragt werden;
+das Maximum und Minimum mit \texttt{max()} bzw.\ \texttt{min()}:
+<<>>=
+length(a)
+max(a)
+min(a)
+@
+ 
+Die Operationen aus Abschnitt \ref{sec:rechenoperationen} können auch auf Vektoren
+angewandt werden. In diesem Fall werden sie komponentenweise ausgeführt:
+<<>>=
+2 * a
+a - 7
+sqrt(a) # Warnung wg. Wurzel von negativer Zahl
+log(a, 2)
+@
+
+Wenn wir noch einen zweiten Vektor der gleichen Länge definieren,
+so können wir gewisse Operationen komponentenweise mit den übereinstimmenden
+Elementen durchführen:
+<<>>=
+b <- c(3, 8.2, -1.2, sqrt(20))
+a - b
+a + b
+a / b
+a * b
+a ^ b
+@
+
+Um das komponentenweise Maximum bzw.\ Minimum von zwei oder mehr
+Vektoren zu berechnen, brauchen wir \texttt{pmax()} bzw.\ \texttt{pmin()}
+(\textit{p} für \textit{parallel}):
+<<>>=
+pmax(a, b)
+pmin(a, b)
+@
+Wollen wir den maximalen bzw.\ minimalen Eintrag mehrerer Vektoren berechnen,
+so bieten sich wieder \texttt{max()} bzw.\ \texttt{min()} an:
+<<>>=
+max(a, b)
+@
+
+\mypar[Produkte von Vektoren]{Bemerkung}
+Es gibt mehrere Arten und Weisen, wie man ein Produkt zweier Vektoren definieren
+kann. Das komponentenweise Produkt (oder Hadamard-Produkt), das wir hier berechnen, ist nicht
+gleich dem sog.\ Vektorprodukt oder dem sog.\ Skalarprodukt.
+Da gerade das Skalarprodukt noch oft in Texten zu
+Statistik auftaucht, musste dies hier kurz erwähnt werden. \parend
+
+\mypar[Vektoren ungleicher Länge]{Bemerkung}
+Streng genommen muss der zweite Vektor nicht gleich lang
+sein wie der erste. Wenn die Vektoren aber nicht gleich lang sind, 
+kann es schwierig sein, die Ergebnisse der Berechnungen zu antizipieren.
+Als Beispiel definieren wir einen dreistelligen Vektor $d$ und addieren wir diesen
+zum vierstelligen Vektor $a$. (Es gibt eine R-Funktion \texttt{c()}, weshalb
+wir diesen dritten Vektor nicht \texttt{c}, sondern \texttt{d} nennen.)
+<<>>=
+d <- c(3, 8.2, -1.2)
+a + d
+@
+Da die Länge des zweiten Vektors kein Vielfaches der Länge des
+ersten Vektors ist, wird die vierte Addition mit dem vierten Element
+des ersten Vektors und dem ersten Element des zweiten Vektors durchgeführt.
+Dies sorgt garantiert für Verwirrung.
+Vermeiden Sie diese Situation.
+
+Ist die Länge des zweiten Vektors schon ein Vielfaches der Länge
+des ersten Vektors, so wird der zweite Vektor rezykliert,
+ohne dass man eine Warnung erhält. Im folgenden Beispiel
+ist der dritte Eintrag von \texttt{a + d} daher gleich
+dem dritten Eintrag von \texttt{a} plus den ersten Eintrag von \texttt{d}.
+<<>>=
+d <- c(3, 8.2)
+a + d
+@
+Auch dies dürfte für Verwirrung sorgen. \parend
+
+\mypar[Zahlenfolgen]{Bemerkung}
+Wir haben bereits gesehen, dass man Vektoren mit der \texttt{c()}-Funktion
+definieren kann. Will man eine Zahlenfolge als Vektor definieren, so
+gibt es aber einfachere Varianten:
+<<>>=
+z <- 3:12
+z
+z <- 7:-1
+z
+z <- seq(from = 1, to = 3.5, by = 0.25)
+z
+z <- seq(from = 0, to = 2, length.out = 7)
+z
+z <- seq(to = 2, by = 12, length.out = 5)
+z
+z <- seq_len(5)
+z
+@
+Erklären Sie sich, was jeder dieser Befehle bewirkt.
+\parend
+
+
+\section{R als Programmiersprache}\label{sec:rprogramming}
+Die Funktionalität von R kann um eigens geschriebene Funktionen ergänzt werden.
+Wir wollen anhand von zwei Beispielen zeigen, wie dies funktioniert.
+Weitere Beispiele folgen in späteren Kapiteln.
+
+\mypar[Kumulative Summe]{Beispiel}
+Wir erhalten einen Vektor mit numerischen Werten und wollen einen neuen Vektor
+kreieren, der die kumulativen Summen der Werte dieses Vektors enthält.
+Wenn wir zum Beispiel die kumulativen Summen für den Vektor $(1, 4, 9)$
+berechnen, so erhalten wir $(1, 1 + 4, 1 + 4 + 9) = (1, 5, 15)$.
+
+Mit dem unten stehenden Code erzeugen wir eine neue Funktion namens
+\texttt{kum\_summe()}, der einen einzigen Parameter \texttt{x} hat.
+Dieses \texttt{x} spielt die Rolle des Eingabevektors.
+Die Funktion kreiert zunächst einen neuen Vektor mit der gleichen Länge
+des Eingabevektors. Den ersten Wert dieses neuen Vektors wird auf den
+ersten Wert des Eingabevektors gestellt. Danach wird eine \term{for-Schleife}
+verwendet, um die weiteren kumulativen Summen zu bestimmen. Am Ende
+verlassen wir die Funktion und geben den neuen Vektor aus:
+<<>>=
+kum_summe <- function(x) {
+  resultat <- vector(length = length(x))
+  resultat[1] <- x[1]
+  for (i in 2:length(x)) {
+    resultat[i] <- resultat[i - 1] + x[i]
+  }
+  return(resultat)
+}
+@
+
+Verwenden können wir die neue Funktion wie jede andere R-Funktion:
+<<>>=
+a <- c(-8, 12, pi, 203, 2)
+b <- kum_summe(a)
+b
+kum_summe(b)
+@
+
+Das Objekt \texttt{resultat} existiert übrigens nur innerhalb der Funktion
+und ist also nicht in der Arbeitsumgebung vorhanden:
+<<>>=
+resultat
+@
+
+Die neue Funktion \texttt{kum\_summe()} dient nur didaktischen Zwecken,
+da es bereits die R-Funktion \texttt{cumsum()} gibt, die die gleiche 
+Berechnung ausführt.
+\parend
+
+\mypar[Fakultät]{Beispiel}\label{bsp:factorial}
+Seit 2023 spielen zwölf Teams in der Schweizer Super League.
+Wie viele möglichen Tabellenstände gibt es, wenn wir die Möglichkeit
+gleich plazierter Teams ausser Acht lassen?
+
+Es gibt 12 Möglichkeiten, den ersten Rang zu belegen.
+Sobald wir ein Team für den ersten Rang ausgewählt haben, bleiben nur noch
+11 Möglichkeiten für den zweiten Rang übrig. Haben wir die ersten zwei Ränge
+festgelegt, so bleiben noch 10 Möglichkeiten für den dritten Rang übrig.
+So geht es weiter, bis wir am Schluss nur noch eine Möglichkeit für das letzte
+Team haben. Insgesamt gibt es also
+\[
+12 \cdot 11 \cdot 10 \cdot \dots \cdot 2 \cdot 1 = 479'001'600
+\]
+möglichen Tabellenstände in der Super League.
+
+Diese Erkenntnis kann verallgemeinert werden:
+Bei $n$ unterschiedlichen Objekten gibt es $n \cdot (n-1) \cdot \dots \cdot 1$
+unterschiedliche Möglichkeiten, diese anzuordnen.
+Entsprechend bezeichnen wir mit $n!$ die \term{Fakultät}
+(\textit{factorial}) einer natürlichen Zahl $n$ als
+\[
+  n! :=
+  \begin{cases}
+    1, & \textrm{falls $n = 0$}, \\
+    n \cdot (n-1) \cdot \dots \cdot 1, &\textrm{sonst}.
+  \end{cases}
+\]
+Mit der Definition von $0! := 1$ könnte man sich anfreunden,
+indem man sich überlegt, dass  da man nur eine Möglichkeit hat, 
+keine Objekte anzuordnen (nämlich: nichts tun).
+Aber vor allem erleichtert diese Definition viele Berechnungen und Beweise.
+
+Wir können diese Definition nun als Grundlage einer eigens geschriebenen
+R-Funktion zur Berechnung der Fakultät verwenden.
+<<>>=
+fakultaet <- function(n) {
+  if (n == 0) {
+    return(1)
+  }
+  resultat <- 1
+  for (i in 1:n) {
+    resultat <- i * resultat
+  }
+  return(resultat)
+}
+@
+
+Die neu definierte Funktion \texttt{fakultaet()} akzeptiert
+einen Parameter, \texttt{n} (Zeile 1).
+Wenn dieses \texttt{n} gleich $0$ ist, so gibt die
+Funktion $1$ als Resultat zurück, und wir verlassen
+die Funktion (Zeilen 2--4). 
+Zu bemerken sind hier folgende Sachen:
+\begin{itemize}
+  \item Wir verwenden `==` (nicht `=`), um zwei Ganzzahlen auf Gleichheit
+  zu testen. (Um reelle Zahlen auf Gleichheit zu testen, siehe \texttt{all.equal()}!)
+  \item Wir verwenden geschweifte Klammern, um zu definieren, was alles gemacht werden
+muss, wenn die Bedingung in der \textit{if}-Klausel erfüllt ist.
+  \item Wir können \texttt{return()} mehrmals verwenden. Die Funktion wird beim
+  zuerst angetroffenen \texttt{return()} verlassen und nicht weiter ausgeführt.
+\end{itemize}
+
+Ist die Bedingung in der \textit{if}-Klausel nicht erfüllt,
+so verlassen wir die Funktion vorübergehend nicht. Zunächst initialisieren
+wird eine Variable namens \texttt{resultat} mit dem Anfangswert von $1$ (Zeile 5).
+In einer \textit{for}-Schleife iterieren wir nun durch alle Ganzzahlen zwischen
+$1$ und \texttt{n} und multiplizieren jeweils diese Zahl mit dem jetzigen Wert
+von \texttt{resultat}, um so den nächsten Wert von \texttt{resultat} zu erhalten.
+Am Ende verlassen wir die Funktion und geben dieses \texttt{resultat} aus.
+
+Die neu geschriebene Funktion kann man nun wie jede andere R-Funktion verwenden:
+<<>>=
+fakultaet(12)
+@
+Wenn Sie Ihre R-Session neu starten, so werden Sie jedoch die neue Funktion
+nochmals definieren müssen, bevor Sie diese verwenden können.
+
+Übrigens können \textit{if}-Klauseln noch um \textit{else if}- und
+\textit{else}-Klauseln ergänzt werden, wie in der Code-Schablone unten. In der
+Funktion \texttt{fakultaet()} brauchen wir solche \textit{else (if)}-Klauseln
+jedoch nicht, da wir die Funktion bereits in der \textit{if}-Klausel verlassen.
+<<eval = FALSE>>=
+# Beispiel mit else (if):
+if (Bedingung1) {
+  # Dieser Code wird ausgeführt, wenn Bedingung1 erfüllt ist
+} else if (Bedingung2) {
+  # Dieser Code wird ausgeführt, wenn Bedingung2 erfüllt ist,
+  # aber Bedingung1 nicht.
+} else {
+  # Dieser Code wird ausgeführt, wenn weder Bedingung 1
+  # noch Bedingung2 erfüllt ist.
+}
+@
+
+Statt eine \textit{for}-Schleife zu verwenden, können wir auch
+einen Vektor mit allen Ganzzahlen von $1$ bis \texttt{n} kreieren und diese
+miteinander multiplizieren:
+<<>>=
+fakultaet2 <- function(n) {
+  if (n == 0) {
+    return(1)
+  }
+  return(prod(1:n))
+}
+fakultaet2(12)
+@
+
+Eine weitere Variante bietet sich an, wenn wir bemerken, dass wir
+$n!$ rekursiv umschreiben können, denn für $n \geq 1$ gilt
+\[
+  n! = n \cdot \underbrace{(n-1) \cdot (n-2) \cdot \dots \cdot 1}_{= (n-1)!}.
+\]
+Die Funktion \texttt{fakultaet3()} ruft entsprechend sich selbst auf,
+um $n!$ zu berechnen:
+<<>>=
+fakultaet3 <- function(n) {
+  if (n == 0) {
+    return(1)
+  }
+  return(n * fakultaet3(n - 1))
+}
+
+fakultaet3(12)
+@
+Bei dieser Lösung ist jedoch Vorsicht geboten: Wenn wir zum Beispiel den Befehl
+\texttt{fakultaet3(-1)} oder \texttt{fakultaet3(2.5)} ausführen, so geraten
+wir in eine endlose Rekursion, da der Basisfall ($n = 0$) nie erreicht wird.
+
+Natürlich hat R eine eingebaute und optimierte Funktion, um Fakultäten zu berechnen:
+<<>>=
+factorial(12)
+@
+\parend
+
+\mypar[Skalarprodukt]{Aufgabe} Seien
+$x = (x_1, \dots, x_n)$ und $y = (y_1, \dots, y_n)$ zwei Vektoren, beide
+der Länge $n \geq 1$ und mit reellen Zahlen als Komponenten.
+Das sogenannte (Standard-)Skalarprodukt weist diesem Paar von Vektoren eine reelle
+Zahl zu und zwar
+\[
+  \langle x, y \rangle := \sum_{i=1}^n x_iy_i = x_1y_1 + x_2y_2 + \dots + x_ny_n.
+\]
+Schreiben Sie eine R-Funktion \texttt{skp()}, welche zwei Vektoren als Parameter
+akzeptiert und ihr Skalarprodukt berechnet. 
+Wenn die zwei Eingabevektoren nicht gleich lang sind, so soll Ihre Funktion
+eine Fehlermeldung geben. Diese können Sie mit dem Befehl \texttt{stop()} erzeugen:
+<<eval = FALSE>>=
+stop("Vectors not of same length.")
+@
+
+Hinweis zur Selbstkontrolle: Der Output des folgenden Befehls müsste $-6$ sein.
+<<eval = FALSE>>=
+skp(c(1, -2, 3), c(-1, -2, -3))
+@
+
+\parend
+
+\mypar[Fibonacci-Zahlen]{Aufgabe}
+Die Fibonacci-Folge $1, 1, 2, 3, 5, \dots$ ist wie folgt definiert:
+\[
+  \textrm{Fib}(n) := 
+  \begin{cases}
+    1, & \textrm{falls $n \leq 2$}, \\
+    \textrm{Fib}(n-1) + \textrm{Fib}(n-2), & \textrm{sonst},
+  \end{cases}
+\]
+wobei $n$ eine natürliche Zahl ungleich $0$ ist.
+Schreiben Sie eine Funktion \texttt{Fib()}, mit der Sie die $n$-te
+Fibonacci-Zahl berechnen können. Verwenden Sie diese Funktion, um
+die 25.\ Fibonacci-Zahl zu berechnen. Was stellen Sie fest, wenn
+Sie die 100.\ Fibonacci-Zahl berechnen möchten?
+
+Hinweis: Sie können eine Berechnung meistens abbrechen, 
+indem Sie bei der Konsole auf STOP klicken.
+\parend
+
+\section{Erweitungspakete}
+Es gibt für R einen Haufen Erweiterungspakete,
+mit denen man z.B.\ informative Grafiken
+gestalten kann oder spezialisierte statistische
+Modelle rechnen kann.
+
+\mypar[\texttt{tidyverse} installieren]{Aufgabe}
+Mit dem unten stehenden Befehl installieren Sie das
+\texttt{tidyverse}-Bündel: eine
+Sammlung unterschiedlicher Pakete, die alle
+auf der gleichen Philosophie basieren und
+die das Arbeiten mit Datensätzen wesentlich
+erleichtern.
+<<eval = FALSE>>=
+install.packages("tidyverse")
+@
+
+Für die Erweitungspakete, die im \texttt{tidyverse}-Bündel
+zusammengepackt wurden, finden Sie unter \url{https://www.tidyverse.org/}
+Anleitungen und weitere Informationen. \parend
+
+
+\mypar[\texttt{here} installieren]{Aufgabe}
+Ein weiteres nützliches Erweiterungspaket, das wir bald verwenden werden,
+ist das \texttt{here}-Package. Installieren Sie es. \parend
+
+\section{R-Projekte}
+Es ist sinnvoll, wenn sich die Scripts, Datensätze, Grafiken, usw.,
+die Sie für ein Forschungsprojekt brauchen oder kreiert haben,
+alle im gleichen Ordner (`Arbeitsordner') befinden.
+Am besten richten Sie dazu für jedes Forschungsprojekt, an dem Sie beteiligt
+sind (inklusive Seminar- und Masterarbeiten), ein R-Projekt ein.
+Auch für diesen Kurs sollten Sie ein solches Projekt einrichten.
+
+\mypar[R-Projekt einrichten]{Aufgabe}
+Klicken Sie in RStudio auf \texttt{File, New Project..., New directory, New Project} und geben Sie dem
+Projekt einen sinnvollen Namen (z.B.\ Statistikkurs).
+Für diesen Kurs brauchen Sie
+die Option\texttt{Use renv with this project} nicht einzuschalten.
+Es wird jetzt ein Ordner kreiert, der eine Datei
+mit der Endung \texttt{.Rproj} enthält.
+Um das R-Projekt zu öffnen, können Sie diese Datei
+öffnen oder das Projekt in RStudio unter
+\texttt{File, Open Project...} auswählen.
+
+Wenn Sie das Projekt geöffnet haben,
+sollten Sie im Fenster rechts unten noch die Registerkarte
+\texttt{Files} öffnen und mit \texttt{New Folder}
+die Unterordner \texttt{data}, \texttt{figs}, \texttt{scripts} und
+\texttt{assignments} kreieren.
+Die Datensätze, mit denen wir arbeiten werden, 
+sollten Sie in \texttt{data} ablegen;
+in \texttt{figs} werden wir Abbildungen (Grafiken) speichern;
+in \texttt{scripts} ein paar R-Scripts;
+und in \texttt{assignments} können Sie Ihre Hausaufgaben speichern. \parend
+
+\section{Softwareversionen und Updates}
+R und seine Erweiterungspakete sind in ständiger Entwicklung.
+Um ein Update der installierten R-Packages durchzuführen,
+können Sie den Befehl \texttt{update.packages()} verwenden.
+Um R selber auf den neusten Stand zu bringen, finde ich es
+eigentlich am einfachsten, die alte Version komplett zu löschen
+und die neue zu installieren. Danach muss ich dann aber die
+Packages, die ich brauche, erneut installieren.
+Dies kann recht mühsam sein, weshalb ich Ihnen empfehle,
+solche Upgrades in der vorlesungsfreien Zeit durchzuführen
+statt mitten im Semesterstress.
+
+Aber Achtung: Es kommt nicht selten vor, dass alter R-Code
+nach einem Update nicht mehr oder etwas anders funktioniert.
+Für grössere Forschungsprojekte empfiehlt es sich daher,
+die Option \texttt{Use renv with this project} anzukreuzen.
+Diese sorgt dafür, dass die Versionen der Packages, die Sie
+im Projekt verwenden, als Teil des Projekts gespeichert werden.
+Die verwendeten Packages müssen jedoch im Projekt neu installiert werden.
+Auch wenn Sie nachher für ein anderes Projekt eine neuere
+Version des Packages verwenden, werden die Befehle im ersten Projekt
+noch mit der alten Version ausgeführt. Dies verringert die
+Gefahr, dass Ihr alter Code ein paar Jahre später nicht mehr funktioniert.
+Für mehr Informationen, siehe \url{https://rstudio.github.io/renv/articles/renv.html}.
+
+Für dieses Skript wurde R-Version 4.3.1 verwendet.
+Eine Übersicht über die Packageversionen finden Sie im Anhang.
+
+\section{Software zitieren}
+R und R-Pakete sind gratis und werden mehrheitlich
+von anderen Forschenden entwickelt. Wenn Sie bei
+Ihrer Arbeit sehr von R oder einem Erweiterungspaket
+profitiert haben, ziehen Sie es dann bitte in Erwägung,
+diesen Freiwilligen mit einer Referenz zu danken.
+
+Eine Referenz für R erhalten Sie, wenn Sie
+den folgenden Befehl in die Konsole eintippen.
+Den Output dieses Befehls wird hier im Skript nicht gezeigt.
+<<eval = FALSE>>=
+citation()
+@
+
+Wenn Sie ein bestimmtes Erweiterungspaket zitieren
+möchten, stellen Sie den Namen des Pakets zwischen
+Klammern und Anführungszeichen, etwa so:
+<<eval = FALSE>>=
+# Output nicht im Skript
+citation("tidyverse")
+@
+
+Es ist eine gute Idee, der Referenz an
+ein Erweitungspaket auch noch die Softwareversion
+hinzuzufügen. Es kann nämlich vorkommen, dass
+gewisse Berechnungen je nach der Softwareversion
+ein anderes---eventuell falsches---Ergebnis liefern.
+Um die Softwareversion von R und eventuell geladenen
+Erweitungspaketen abzurufen, können Sie den Befehl \texttt{sessionInfo()}
+verwenden.
+<<eval = FALSE>>=
+# Output nicht im Skript
+sessionInfo()
+@
+
+\section{R Markdown-Berichte}
+R-Scripts können zu Berichten kompiliert werden.
+Dies ist nützlich, um sicherzustellen, dass Ihre Analysen reproduzierbar sind,
+denn kompliert werden nur jene Befehle, die auch im Script vorhanden sind --
+und nicht irgendwelche Befehle, die man zwar ausgeführt, aber nicht ins 
+Script aufgenommen hat. Ausserdem kann ein Script nur kompiliert werden,
+wenn alle Befehle geparst werden können. Ihre Hausaufgaben sollten Sie daher
+sowohl als Script als auch in Form eines Berichts einreichen.
+
+\mypar[Berichtschablone]{Aufgabe}
+Speichern Sie die Datei \texttt{schablone.R} in den Unterordner 
+\texttt{aufgaben} in Ihrem R-Projekt. Kompilieren Sie diesen Bericht:
+\texttt{File, Compile Report\dots}.
+Vergleichen Sie die .R-Datei mit dem kompilierten HTML-Bericht.
+Für die weiteren Hausaufgaben können Sie dann jeweils diese Schablone als 
+Grundlage verwenden. \parend
