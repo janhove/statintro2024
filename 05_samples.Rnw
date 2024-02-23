@@ -10,11 +10,11 @@ die Wahlpräferenz aller AmerikanerInnen, die vorhaben,
 zur Urne zu gehen.
 Öfters sollte man die Population von Interesse
 aber eher als einen abstrakteren datengenerierenden Mechanismus
-zu verstehen. Ein simples Beispiel hierfür ist die Kreisscheibe aus Abbildung
+verstehen. Ein simples Beispiel hierfür ist die Kreisscheibe aus Abbildung
 \ref{fig:kreis}, die Daten aus einer kontinuierlichen Gleichverteilung generiert.
 
 In der Regel stellen die Daten,
-die gesammelt wurden, aber nur einen kleinen Teil
+die gesammelt wurden, nur einen kleinen Teil
 der Population von Interesse da bzw.\ sie besteht aus
 endlich vielen Belegen, die von einem Mechanismus
 generiert wurden, der theoretisch unendlich viele solche
@@ -35,7 +35,7 @@ Im Folgenden gehen wir davon aus, dass uns eine
 und dass die relevante Population als unendlich gross aufgefasst werden kann.
 Genauer sei $P$ die Verteilung der Population, über die wir Aussagen machen möchten.
 Dann besteht eine einfache Zufallsstichprobe aus Beobachtungen
-$X_1, X_2, \dots, X_n$, die identische und unabhängig nach $P$ verteilt sind.\footnote{Eine 
+$X_1, X_2, \dots, X_n$, die identisch und unabhängig nach $P$ verteilt sind.\footnote{Eine 
 etwas kompliziertere Art Stichprobe wäre die \term{geschichtete Zufallsstichprobe}
 (\textit{stratified random sample}). Hierzu teilt man die Population von Interesse 
 (z.B.\ Studierende an der Universität Freiburg) in Teilpopulationen auf 
@@ -119,7 +119,7 @@ In Kapiteln \ref{ch:descriptives} und \ref{ch:stochastik}
 wurden das Mittel (Erwartungswert) und die Varianz als Masse
 der zentralen Tendenz und der Streuung
 einer Population eingeführt. Wenn uns nun eine Stichprobe aus dieser Population
-$P$ (also Beobachtungen $X_1, \dots, X_n$ mit $P$ Verteilung) zur Verfügung steht, so ist
+$P$ (also Beobachtungen $X_1, \dots, X_n$ mit Verteilung $P$) zur Verfügung steht, so ist
 es naheliegend, die \term{empirische Verteilung} $\widehat{P}$ durch die
 empirische Verteilungsfunktion $\widehat{F}$ zu definieren, wo
 \[
@@ -368,7 +368,7 @@ Die Unterschätzung der Populationsvarianz lässt sich einfach korrigieren.
 Wie Sie anhand von Aufgabe \ref{ex:estimate_var} ergibt die plug-in-Schätzung
 von $\sigma^2$ im Schnitt den Wert $\frac{n-1}{n}\sigma^2$. Um diese Unterschätzung
 zu korrigieren, wird die \term{Stichprobenvarianz}
-(Kürzel: $s^2$) nicht wie die Populationsvarianz ($\sigma^2$),
+(Kürzel: $S^2$) nicht wie die Populationsvarianz ($\sigma^2$),
 sondern folgendermassen berechnet:
 \begin{equation*}
   S^2 := \frac{1}{n-1} \sum_{i = 1}^{n} (X_i - \overline{X})^2 = \frac{n}{n-1}\left(\frac{1}{n} \sum_{i = 1}^{n} (X_i - \overline{X})^2\right).
@@ -461,8 +461,8 @@ den Estimanden $h(\theta)$ unverzerrt schätzt. Beispielsweise
 schätzt das Stichprobenmittel $\overline{X}$ das Populationsmittel $\mu$ unverzerrt,
 aber die Grösse $(\overline{X})^2$ überschätzt $\mu^2$. Hiervon kann man sich
 überzeugen, indem man eine Population mit $\mu = 0$ betrachtet. Im Allgemeinen
-handelt es sich um eine Überschätzung, wenn $h$ konvex ist, und um eine 
-Unterschätzung, wenn $h$ konkav ist.}
+handelt es sich um eine Überschätzung, wenn $h$ streng konvex ist, und um eine 
+Unterschätzung, wenn $h$ streng konkav ist.}
 
 Es kommt eigentlich quasi nie vor, dass man für einen Datensatz
 die Populationsvarianz und -standardabweichung berechnet.
@@ -478,12 +478,10 @@ ergeben beide Berechnungsmethoden ohnehin nahezu das gleiche Resultat.
 \parend
 
 \section{Nicht-zufällige Stichproben}
-Wir haben uns in diesem Kapitel mit Zufallsstichproben
 Zwei grosse Vorteile von Zufallsstichproben sind,
 dass sie unverzerrte Schätzungen des Populationsmittels und der
 Populationsvarianz liefern und dass der zentrale Grenzwertsatz
 auf sie zutrifft.
-
 In der Praxis ist es jedoch schwierig, eine Zufallsstichprobe
 aus einer einigermassen interessanten Population zu ziehen.
 Wenn wir etwa anhand einer Zufallsstichprobe die Englischkenntnisse
