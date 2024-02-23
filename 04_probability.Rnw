@@ -1571,7 +1571,7 @@ anhand einer Normalverteilung schätzen. Für grössere $n$ ist diese Schätzung
   Die Anzahl Augen, die man beim Würfeln mit einer 6-seitigen Würfel erhält, folgt einer
   diskreten Gleichverteilung auf $\{1, 2, 3, 4, 5, 6\}$. Ein Wurf hat Erwartungswert $\mu = 3.5$
   und Varianz $\sigma^2 \approx 2.92$. Wenn wir 7 Mal würfeln, beträgt die Varianz
-  des durchschnittlichen Wurf $\sigma^2/7 \approx 0.42$.
+  des durchschnittlichen Wurfs $\sigma^2/7 \approx 0.42$.
   Die Wahrscheinlichkeit, dass der durchschnittliche Wurf kleiner als 3 ist,
   beträgt mit dem zentralen Grenzwertsatz ungefähr 22\%.
 <<>>=
