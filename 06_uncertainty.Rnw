@@ -3,7 +3,7 @@ Eine unumgängliche Gegebenheit beim Arbeiten mit Stichproben
 ist, dass wir Eigenschaften von Populationen
 nur \emph{schätzen} können. Die Frage stellt sich, wie
 genau diese Schätzungen denn sind. Interessanterweise wissen wir
-dies in der Regel auch nicht genau, weshalb diese Unsicherheit
+dies in der Regel auch nicht genau, weshalb diese Ungenauigkeit
 \emph{auch} anhand der Stichprobe geschätzt werden muss.
 
 Das Ziel dieses Kapitels ist es, anhand eines Beispiels zu
@@ -11,7 +11,7 @@ illustrieren, wie man mit einer Stichprobe die Unsicherheit
 in einer Parameterschätzung einschätzen kann.
 Dazu introduziert dieses Kapitel den sog.\ \term{Bootstrap},
 ein flexibles, mechanistisches Verfahren,
-um Unsicherheit einzuschätzen.
+um Ungenauigkeit einzuschätzen.
 Danach wird gezeigt, wie man anhand des zentralen Grenzwertsatzes
 (vgl.\ Abschnitt \ref{sec:clt}) das Gleiche machen kann.
 
@@ -22,7 +22,7 @@ in dem Migrant:innen angefangen haben, eine Zweitsprache
 zu lernen (\textit{age of acquisition}, AOA),
 mit ihrer Leistung bei einer Grammatikaufgabe
 zusammenhängt (\textit{grammaticality judgement task}, GJT).
-Die Teilnehmenden waren russische MigrantInnen in Israel
+Die Teilnehmenden waren russische Migrant:innen in Israel
 und in Nordamerika.
 Die Grammatikaufgabe bestand aus 204 richtig/falsch-Items.
 In den nächsten Kapiteln werden wir uns mit dem
@@ -491,7 +491,7 @@ Bootstraps sind die folgenden.
  obigen Beispielen nirgends davon ausgegangen sind, dass die
  Stichprobenmittelverteilung normalverteilt ist.
  In den Beispielen sind die Verteilungen der gebootstrappten Mittel zwar
- normalverteilt, aber hiervon sind wir nicht a priori \emph{ausgegangen}.
+ annäherend normalverteilt, aber hiervon sind wir nicht a priori \emph{ausgegangen}.
  Wir sind insbesondere nicht davon ausgegangen,
  dass die Population, aus der
  die Stichproben stammen, normalverteilt ist. \parend
@@ -690,13 +690,13 @@ man sich meistens auf den zentralen Grenzwertsatz (siehe
 Abschnitt \vref{sec:clt}).
 Zur Erinnerung: Der zentrale Grenzwertsatz besagt, dass
 die Verteilung der
-Stichprobenmittel ($\bar{X}$) zu einer Normalverteilung neigt,
+Stichprobenmittel ($\overline{X}$) zu einer Normalverteilung neigt,
 wenn die Stichproben gross genug sind. Das Mittel
 der Stichprobenmittelverteilung ist gleich dem Populationsmittel
-($\mu_{\bar{X}} = \mu$); ihre Standardabweichung (der Standardfehler)
+($\mu_{\overline{X}} = \mu$); ihre Standardabweichung (der Standardfehler)
 beträgt:
 \begin{equation*}
-\textrm{SE} = \sigma_{\bar{X}} = \frac{\sigma}{\sqrt{n}}.
+\textrm{SE} = \sigma_{\overline{X}} = \frac{\sigma}{\sqrt{n}}.
 \end{equation*}
 Wenn wir die Standardabweichung der Population kennen, so können wir
 diesen Standardfehler direkt berechnen. Wenn uns die Standardabweichung
@@ -721,9 +721,8 @@ mean(d$GJT) + qnorm(c(0.025, 0.975)) * sd(d$GJT)/sqrt(76)
 Dieses Konfidenzintervall ist dem Konfidenzintervall,
 das mit dem Bootstrap konstruiert wurde, sehr ähnlich, was natürlich
 beruhigend ist.
-
-Bemerken Sie aber, dass wir diesmal
-davon \emph{ausgegangen} sind, dass die Stichprobenmittel aus
+Diesmal sind wir aber
+davon \emph{ausgegangen}, dass die Stichprobenmittel aus
 der Population normalverteilt sind; diese Annahme haben
 wir beim Bootstrap nicht gemacht. Bei sehr schiefen oder
 anderen asymmetrischen Verteilungen ist es durchaus möglich,
@@ -741,16 +740,15 @@ gibt es andere Formeln, aber der Bootstrap ist wesentlich flexibler.
 Die Stichprobenstandardabweichung ($S$)
 ist bloss eine Schätzung der Populationsstandardabweichung ($\sigma$).
 Insofern $S$ $\sigma$ unterschätzt, wird die Unsicherheit
-in der Parameterschätzung unterschätzt; überschätzt $s$ $\sigma$,
+in der Parameterschätzung unterschätzt; überschätzt $S$ $\sigma$,
 dann wird die Unsicherheit in der Parameterschätzung überschätzt.
 Damit könnte man sich abfinden, wenn sich Unter- und Überschätzungen 
 ausgleichen würden. In Abschnitt \ref{sec:sd} wird diesbezüglich
-jedoch auf ein Problem hingewiesen
-aber ein Problem auf: $S$ tendiert dazu, $\sigma$ zu unterschätzen,
+jedoch auf ein Problem hingewiesen: 
+$S$ tendiert dazu, $\sigma$ zu unterschätzen,
 insbesondere bei kleinen Stichproben.
 Entsprechend ist die Stichprobenmittelverteilung eher breiter als
 schmaler als eine Normalverteilung mit $S/\sqrt{n}$ als Standardabweichung.
-
 Meistens ist es unmöglich, diese Verzerrung in $S$ zu beheben.
 Die Ausnahme ist, wenn die Stichprobe aus einer normalverteilten 
 Population stammt.
@@ -770,7 +768,7 @@ Population stammt.
   wo $Z_0, \dots, Z_{n-1} \sim \mathcal{N}(0, 1)$ unabhängig sind.
   Diese Verteilung nennt man die \term{Student-$t$-Verteilung} mit $n-1$
   Freiheitsgraden (Anzahl Zufallsvariablen, die im Nenner auftauchen).
-  Man schreibt $T \sim t_{n-1}$ oder $T \sim t(1)$.
+  Man schreibt $T \sim t_{n-1}$ oder $T \sim t(n-1)$.
 \parend
 
 Zum Vergleich: Ist $\sigma$ bekannt, so gilt
@@ -878,7 +876,7 @@ die folgende.
   \end{equation}
   für alle $\alpha \in (0, 1)$.
   Eine Abbildung $b(X_1, \dots, X_n)$ liefert eine
-  \term{untere $100(1-\alpha)$\%-Vertrauensschranke}, wenn
+  \term{obere $100(1-\alpha)$\%-Vertrauensschranke}, wenn
   \[
     \Prob(\theta \leq b(\alpha, X_1, \dots, X_n)) \geq 1 - \alpha.
   \]
@@ -888,7 +886,7 @@ die folgende.
   \term{$100(1-\alpha)$\%-Vertrauens- oder Konfidenzintervall},
   wenn 
   \[
-    \Prob(\tilde{a}(\alpha, X_1, \dots, X_n) \leq \theta \leq \tilde{b}(X_1, \dots, X_n))
+    \Prob(\tilde{a}(\alpha, X_1, \dots, X_n) \leq \theta \leq \tilde{b}(\alpha, X_1, \dots, X_n))
     \geq 1 - \alpha
   \]
   für alle $\alpha \in (0, 1)$.
@@ -904,8 +902,8 @@ zu einer Wahrscheinlichkeit von höchstens $\alpha$ grösser bzw.\ kleiner
 als $\theta$ ist, wobei $\alpha$ die Fehlerwahrscheinlichkeit ist, die wir
 uns erlauben.
 Für ein Konfidenzintervall brauchen wir ein Verfahren, das ein Intervall
-konstruieren, dass zu einer Wahrscheinlichkeit von höchstens $\alpha$ den
-Parameter $\theta$ nicht enthält.
+konstruiert, das zu einer Wahrscheinlichkeit von mindestens $1-\alpha$ den
+Parameter $\theta$ enthält.
 
 \mypar[Exakte Vertrauensschranken für das Mittel einer Normalverteilung mit bekannter Varianz]{Beispiel}\label{bsp:ci_exact_norm}
   Sei $X_1, \dots, X_n$ eine Zufallsstichprobe unabhängiger Beobachtungen
@@ -1009,11 +1007,17 @@ die geläufigste.
   Wenn zwei Verfahren dieses Kriterium gleichermassen erfüllen, so bevorzugt
   man in der Regel das Verfahren, das tendenziell die schmalsten Intervalle 
   liefert, oder wo die Intervallbreite für $n \to \infty$ gegen 0 strebt.
-  
-  Es ist möglich, sich Verfahren einfallen zu lassen, die zwar die nötigen
+  Tatsächlich ist es möglich, sich Verfahren einfallen zu lassen, die zwar die nötigen
   Wahrscheinlichkeitsgarantien bieten, aber die entweder komplett triviale
   Vertrauensschranken liefern oder wo sich das Intervall für $n \to \infty$
   nicht verengt. Mit diesen wollen wir uns hier aber nicht auseinandersetzen.
+  
+  Ein weiteres relevantes Gütekriterium für Konfidenzschranken und -intervalle
+  ist ihre \term{Robustheit}: Wenn wir nur unter recht spezifischen Annahmen
+  an die Daten nachweisen können, dass ein Verfahren die Wahrscheinlichkeitsgarantien
+  exakt einhält, so ist es aus praktischen Gründen erwünscht, dass dieses Verfahren
+  die Wahrscheinlichkeitsgarantien unter weniger spezifischen Annahmen immerhin
+  in etwa einhält. Siehe hierzu Aufgabe \ref{ex:robust}.
 \parend
 
 \mypar[Wahl der Schranken bzw.\ des Intervalls]{Bemerkung}
@@ -1108,6 +1112,66 @@ t.test(d$GJT, conf.level = 0.95, alternative = "greater")$conf.int
 Für obere Vertrauensschranken verwende man \texttt{alternative = "less"}.
 \parend
 
+\mypar{Bemerkung} Identisch aufgegleiste Zufallsexperimente können
+recht unterschiedliche Konfidenzintervalle ergeben. Mit dem unten
+stehenden Code können Sie dies selber aufzeigen. Es wird \texttt{n\_sim} 
+Mal das gleiche Zufallsexperiment ausgeführt: Jeweils 
+\texttt{n\_obs} unabhängige Beobachtungen werden aus einer 
+$\mathcal{N}(\texttt{mittel}, \texttt{stabw}^2)$-Verteilung generiert.
+Auf der Basis dieser Stichprobe wird mit \texttt{t.test()} ein 
+95\%-Konfidenzintervall konstruiert. Die Konfidenzintervalle werden,
+nach ihrer Breite sortiert, in Abbildung \ref{fig:ci_dance} dargestellt.
+In jeweils etwa 5\% der gezeichneten Intervalle ist der Wert von \texttt{mittel}
+nicht enthalten und auch die Breite der Intervalle variiert zwischen den Stichproben.
+
+<<echo = TRUE, warning = FALSE, fig.cap = "Konfidenzintervalle basiert auf 100 Stichproben von je 23 Beobachtungen aus einer $\\mathcal{N}(-7, 2.5^2)$-Verteilung. Die Konfidenzintervalle sind ihrer Breite nach sortiert (kürzer unten).\\label{fig:ci_dance}", fig.width = 6, fig.height = 9, out.width=".6\\textwidth">>=
+n_sim  <- 100
+n_obs  <- 23
+stabw  <- 2.5
+mittel <- -7
+
+cis <- matrix(nrow = n_sim, ncol = 2)
+
+for (i in 1:n_sim) {
+  x <- rnorm(n_obs, mittel, stabw)
+  cis[i, ] <- t.test(x)$conf.int
+}
+
+im_intervall <- cis[, 1] <= mittel & mittel <= cis[, 2]
+
+resultate <- tibble(min = cis[, 1], 
+                    max = cis[, 2], 
+                    im_intervall, 
+                    sim = 1:n_sim) |> 
+  mutate(breite = max - min)
+
+ggplot(resultate,
+       aes(xmin = min, xmax = max,
+           y = reorder(sim, breite),
+           colour = im_intervall)) +
+  geom_errorbarh() +
+  geom_vline(xintercept = mittel,
+             linetype = "dashed") +
+  scale_y_discrete(breaks = NULL) +
+  scale_colour_manual("Mittel im Intervall?",
+                      limits = c(FALSE, TRUE),
+                      labels = c("nein", "ja"),
+                      values = c("red", "black")) +
+  theme(legend.position = "bottom") +
+  labs(y = "Simulation",
+       title = "100 95%-Konfidenzintervalle fürs gleiche Mittel")
+@
+\parend
+
+\mypar{Aufgabe}
+Angenommen, zwei Stichproben haben identische Stichprobenstandardabweichungen:
+$S_1 = S_2$. 
+Stichprobe 1 bestehe aus 16 Datenpunkten; Stichprobe 2 aus nur vier.
+Aus welchen \emph{zwei} Gründen wird das 95\%-Konfidenzintervall
+bei Stichprobe 1 schmaler sein als bei Stichprobe 2, wenn Sie
+diese Intervalle mit $t$-Verteilungen konstruieren?
+\parend
+
 \mypar[Approximative Vertrauensschranken fürs Mittel]{Beispiel}
   Wenn die Zufallsstichprobe nicht aus einer Normalverteilung stammt,
   so kann man die Vertrauensschranken und Konfidenzintervalle aus Beispiel \ref{bsp:ci_exact_t}
@@ -1115,7 +1179,7 @@ Für obere Vertrauensschranken verwende man \texttt{alternative = "less"}.
   dass man Bootstrap-Intervalle verwendet.
 \parend
 
-\mypar[Robustheit der $t$-Methode]{Aufgabe}
+\mypar[Robustheit der $t$-Methode]{Aufgabe}\label{ex:robust}
   Wir wollen untersuchen, wie gut die Vertrauensintervalle, welche
   die Methode aus Beispiel \ref{bsp:ci_exact_t} liefert, sind, wenn
   die Beobachtungen nicht aus einer Normalverteilung, sondern aus einer
@@ -1123,7 +1187,7 @@ Für obere Vertrauensschranken verwende man \texttt{alternative = "less"}.
   die eine Stichprobe generiert und anhand dieser ein Konfidenzintervall konstruiert.
   Sie gibt aus, ob das Mittel der Gleichverteilung im Konfidenzintervall liegt.
 <<>>=
-one_run_uniform <- function(n, min, max, conf_level) {
+uniform_one_run <- function(n, min, max, conf_level) {
   x <- runif(n, min, max)
   ci <- t.test(x, conf.level = conf_level)$conf.int
   mittel <- (min + max)/2
@@ -1134,7 +1198,7 @@ one_run_uniform <- function(n, min, max, conf_level) {
   Anschliessend berechnen wir
   die Proportion von Stichproben, für die das eigentliche Mittel im Konfidenzintervall liegt:
 <<>>=
-simulation <- replicate(20000, one_run_uniform(9, -12, 2, 0.7))
+simulation <- replicate(20000, uniform_one_run(9, -12, 2, 0.7))
 mean(simulation)
 @
   In diesem Fall enthalten also etwa 70.5\% der 70\%-Konfidenzintervalle 
@@ -1182,7 +1246,7 @@ mean(simulation)
   \end{align*}
   Wir fassen den Ausdruck $F_{n,p}(r)$ diesmal jedoch nicht auf als eine Funktion von $r$,
   sondern als eine Funktion von $p$. Für $r$ setzen wir die beobachtete
-  Anzahl Erfolge $X$ ein. Die Funktion, die wir so erhalten, ist monoton fallend
+  Anzahl Erfolge $X$ ein. Die Funktion, die wir so erhalten, ist streng monoton fallend
   in $p$: Für eine feste Anzahl Erfolge ist die Wahrscheinlichkeit, dass
   eine binomialverteilte Zufallsvariable höchstens so viele Erfolge generiert,
   grösser für kleine $p$ als für grosse $p$.
@@ -1190,7 +1254,7 @@ mean(simulation)
   $b$ mit $F_{n, b}(X) > \alpha$. Dann gilt nämlich
   \begin{align*}
     \Prob(p \leq b)
-    &= \Prob(F_{n,p}(X) \geq F_{n,b}(X)) & [\textrm{monoton fallend}] \\
+    &= \Prob(F_{n,p}(X) \geq F_{n,b}(X)) & [\textrm{streng monoton fallend}] \\
     &\geq \Prob(F_{n,p}(X) > \alpha)             & [\textrm{Auswahl von $b$}] \\
     &\geq 1 - \alpha.                            & [(\ast)]
   \end{align*}
@@ -1215,23 +1279,23 @@ n <- 23 # Anzahl Versuche
 X <- 7  # Anzahl Erfolge
 
 # Obere Schranke für p
-curve(pbinom(X, n, x), from = 0, to = 1,
+curve(pbinom(X, n, x), from = 0, to = 1, lwd = 2,
       xlab = "p", ylab = "F(23,p)({7, 23-7})", col = "red")
-abline(h = 0.10, lty = 2)
-abline(v = 0.46, lty = 2)
+abline(h = 0.10, lty = 2, lwd = 2)
+abline(v = 0.46, lty = 2, lwd = 2)
 
 # Untere Schranke
-curve(pbinom(16, n, x), add = TRUE, col = "blue")
-abline(h = 0.10, lty = 2)
-abline(v = 1-0.1781578, lty = 2)
+curve(pbinom(16, n, x), add = TRUE, col = "blue", lwd = 2)
+abline(h = 0.10, lty = 2, lwd = 2)
+abline(v = 1-0.1781578, lty = 2, lwd = 2)
 @
 
 Mit \texttt{binom.test()} geht es natürlich einfacher:
 <<>>=
 binom.test(7, 23, conf.level = 0.80)$conf.int
 @
-
 \parend
+
 
 % 
 % Unter \url{https://rpsychologist.com/d3/CI/} finden Sie
@@ -1257,11 +1321,7 @@ binom.test(7, 23, conf.level = 0.80)$conf.int
 %  \item Wie könnte man als ForscherIn die Unsicherheit bei der
 %  Schätzung verringern?
 % 
-%   \item Zwei Stichproben haben identische Stichprobenstandardabweichungen:
-%  $s_1 = s_2$. Stichprobe 1 bestehe aus 16 Datenpunkten; Stichprobe 2 aus nur vier.
-%  Aus welchen \emph{zwei} Gründen wird das 95\%-Konfidenzintervall
-%  bei Stichprobe 1 schmaler sein als bei Stichprobe 2, wenn Sie
-%  diese Intervalle mit $t$-Verteilungen konstruieren?
+%   \item 
 % 
 %  \item Beim Arbeiten mit $t$-Verteilungen geht man davon aus,
 %  dass die Population, aus der die Stichprobe stammt, normalverteilt ist.

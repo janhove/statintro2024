@@ -676,8 +676,8 @@ für jede reellen Zahl $r$.
 
 Greifen wir das obige Beispiel wieder auf, so können wir eine Tabelle
 mit den kumulativen Wahrscheinlichkeiten zusammenbasteln:
-{
-\centering
+
+\begin{center}
 \begin{tabular}{l|lllllll}
 \hline
 Wert                              & 0     & 2  & 3 & 4 & 8 & 10 & 11  \\
@@ -685,7 +685,7 @@ Wahrscheinlichkeit                & 0.333 & 0.111 & 0.111 & 0.111 & 0.111 & 0.11
 kumulative Wahrscheinlichkeit     & 0.333 & 0.444 & 0.555 & 0.666 & 0.777 & 0.888 & 1 \\
 \hline
 \end{tabular}
-}
+\end{center}
 
 Folglich gelten etwa $F_X(-1) = 0, F_X(2.5) = 0.444$ und $F_X(1.2) = 1$.
 Abbildung \ref{fig:fx} stellt die Verteilungsfunktion von $X$ dar.
