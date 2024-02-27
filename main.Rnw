@@ -8,7 +8,7 @@
 \usepackage[ngerman]{babel, varioref}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\hyphenation{Stich-proben-standard-abweichung Populations-standard-abweichung Standard-abweichung Stichproben-mittel Populations-mittel Ver-trauens-schranke Kon-fi-denz-inter-vall}
+\hyphenation{Stich-proben-standard-abweichung Populations-standard-abweichung Standard-abweichung Stichproben-mittel Populations-mittel Ver-trauens-schranke Kon-fi-denz-inter-vall Code-switches}
 
 % Absätze formattieren
 \usepackage{setspace}
@@ -162,6 +162,10 @@ op <- par(no.readonly = TRUE)
 
 <<GroupDifferences, child = '09_groupdiffs.Rnw'>>=
 @
+
+<<Interactions, child = '10_interactions.Rnw'>>=
+@
+
 
 
 
