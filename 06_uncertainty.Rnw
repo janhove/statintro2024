@@ -1,4 +1,4 @@
-\chapter{Die Ungenauigkeit von Schätzungen einschätzen}\label{ch:uncertainty}
+\chapter{Die Ungenauigkeit von Schätzungen schätzen}\label{ch:uncertainty}
 Eine unumgängliche Gegebenheit beim Arbeiten mit Stichproben
 ist, dass wir Eigenschaften von Populationen
 nur \emph{schätzen} können. Die Frage stellt sich, wie
@@ -168,7 +168,7 @@ Wenn wir nur über eine Stichprobe verfügen, müssen wir den
 Standardfehler bzw.\ die Breite solcher Intervalle anhand der
 Stichprobe schätzen.
 
-\section{Das \textit{plug-in}-Prinzip und der \textit{Bootstrap}}
+\section{Das plug-in-Prinzip und der Bootstrap}
 \emph{Enter the plug-in principle.}
 Abbildung \ref{fig:stichprobenauspopulation} zeigt zwar,
 dass jede einzelne Stichprobe die Population nur imperfekt

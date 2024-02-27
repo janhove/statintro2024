@@ -131,7 +131,7 @@ und die Varianz und Standardabweichung von $\widehat{P}$ mit den Formeln
 aus Kapitel \ref{ch:descriptives} berechnen und diese als unsere Schätzung
 für die entsprechenden Merkmale von $P$ verwenden.
 
-Hierbei stellt sich die Frage, wie gut solche sogenannte \textit{plug-in}-Schätzer sind.
+Hierbei stellt sich die Frage, wie gut solche sogenannten \textit{plug-in}-Schätzer sind.
 
 \mypar[Estimand, Schätzung und Schätzer]{Definition}
   Ein \term{Estimand} $\mu$ ist eine numerische Eigenschaft einer Population,
@@ -234,7 +234,7 @@ ist $\overline{X}$ auch ein konsistenter Schätzer von $\mu$.
 Laut dem Satz von Gauss ist das Stichprobenmittel unter allen unverzerrten
 Schätzern des Populationsmittels ausserdem der Schätzer mit der niedrigsten Varianz.
 
-\mypar[Gauss]{Satz}
+\mypar[Gauss]{Satz}\label{th:gauss}
   Sei $X_1, \dots, X_n$ eine einfache Stichprobe aus der Verteilung $P$.
   Dann gilt für jeden unverzerrten Schätzer $g(X_1, \dots, X_n)$ von $\mu$,
   dass
@@ -411,7 +411,7 @@ ggplot(data.frame(x = c(0, 40)),
            color = my_col[1]) +
   stat_function(fun = function(x) dchisq(x, 9),
                 colour = my_col[2]) +
-  annotate("text", x = 7 + 1.5, y = dchisq(7, 9) + 0.005, label = bquote(chi[9]^2),
+  annotate("text", x = 7 + 1.55, y = dchisq(7, 9) + 0.007, label = bquote(chi[9]^2),
            color = my_col[2]) +
   stat_function(fun = function(x) dchisq(x, 16),
                 color = my_col[3]) +

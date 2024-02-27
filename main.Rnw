@@ -132,8 +132,8 @@ op <- par(no.readonly = TRUE)
 % \tableofcontents
 
 \mainmatter
-\part{Grundlagen}
 
+\part{Grundlagen}
 <<Software, child='01_software.Rnw'>>=
 @
 
@@ -152,6 +152,15 @@ op <- par(no.readonly = TRUE)
 
 <<Unsicherheit, child = '06_uncertainty.Rnw'>>=
 @
+
+\part{Das allgemeine lineare Modell}
+<<LinearModel, child = '07_linearmodel.Rnw'>>=
+@
+
+<<SimpleRegression, child = '08_regression.Rnw'>>=
+
+@
+
 
 
 \appendix
