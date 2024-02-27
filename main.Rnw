@@ -158,7 +158,9 @@ op <- par(no.readonly = TRUE)
 @
 
 <<SimpleRegression, child = '08_regression.Rnw'>>=
+@
 
+<<GroupDifferences, child = '09_groupdiffs.Rnw'>>=
 @
 
 

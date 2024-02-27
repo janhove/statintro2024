@@ -1672,7 +1672,7 @@ text(x = 45, y = 1350, "intrapolierte Schätzung\nfür Reaktionszeit")
 curve(20 + ((x-40)^2), from = 10, to = 80,
       xlab = "Alter (Jahre)",
       ylab = "Fähigkeit", add = TRUE, col = "#377EB8")
-text(x = 38, y = 350, "echte Entwicklung\nvon Reaktionszeit", col = "#377EB8")
+text(x = 40, y = 370, "echte Entwicklung\nvon Reaktionszeit", col = "#377EB8")
 par(op)
 @
 
