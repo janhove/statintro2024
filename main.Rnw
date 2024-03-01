@@ -15,6 +15,7 @@
 \setstretch{1.15}
 \usepackage{parskip}
 \usepackage{microtype}
+\usepackage{bold-extra}
 
 % Mathe-Notation
 \usepackage{amsmath}
@@ -97,7 +98,7 @@ opts_chunk$set(fig.path = 'generated_figs/',
                comment = '',
                highlight = TRUE,
                dev = 'cairo_pdf',
-               cache = FALSE,
+               cache = TRUE,
                fig.width = 4,
                fig.height = 4,
                out.width = '.5\\textwidth')
@@ -166,11 +167,32 @@ op <- par(no.readonly = TRUE)
 <<Interactions, child = '10_interactions.Rnw'>>=
 @
 
+<<MultipleRegression, child = '11_multipleregression.Rnw'>>=
+@
 
+\part{Signifikanztests}
+<<LogicSignificance, child = '12_significance.Rnw'>>=
+@
 
+<<tTest, child = '13_ttest.Rnw'>>=
+@
+
+<<ANOVA, child = '14_anova.Rnw'>>=
+@
+
+<<Power, child = '15_power.Rnw'>>=
+@
+
+<<SillyTests, child = '16_sillytests.Rnw'>>=
+@
+
+<<QRPs, child = '17_QRP.Rnw'>>=
+@
+
+\part{Ausblick}
 
 \appendix
-\part{Anhänge}
+\part*{Anhänge}
 
 <<Errors, child = '99_errormessages.Rnw'>>=
 @
@@ -181,7 +203,7 @@ Die hier aufgeführten Softwareversionen und die Systemeinstellungen
 variieren je nachdem, auf welchem Computer ich das Skript das letzte Mal
 kompiliert habe.
 <<>>=
-devtools::session_info()
+devtools::session_info(pkgs = "attached")
 @
 
 \bibliographystyle{../Documents/unified}

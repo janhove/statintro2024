@@ -724,7 +724,7 @@ Kürzel in RStudio: \textsc{ctrl} + \textsc{shift} + \textsc{m}. \parend
 
 Im Folgenden werden die Ergebnisse der Befehle nicht mehr angezeigt.
 Probieren Sie die Befehle aber dennoch aus.
-Bemerken Sie die Verwendung von \texttt{c()} (für `combine')
+Bemerken Sie die Verwendung von \texttt{c()} (für `concatenate')
 sowie von \texttt{:}. Auch können mehrere Befehle verkettet werden.
 <<eval = FALSE>>=
 # Zeilen 5 und 7 auswählen.
@@ -741,7 +741,7 @@ all_data |>
   View()
 @
 
-Mit den obigen Befehlen werden nur gewisse Zeilen in der Konsole angezeigt.
+Mit den obigen Befehlen werden nur gewisse Zeilen auf der Konsole angezeigt.
 Man kann den Output stattdessen auch als neues Objekt speichern:
 <<>>=
 zeilen7_12 <- all_data |>
@@ -750,7 +750,7 @@ zeilen7_12 <- all_data |>
 
 Jetzt werden die Zeilen nicht angezeigt, aber sie sind fortan verfügbar als neues Objekt
 im Arbeitsspeicher. Um dieses Objekt zu inspizieren, können Sie seinen Namen eintippen
-oder \texttt{View} verwenden:
+oder \texttt{View()} verwenden:
 <<>>=
 zeilen7_12
 @
@@ -947,8 +947,8 @@ dem Befehl \texttt{mutate()} noch hinzufügen:
 <<>>=
 skills_wider_time |>
   mutate(ProgressT1_T2 = T2 - T1,
-         ProgressT3_T2 = T3 - T2) |>
-  select(Subject, LanguageTested, Skill, ProgressT1_T2, ProgressT3_T2)
+         ProgressT2_T3 = T3 - T2) |>
+  select(Subject, LanguageTested, Skill, ProgressT1_T2, ProgressT2_T3)
 @
 
 Wir könnten auch die Angaben zu den unterschiedlichen Sprachen nebeneinander stellen.

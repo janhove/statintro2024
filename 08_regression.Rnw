@@ -1705,7 +1705,7 @@ predict(aoa.lm, newdata = tibble(AOA = 35),
 @
 \parend
 
-\mypar[Schnittpunkt interpretierbarer machen]{Bemerkung}
+\mypar[Schnittpunkt interpretierbarer machen]{Bemerkung}\label{bm:zentrieren}
 Der geschätzte Schnittpunkt hat nicht unbedingt eine nützliche
 Interpretation. In unserem Fall stellt er die geschätzte Durchschnittsleistung
 von Versuchspersonen mit AOA 0 dar. Solche gibt es in der Stichprobe

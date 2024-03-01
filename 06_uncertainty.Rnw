@@ -905,7 +905,7 @@ Für ein Konfidenzintervall brauchen wir ein Verfahren, das ein Intervall
 konstruiert, das zu einer Wahrscheinlichkeit von mindestens $1-\alpha$ den
 Parameter $\theta$ enthält.
 
-\mypar[Exakte Vertrauensschranken für das Mittel einer Normalverteilung mit bekannter Varianz]{Beispiel}\label{bsp:ci_exact_norm}
+\mypar[exacte Vertrauensschranken für das Mittel einer Normalverteilung mit bekannter Varianz]{Beispiel}\label{bsp:ci_exact_norm}
   Sei $X_1, \dots, X_n$ eine Zufallsstichprobe unabhängiger Beobachtungen
   aus der Verteilung $\mathcal{N}(\mu, \sigma^2)$, wobei $\sigma^2$ bekannt ist.
   Wir wissen, dass
@@ -1083,7 +1083,7 @@ folgenden Punkte wichtig:
 Im Folgenden beschäftigen wir uns noch mit der Konstruktion
 von Vertrauensintervallen für drei realistischere Szenarien.
 
-\mypar[Exakte Vertrauensschranken für das Mittel einer Normalverteilung mit unbekannter Varianz]{Beispiel}\label{bsp:ci_exact_t}
+\mypar[exacte Vertrauensschranken für das Mittel einer Normalverteilung mit unbekannter Varianz]{Beispiel}\label{bsp:ci_exact_t}
   Haben wir eine Zufallsstichprobe mit unabhängigen Beobachtungen
   $X_1, \dots, X_n \sim \mathcal{N}(\mu, \sigma^2)$, wo sowohl $\mu$ als auch $\sigma^2$
   unbekannt sind, so liefert die Methode aus Beispiel \ref{bsp:ci_exact_norm} nicht
@@ -1224,7 +1224,7 @@ mean(simulation)
     Freiheitsgrade. \parend
   \end{enumerate}
 
-\mypar[Exakte Vertrauensschranken für Binomialparameter]{Beispiel}
+\mypar[exakte Vertrauensschranken für Binomialparameter]{Beispiel}
   Wir runden dieses Kapitel mit einem klassischen Beispiel ab.
   Sei $X \sim \textrm{Binomial}(n, p)$. Ein erwartungstreuer Schätzer
   von $p$ ist

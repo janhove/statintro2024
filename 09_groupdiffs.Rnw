@@ -548,7 +548,7 @@ Zur Überprüfung dieser Annahmen, siehe noch \citet{Vanhove2018b}.
   \item Fassen Sie Ihre Befunde in 2--3 Sätzen zusammen. \parend
  \end{enumerate}
  
-\mypar{Aufgabe}
+\mypar{Aufgabe}\label{ex:gambler}
  Ein anderer Befund, den \citet{Klein2014} zu replizieren
  versuchten, war der \textit{gambler's fallacy}, der in einem
  Experiment von \citet{Oppenheimer2009a} belegt wurde. \citet{Klein2014}

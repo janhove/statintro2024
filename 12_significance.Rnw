@@ -1,0 +1,1012 @@
+\chapter{Die Logik des Signifikanztests}\label{ch:logik}
+Für viele Forschende scheint der Sinn und Zweck
+einer statistischen Analyse das Produzieren
+eines möglichst `signifikanten' $p$-Wertes zu sein.
+Meines Erachtens lässt sich dies dadurch erklären,
+dass solche Forschende die Bedeutung von $p$-Werten
+falsch verstehen. Um derartige Missverständnisse
+vorzubeugen, introduziert dieses Kapitel $p$-Werte
+zunächst rein konzeptuell, ohne zusätzliche Mathe
+zu verwenden.
+
+\section{Randomisierung als Inferenzbasis}
+Stellen Sie sich folgendes Experiment vor.
+Um den Effekt von Alkohol auf die Sprechgeschwindigkeit zu untersuchen,
+werden sechs Germanistikstudierende zu einem Experiment eingeladen.
+Sechs Teilnehmende ist natürlich eine lächerlich kleine Anzahl,
+aber diese Erklärung bleibt dadurch übersichtlich.
+Nach dem Zufallsprinzip wird die Hälfte der Studierenden der Experimentalgruppe
+und die andere Hälfte der Kontrollgruppe zugeteilt.
+Die Versuchspersonen in der Experimentalgruppe müssen ein Videofragment
+beschreiben, nachdem sie zuerst 5 Deziliter alkoholhaltiges
+Bier getrunken haben. Die Versuchspersonen in der Kontrollgruppe erledigen
+dieselbe Aufgabe, trinken statt alkoholhaltigem aber 5 Deziliter
+alkoholfreies Bier. Die Versuchspersonen wissen nicht, ob das Bier,
+das sie trinken, alkoholfrei oder alkoholhaltig ist. Gemessen wird
+die Sprechgeschwindigkeit in Silben pro Sekunde.
+Auch die Mitarbeitenden, die die Silben zählen, wissen
+nicht, welche Versuchspersonen welcher Kondition zugeteilt
+wurden (\textit{double-blind experiment}).
+
+Von den sechs Studierenden wurden Sandra, Daniel und Maria
+nach dem Zufallsprinzip der Kontrollgruppe zugeteilt, während Nicole,
+Michael und Thomas der Experimentalgruppe zugeteilt wurden.
+Die Versuchspersonen in der Kontrollgruppe äusserten beim Beschreiben des
+Videofragments 4.2, 3.8 und 5.0 Silben pro Sekunde;
+diejenigen in der Experimentalgruppe 3.1, 3.4 und 4.3 Silben pro Sekunde;
+siehe Abbildung \ref{fig:experiment}.
+Es ist klar, dass die Versuchspersonen in der
+Kontrollgruppe eine höhere durchschnittliche Sprechgeschwindigkeit haben
+als jene in der Experimentalgruppe: Der Unterschied zwischen
+den Gruppenmitteln beträgt etwa 0.73 Silben pro Sekunde.
+Können wir daraus schliessen,
+dass das Trinken von alkoholhaltigem vs.\
+alkoholfreiem Bier diesen Unterschied mitverursacht hat, oder beruht er auf reinem Zufall?
+
+<<echo = FALSE, fig.width = 1.2*3, fig.height = 1.2*3, fig.cap = "Ergebnisse eines fiktiven Experiments.\\label{fig:experiment}">>=
+sortLevelsByVar.fnc <- function(oldFactor, sortingVariable, ascending = TRUE) {
+
+  # Combine into data frame
+  df <- data.frame(oldFactor, sortingVariable)
+
+  # Compute average of sortingVariable and arrange (ascending)
+  if (ascending == TRUE) {
+  df_av <- df %>% group_by(oldFactor) %>% summarise(meanSortingVariable = mean(sortingVariable)) %>%
+    arrange(meanSortingVariable)
+  }
+
+  # Compute average of sortingVariable and arrange (descending)
+  if (ascending == FALSE) {
+  df_av <- df %>% group_by(oldFactor) %>% summarise(meanSortingVariable = mean(sortingVariable)) %>%
+    arrange(desc(meanSortingVariable))
+  }
+
+  # Return factor with new level order
+  newFactor <- factor(oldFactor, levels = df_av$oldFactor)
+  return(newFactor)
+}
+
+Rates <- c(4.2, 3.8, 5.0,
+           3.1, 3.4, 4.3)
+Names <- factor(c("Sandra", "Daniel", "Maria",
+                  "Nicole", "Michael", "Thomas"))
+Condition <- factor(c(rep("ohne Alkohol", 3),
+                      rep("mit Alkohol", 3)))
+
+df <- data.frame(Rates, Names, Condition)
+df$Names <- sortLevelsByVar.fnc(df$Names, df$Rates)
+
+ggplot(df, aes(x = Rates, y = Names)) +
+  geom_point() +
+  facet_wrap(~ Condition, ncol = 1, scales = "free_y") +
+  xlab("Sprechgeschwindigkeit\n(Silben/Sekunde)") +
+  ylab("") +
+  scale_shape_manual(values = c(16, 3), guide = "none")
+@
+
+Die Versuchspersonen wurden nach dem Zufallsprinzip einer
+der Gruppen zugeordnet. So wurde sichergestellt, dass die
+Ergebnisse nicht systematisch verzerrt wurden.
+Zum Beispiel gibt es in der Kontrollgruppe zwei Frauen
+und in der Experimentalgruppe nur eine. Aber dieser
+Unterschied ist rein zufällig. Das Ziel von
+Randomisierung ist eben nicht, perfekt
+äquivalente Gruppen zu generieren, sondern
+eine systematische Verzerrung vorzubeugen, sowohl
+was bekannte als was unbekannte Störvariablen betrifft.
+Siehe \citet{Vanhove2015} zu diesem Missverständnis.
+
+Ausserdem handelt es sich in diesem Fall um ein
+\textit{double-blind experiment}: Weder die Versuchspersonen
+selber noch die auswertenden Mitarbeitenden wussten, wer welcher
+Kondition zugeteilt wurde. Dies beugt eine Verzerrung
+der Ergebnisse aufgrund von \term{Erwartungseffekten} vonseiten
+der Versuchspersonen (\textit{subject-expectancy effect}, vgl.\ den
+Placebo-Effekt) oder vonseiten der Forschenden (\textit{observer-expectancy effect}) vor.
+
+Sicher hätten wir dieses Design verfeinern können, etwa indem wir
+die Herkunft der Versuchspersonen in den beiden Gruppen fixiert
+hätten (z.B.\ eine Bünderin, ein Zürcher und eine Bernerin in jeder
+Gruppe; wer sich für solche raffiniertere Designs interessiert,
+kann sich ausgewählte Kapitel aus \citealp{Oehlert2010}, anschauen)
+oder indem wir die Sprachgeschwindigkeit der Versuchspersonen auch
+vor dem Experiment gemessen hätten (`Prätest'), sodass wir diese
+in der Analyse hätten mitberücksichtigen können. Aber auch ohne solche
+Raffinesse erlaubt dieses Design dank der Randomisierung
+und der Blindierung gültige Aussagen.
+
+Der Unterschied zwischen den Mitteln der Gruppen beträgt
+0.73 Silben pro Sekunde. Da wir ein randomisiertes
+Experiment ausgeführt haben und somit eine systematische
+Verzerrung der Ergebnisse vorgebeugt haben, könnten wir
+daraus sogar schliessen, dass dieser Unterschied z.T.\ von
+unserer experimentellen Manipulation \emph{verursacht} wurde:
+Der Konsum von 5 Deziliter alkoholhaltigem Bier senkt die
+Sprechgeschwindigkeit.
+
+Bevor wir eine solche kausale Aussage machen, müssen wir
+uns mit einer trivialeren Erklärung beschäftigen: Vielleicht
+beruht der Unterschied auf reinem Zufall. Dies ist unsere
+\term{Nullhypothese} ($H_0$),
+die wir mit einer ziemlich vagen \term{Alternativhypothese} ($H_A$)
+kontrasieren können:
+\begin{itemize}
+  \item $H_0$: Der Unterschied zwischen beiden Mitteln ist \emph{nur}
+  dem Zufallsfaktor zuzuschreiben.
+
+  \item $H_A$: Der Unterschied ist \emph{auch teilweise} der
+  experimentellen Manipulation zuzuschreiben.
+\end{itemize}
+
+In der sog.\ `frequentistischen' Tradition des Nullhypothesen Testens
+berechnet man, wie wahrscheinlich es ist,
+das beobachtete Muster (hier: den Unterschied zwischen den Gruppenmitteln)
+oder noch extremere Muster anzutreffen,
+wenn die Nullhypothese denn tatsächlich stimmen würde.
+Diese Wahrscheinlichkeit bezeichnet man als den $p$-Wert
+($p$ für \textit{probability}).
+Ist diese Wahrscheinlichkeit gering, dann zieht man
+daraus in der Regel die Schlussfolgerung, dass die Annahme, dass die
+Nullhypothese stimmt, wohl nicht berechtigt ist,
+und dass auch ein systematischer Effekt im Spiel ist.
+In der Regel hantiert man dabei eine arbiträre Schwelle $\alpha$ (oft $\alpha = 0.05$),
+unter der der $p$-Wert als zu klein gilt.
+
+Bevor wir uns einigen konzeptuellen Problemen mit
+diesem Vorgehen widmen und einige Komplikationen besprechen,
+schauen wir uns eine Methode an, um den $p$-Wert zu berechnen.
+Wenn wir davon ausgehen, dass die Nullhypothese stimmt, dann ist
+der Unterschied zwischen den Gruppen lediglich das Ergebnis der
+Randomisierung, also des Zufalls. Unter dieser Annahme hätte Michael
+auch in der Kontrollgruppe 3.4 Silben pro Sekunde geäussert;
+ebenso hätte Sandra in der Experimentalgruppe 4.2 Silben pro Sekunde
+geäussert. Wenn das Zufallsverfahren also statt Michael Sandra der
+Experimentalgruppe zugeteilt hätte
+und Alkoholkonsum die Sprechgeschwindigkeit nicht beeinflusst,
+dann wäre das Mittel der Experimentalgruppe 3.87 gewesen
+und das der Kontrollgruppe 4.07. In diesem Fall hätten wir also
+eine um 0.20 Silben pro Sekunde höhere Sprechgeschwindigkeit
+in der Experimentalgruppe festgestellt.
+
+Insgesamt gibt es 20 Möglichkeiten, wie die Experimental-
+und Kontrollgruppe hätten aussehen können. Diese Zahl können wir
+mit dem binomischen Koeffizienten berechnen:\footnote{Für grössere
+Gruppen wird diese Zahl schnell zu gross, um das Vorgehen
+nachvollziehbar darzustellen. So gibt es 137'846'528'820 Möglichkeiten,
+um eine Gruppe von 40 Teilnehmenden in zwei gleich grossen
+Gruppen zu verteilen.}
+\[
+  {6\choose 3} = 20.
+\]
+Oder in R:
+<<>>=
+choose(n = 6, k = 3)
+@
+
+Jede dieser Möglichkeiten ist in Abbildung \ref{fig:20moeglichkeiten}
+dargestellt. Für jede können wir berechnen, wie gross der
+Gruppenunterschied ist. Der R-Code ist dabei nicht wichtig,
+weshalb ich ihn nicht zeige; nur die Logik ist wichtig.
+<<echo = FALSE, fig.width = 10, fig.height = 13, out.width=".8\\textwidth", fig.cap = "Die 20 möglichen Ergebnisse laut der Annahme, dass die Unterschiede in der Stichprobe nur der Randomisierung zuzuschreiben sind.\\label{fig:20moeglichkeiten}">>=
+possible_control_groups <- combn(c("Sandra", "Daniel", "Maria",
+                                   "Nicole", "Michael", "Thomas"), 3)
+
+p <- list()
+
+for (i in 1:20) {
+  control_group <- possible_control_groups[, i]
+  Condition <- rep("mit Alkohol", 6)
+  Condition[Names %in% control_group] <- "ohne Alkohol"
+  df <- data.frame(Rates, Names, Condition)
+  df$Names <- sortLevelsByVar.fnc(df$Names, df$Rates)
+  unterschied <- format(round(diff(t.test(Rates ~ Condition, df)$estimate), 2), nsmall = 2)
+
+  p[[i]] <- ggplot(df, aes(x = Rates, y = Names)) +
+  geom_point() +
+  facet_wrap(~ Condition, ncol = 1, scales = "free_y") +
+  xlab("Sprechgeschwindigkeit") +
+  ylab("") +
+  scale_shape_manual(values = c(16, 3), guide = "none") +
+    ggtitle(paste("Unterschied:", unterschied))
+}
+do.call(gridExtra::grid.arrange, p)
+@
+
+Abbildung \ref{fig:20moeglichkeitenunterschiede}
+stellt die 20 möglichen Gruppenunterschiede dar,
+die man hätte antreffen können, wenn die Nullhypothese
+tatsächlich stimmen würde. Im Schnitt betrüge
+der Gruppenunterschied unter Annahme der Nullhypothese
+0, aber je nachdem, welche Versuchsperson welcher Kondition
+zugeordnet worden wäre, hätte man kleinere
+aber durchaus auch grössere Unterschiede feststellen können.
+Dieser Grafik kann man entnehmen, wie ungewöhnlich nun Gruppenunterschiede,
+die mindestens so gross sind wie der Gruppenunterschied,
+den wir tatsächlich festgestellt haben, unter Annahme der Nullhypothese wären.
+Die roten Strichellinien zeigen, dass in 6 von 20 Fällen die
+Gruppenunterschiede um 0.73 Silben pro Sekunde oder noch mehr voneinander abweichen.
+Auch wenn die Nullhypothese in unserem Beispiel tatsächlich stimmen würde,
+hätten wir also in 6 der 20 möglichen Stichproben (also in 30\% der Fälle)
+einen Gruppenunterschied von 0.73 Silben pro Sekunde oder sogar noch
+mehr feststellt. Dies ist unser $p$-Wert. Da eine Wahrscheinlichkeit
+von 30\% doch beträchtlich ist, würde wohl kaum jemand schlussfolgern,
+dass wir ausschlaggebende Evidenz gegen die Nullhypothese gesammelt haben.
+Dies heisst aber \emph{nicht}, dass wir die Nullhypothese
+`bestätigt' haben, sondern lediglich, dass nur wenig statistische Evidenz
+vorliegt, dass sie abgelehnt werden sollte. Absenz von Evidenz für einen Unterschied
+ist keine Evidenz für Absenz dieses Unterschieds.
+
+<<echo = FALSE, fig.cap = "Die Unterschiede zwischen den Gruppenmitteln in allen 20 möglichen Konstellationen. Die roten senkrechten Strichellinien stellen den in der tatsächlichen beobachteten Unterschied dar ($-0.73$) und seine Gegenzahl ($0.73$) dar.\\label{fig:20moeglichkeitenunterschiede}">>=
+# Define a function that computes the difference
+# in means (adaptable to other functions)
+# between one part of a vector (indices in Group1)
+# and the remaining part (indices NOT in Group1)
+mean.diff <- function(data, Group1) {
+  diff.mean <- mean(data[Group1]) -
+                mean(data[- Group1])
+  return(diff.mean)
+}
+alkohol <- 4:6
+# mean.diff(rates, alkohol)
+# For the 1st, 2nd ... 10th data points
+combinations <- combn(1:6,
+# Allocate 3 data points to Group 1
+                      3,
+# (and return output as a list)
+                      simplify = FALSE)
+
+# uncomment next line to show all 70 combinations
+# combinations
+
+# apply function mean.diff
+diffs <- mapply(mean.diff,
+# for every combination of indices in combinations
+                Group1 = combinations,
+# apply to actual.data
+                MoreArgs = list(data = df$Rates))
+diffs <- sort(diffs)
+df_diffs <- data.frame(diffs, sample = 1:length(diffs))
+ggplot(df_diffs, aes(diffs, y = sample)) +
+  geom_point(pch = 1) +
+  xlab("Unterschied zwischen Gruppenmitteln") +
+  ylab("mögliche Zuordnung") +
+  geom_vline(xintercept = mean.diff(df$Rates, alkohol), linetype = 2, col = "#E41A1C") +
+  geom_vline(xintercept = -mean.diff(df$Rates, alkohol), linetype = 2, col = "#E41A1C")
+@
+
+\mypar[$p$-Wert]{Definition}\label{def:pvalue}
+  Ein $p$-Wert ist eine Zufallsvariable $P$,
+  die folgende Eigenschaft genügt: Falls die Nullhypothese stimmt, so
+  gilt für alle $\alpha \in (0, 1)$, dass $\Prob(P \leq \alpha) \leq \alpha$.
+\parend
+
+\mypar[weitere Gütekriterien]{Bemerkung}
+  Die konstante Zufallsvariable $P \equiv 1$ stellt nach Definition
+  \ref{def:pvalue} ein gültiger $p$-Wert dar, denn 
+  \[
+    \Prob(P \leq \alpha) = 0 \leq \alpha
+  \]
+  für alle $\alpha \in (0,1)$. Sie ist jedoch überhaupt nicht nützlich als
+  $p$-Wert, da sie die gleiche Verteilung hat -- egal, ob die Nullhypothese
+  stimmt. Auch eine Zufallsvariable $P \sim \textrm{Unif}((0,1))$ stellt
+  ein gültiger $p$-Wert dar, denn
+  \[
+    \Prob(P \leq \alpha) = \alpha \leq \alpha.
+  \]
+  Dieser $p$-Wert hat auch die gleiche Verteilung, egal ob die Nullhypothese
+  stimmt oder nicht.
+  Was wir uns wünschen, sind also $p$-Werte, die nur selten `klein' sind,
+  wenn die Nullhypothese stimmt, aber viel öfters klein sind, wenn 
+  sie nicht stimmt.
+\parend
+
+\mypar[Verknüpfung zum Forschungsdesign]{Bemerkung}
+Der Hypothesentest, den wir soeben durchgeführt haben,
+ist ein \term{Randomisierungstest} (manchmal auch \term{Permutationstest}
+genannt). Sein Gebrauch wird
+durch das Forschungsdesign, genauer gesagt: durch
+die uneingeschränkte Randomisierung und der Blindierung,
+legitimiert:
+\begin{itemize}
+\item Wenn es zum Beispiel so gewesen wäre,
+dass wir Sandra etwa aus medizinischen Gründen nie der
+`mit Alkohol'-Gruppe zugewiesen hätten, dann hätte es nicht
+20 mögliche Ergebnisse unter der Nullhypothese gegeben, sondern
+nur 10: Alle Permutationen mit Sandra in der `mit Alkohol'-Gruppe
+hätten nicht vorkommen können. Dies hätte man dann in der
+Analyse berücksichtigen müssen, indem man die Randomisierungen
+mit Sandra in der `mit Alkohol'-Gruppe hätte ausser Acht lassen sollen.
+
+\item Wenn es so gewesen wäre, dass Michael
+und Nicole unbedingt in der gleichen Kondition getestet werden
+wollten, dann hätte es auch keine 20 möglichen Ergebnisse
+unter der Nullhypothese gegeben, sondern wiederum nur 10:
+Alle Permutationen mit Nicole und Michael in anderen Konditionen
+hätten nicht vorkommen können. Auch dies hätte man dann
+berücksichtigen müssen.
+
+\item Wenn es so gewesen wäre, dass wir zwecks Ausgleichs
+der beiden Gruppen mindestens eine Frau und einen Mann
+jeder Kondition hätten zuordnen wollen, dann hätten die
+zwei Permutationen mit lediglich Männern oder Frauen in einer
+Kondition nicht vorkommen können. Ein solches Design mag
+unter Umständen zwar sinnvoll sein, aber diese Einschränkung
+hätte man ebenfalls berücksichtigen müssen. \parend
+\end{itemize}
+
+\mypar[züfallige Auswahl vs.\ zufällige Zuordnung]{Bemerkung}
+Dieses Experiment und seine Auswertung illustrieren
+weiter den Unterschied zwischen \term{zufälliger Zuordnung}
+und \term{zufälliger Auswahl}: Wir haben unsere Versuchspersonen
+zufällig den experimentellen Konditionen zugeordnet,
+aber wir haben sie nicht zufällig aus irgendeiner Population gewählt.
+Wenn wir überzeugendere Evidenz für eine Wirkung der experimentellen
+Manipulation gefunden hätten,
+dann hätten wir folglich daraus immer noch nicht ohne Weiteres
+schliessen können, dass die experimentelle Manipulation einen Effekt in
+einer bestimmten \emph{Population} hätte.
+Dazu hätten wir sowohl die Versuchsperson zufällig aus dieser
+Population wählen müssen (\textit{random sampling})
+und diese dann zufällig den Kondition zuweisen müssen
+(\textit{random assignment}). Ohne eine zufällige Auswahl beruht
+eine solche Schlussfolgerung auf einer (oft impliziten) sachlogischen
+Argumentation---nicht auf einer statistischen Gegebenheit. Das muss
+nicht heissen, dass eine solche Schlussfolgerung dann falsch ist. Aber
+es ist wichtig zu erkennen, dass es sich hierbei nicht um eine statistische Frage handelt.
+Diese Nuance entspricht dem Unterschied zwischen
+\term{interner Validität} (Ist der Unterschied oder der Effekt,
+der wir in dieser Stichprobe beobachtet haben, der experimentellen
+Manipulation zuzuschreiben?) und \term{externer Validität}
+(Lässt sich dieser Befund über die Stichprobe hinaus generalisieren?)
+
+Wer sich für
+die Effizienz didaktischer Methoden interessiert ist, muss wohl die externe Validität der Untersuchung
+berücksichtigen.
+Aber für etwa experimentelle Psychologen ist externe Validität nicht
+unbedingt so wichtig \citep{Mook1983}: Für sie kann es wichtiger sein, zu
+zeigen, dass eine Manipulation überhaupt einen Effekt erzeugen \emph{kann},
+ohne dass die Grenzen dieses Befunds schon erprobt werden müssen.
+\parend
+
+\mypar[statistische vs.\ wissenschaftliche Hypothesen]{Bemerkung}
+Die für den Test formulierten Null- und Alternativhypothesen
+sind statistische Hypothesen. Diese haben einen erstaunlich
+geringen wissenschaftlichen Inhalt: Die Nullhypothese besagt
+lediglich, dass die beobachteten Muster rein auf Zufall
+basieren; die Alternativhypothese, dass sie nicht rein auf
+Zufall basieren. Worauf die Muster dann -- neben Zufall -- schon
+zurückzuführen wären, darüber macht die Alternativhypothese
+keine Aussage. In unserem Beispiel wären ein paar mögliche Auslöser
+die folgenden:
+\begin{itemize}
+ \item Alkohol senkt die Hemmungen beim Sprechen,
+ was dann wiederum die Sprechgeschwindigkeit erhöht.
+
+ \item Leute mit einem halben Liter alkoholhaltigem
+ Bier intus drücken sich eher in einfachen Strukturen
+ und Floskeln aus, die sie schneller aussprechen
+ als schwierigere Strukturen und neue Phrasen.
+
+ \item Die auswertenden Mitarbeitenden haben doch
+ irgendwie mitbekommen, wer welcher Gruppe zugeordnet
+ wurde, und haben sich bewusst oder unbewusst bei ihren
+ Auswertungen von diesem Wissen leiten lassen.
+\end{itemize}
+
+\begin{framed}
+\noindent \textbf{Merksatz.} Auch wenn ein Muster
+unter der Nullhypothese sehr implausibel ist,
+sagt Ihnen der Signifikanztest noch nicht,
+aus welchem Grund das Muster möglicherweise
+zu Stande gekommen ist.
+\end{framed}
+
+Weiter ist zu bemerken, dass die Alternativhypothese
+auch statistisch vage ist. Zum Beispiel besagt sie
+nicht, wie gross eine allfällige, von Alkohol ausgelöste
+Änderung der Sprechgeschwindigkeit sein könnte. Sie
+besagt nicht einmal, ob diese Änderung eine Beschleunigung
+oder eine Verlangsamung wäre.
+\parend
+
+\mypar[ein- und zweiseitige Tests]{Bemerkung}
+Im obigen Beispiel wurde ein \term{zweiseitiger Signifikanztest} verwendet:
+Es wurde nicht nur berechnet, wie wahrscheinlich es unter Annahme der Nullhypothese
+wäre, einen Unterschied von mindestens 0.73 Silben pro Sekunde zugunsten der Kontrollgruppe
+(dem beobachteten Ergebnis) anzutreffen, sondern auch, wie wahrscheinlich es unter
+Annahme der Nullhypothese wäre, einen Unterschied von mindestens 0.73 Silben pro Sekunde
+zugunsten der Experimentalgruppe anzutreffen. Der Grund hierfür ist, dass die Alternativhypothese
+vage war und wir lediglich die Vermutung aufgestellt haben, dass Alkoholkonsum \emph{irgendeine}
+Änderung der Sprechgeschwindigkeit herbeiführen dürfte.
+
+In der Literatur trifft man ab und zu auch \term{einseitige Tests} an. Bei solchen Tests schaut man
+sich nur eine der beiden Wahrscheinlichkeiten (`grösser' oder `kleiner') an. Die $p$-Werte
+von einseitigen Tests sind kleiner als jene von zweiseitigen Tests. Einseitige Tests
+können sinnvoll sein, wenn man \emph{im Vorhinein} klar spezifiziert hat, dass nur ein Unterschied
+in einer bestimmten Richtung mit der wissenschaftlichen Hypothese, die hinter
+der Arbeit steckt, kompatibel ist. Für eine kurze Übersicht, siehe \href{https://daniellakens.blogspot.com/2016/03/one-sided-tests-efficient-and-underused.html}{\textit{One-sided tests: Efficient and underused}} unter \url{https://daniellakens.blogspot.com}.
+Man sollte sich aber nicht zuerst die Daten anschauen und erst dann
+ entscheiden, dass man einen einseitigen Test verwenden möchte -- etwa, weil der
+ zweiseitige Test ein nicht-signifikantes Ergebnis produziert.
+\parend
+
+\section{Zur Bedeutung des $p$-Werts}
+Wie das Beispiel zeigt, ist $p$ die Wahrscheinlichkeit,
+dass man das beobachtete Muster (hier: einen Gruppenunterschied von
+0.73 Silben pro Sekunde) \emph{oder ein noch extremeres Muster} feststellen
+würde, \emph{wenn die Nullhypothese tatsächlich stimmen würde}.
+Die alternativen Gruppenunterschiede haben wir ja unter der Annahme,
+dass der beobachtete Gruppenunterschied nur durch Zufall zu Stande gekommen ist, generiert.
+Sämtliche andere Definitionen und Interpretationen
+des $p$-Wertes sind schlicht und einfach falsch.
+Zur Vorbeugung einiger häufiger Missverständnisse:
+
+\begin{itemize}
+ \item Der $p$-Wert ist \emph{nicht} die Wahrscheinlichkeit, dass die Nullhypothese
+ stimmt. Wir können also nicht schlussfolgern, dass es eine Wahrscheinlichkeit von
+ 30\% gibt, dass $H_0$ stimmt.
+
+ \item Der $p$-Wert ist auch nicht das Komplement der Wahrscheinlichkeit, dass die
+  Alternativhypothese stimmt. Wir können in diesem Beispiel also \emph{nicht}
+  schlussfolgern, dass $H_A$ mit $1 - 0.3 = $ 70\% Wahrscheinlichkeit zutrifft.
+
+  \item Der $p$-Wert ist nicht das Komplement der Wahrscheinlichkeit, dass sich das beobachtete
+  Ergebnis in einer Replikationsstudie bestätigen würde. (Ich habe keine
+  blasse Ahnung, wo dieses Missverständnis herkommt, aber diesen Kommentar habe ich
+  einmal in einem Gutachten erhalten.)
+\end{itemize}
+
+Solche -- und andere -- Missverständnisse trifft man geläufig an, sogar manchmal
+in Statistikeinführungen, die sich an Psychologie- und Linguistikstudierende richten!
+Für weitere Missverständnisse, siehe \citet{Goodman2008} und \citet{Greenland2016}.
+
+Oft unterscheidet man zwischen `statistisch signifikanten' und
+`statistisch nicht-sig\-ni\-fi\-kan\-ten' $p$-Werten. Dabei gelten $p$-Werte
+unter einer bestimmten Schwelle $\alpha$ als statistisch signifikant.
+Bei einem statistisch signifikanten $p$-Wert schlussfolgern diese
+Forschenden dann, dass die Daten nach der Nullhypothese zu unwahrscheinlich
+sind, sodass sie diese Hypothese zugunsten der Alternativhypothese
+ablehnen. Die Signifikanzschwelle (als $\alpha$ bezeichnet)
+kann im Prinzip von den Forschenden
+arbiträr festgelegt werden; in den Sozial- und Geisteswissenschaften
+liegt sie in der Regel aber fast ausnahmslos bei $\alpha = 0.05$ -- dies
+grundsätzlich aus keinem anderen Grund, als dass eine Hand fünf Finger
+zählt.
+
+\mypar[Schreibtipp]{Bemerkung}
+In der Statistik ist `Signifikanz' ein technischer Begriff,
+der nicht mit dem alltäglicheren Begriff von praktischer oder theoretischer Signifikanz oder Bedeutung verwechselt werden soll. Versuchen Sie in Ihren eigenen Arbeiten, diese Zweideutigkeit zu vermeiden.
+\parend
+
+\section{Fehlentscheide}
+Auch wenn man es sich wohl gerne anders wünschte, bieten
+Signifikanztests keine Sicherheit. Traditionellerweise
+spricht man beim Signifikanztesten (engl.: \textit{null hypothesis
+significance testing} oder \textit{NHST}) von zwei Arten
+von Fehlentscheiden, die man treffen kann.
+
+Die erste Art von Fehlentscheid ist, dass man eine tatsächlich
+zutreffende Nullhypothese ablehnt. Wer sich der traditionellen
+$\alpha$-Schwelle von 5\% bedient, wird tatsächlich
+zutreffende Nullhypothesen mit einer Wahrscheinlichkeit von
+jeweils höchstens 5\% ablehnen -- vorausgesetzt, dass die Daten richtig
+analysiert werden.
+Diese Art von Fehlentscheid nennt
+man einen \term{Fehler der ersten Art} (engl.: \textit{Type-I error};
+auch: falsch positiv, also etwas finden, was nicht da ist).
+Da man $\alpha$ selber definieren kann bzw.\ da $\alpha$
+\textit{de facto} bereits auf $0.05$ vordefiniert wurde,
+ist die Häufigkeit von Fehlern der ersten Art im Prinzip
+kontrolliert: Nur in höchstens $100\alpha$\% (also \textit{de facto} 5\%) 
+aller statistischen Nullhypothesen
+würde man fälschlicherweise ablehnen, wenn man die
+Daten richtig analysiert.
+In der Praxis tauchen
+hier jedoch einige Komplikationen auf, denen wir
+uns zu einem späteren Zeitpunkt widmen;
+siehe Kapitel \ref{ch:anova} und \ref{ch:QRP}.
+
+Wenn nun $H_0$ nicht zutrifft (d.h., das Muster lässt sich
+nicht nur durch Zufall erklären), dann besteht trotzdem
+die Gefahr, dass man einen $p$-Wert über der $\alpha$-Schwelle
+findet. In solchen Fällen würde man die Nullhypothese nicht ablehnen,
+obwohl dies eigentlich schon erwünscht wäre. Diese Art
+von Fehlentscheid nennt man einen \term{Fehler der zweiten Art}
+(engl.: \textit{Type-II error};
+auch: falsch negativ, also etwas nicht finden, was schon da ist).
+Die Wahrscheinlichkeit eines Fehlers der zweiten Art wird als
+$\beta$ bezeichnet (nicht zu verwirren mit den $\beta$s aus
+den Regressionsmodellen); das Komplement von $\beta$, $1-\beta$,
+nennt man die statistische \textbf{power} eines Tests.
+$\beta$ (und somit die power) können nicht ohne Weiteres
+festgelegt werden, denn diese Wahrscheinlichkeit hängt von
+vier Faktoren ab:
+
+\begin{enumerate}
+ \item wie stark das eigentliche Muster denn wäre, wenn die
+ Nullhypothese nicht zutrifft (z.B.\ wie stark moderater Alkoholkonsum
+ die Sprechgeschwindigkeit beeinflusst): Je stärker das Muster
+ (z.B.\ je grösser der Unterschied), desto höher die power;
+
+ \item wie gross die Fehlervarianz ist (z.B.\ wie stark
+ die Teilnehmenden innerhalb jeder Gruppe voneinander abweichen): Je grösser
+ die Fehlervarianz, desto niedriger die power;
+
+ \item wie gross die Datenmenge ist: Je mehr Daten, desto
+ grösser die power;
+
+ \item welcher Test verwendet wird und ob ihre Annahmen
+ ungefähr erfüllt sind.
+\end{enumerate}
+
+Mittels Powerberechnung (siehe Kapitel \ref{ch:poweranalysis}) kann man die power eines Signifikanztests einschätzen.
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+ & $H_0$ stimmt & $H_0$ stimmt nicht\\
+\midrule
+$p\leq \alpha$ & Fehler der 1.\ Art (\textrm{max.\ $\alpha$}) & OK ($1-\beta$)\\
+$p>\alpha$ & OK ($1 - \alpha$) & Fehler der 2.\ Art ($\beta$)\\
+\midrule
+Total      & $\alpha + (1 - \alpha) = 100\%$            & $(1 - \beta) + \beta = 100\%$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\mypar[Interpretation von nicht-signifikanten $p$-Werten]{Bemerkung}
+Aufgrund des Fehlers der zweiten Art kann man bei einem nicht-signifikanten
+Ergebnis weder schlussfolgern, dass es einen Unterschied gibt, noch
+dass es \emph{keinen} gibt: Es ist immer möglich, dass man den Unterschied
+lediglich nicht gefunden hat. Wenn Sie irgendwo lesen, dass $A$ und $B$
+sich nicht signifikant voneinander unterschied und daher einander gleich
+(oder `grundsätzlich gleich') sind, ist dies in der Regel nur bequeme
+Rhetorik: Absenz von Evidenz ist keine Evidenz für Absenz.
+\citet{Schmidt1996} nennt diesen Fehlschluss übrigens ``the most devastating
+of all to the research enterprise'' (S.~126).
+\parend
+
+\mypar[Fehler der dritten Art]{Bemerkung}
+Manchmal trifft man auch den Begriff
+\term{Fehler der dritten Art} (\textit{Type-III error}) an.
+Dieser wird unterschiedlich definiert. Für manche ist ein
+Fehler der dritten Art, wenn man die richtige Antwort auf
+eine falsche Frage gibt; andere verwenden ihn für Situationen,
+in denen Forschende die Nullhypothese zwar zu Recht ablehnen,
+aber fälschlicherweise schlussfolgern, dass der Unterschied
+positiv ist, während er eigentlich negativ ist (oder umgekehrt).
+\parend
+
+Viele Methodiker:innen und Statistiker:innen
+(aber längst nicht alle!) halten das Paradigma des
+Signifikanztests und insbesondere der Fehler der
+ersten und zweiten Art für überholt. Auf seinem
+Blog bringt Andrew Gelman dies auf den Punkt
+(\url{http://andrewgelman.com/2004/12/29/type_1_type_2_t/}):
+
+\begin{quotation}
+``\textbf{Never a Type 1 or Type 2 error}
+
+I've never in my professional life made a Type I error or a Type II error. But I've made lots of errors. How can this be?
+
+A Type 1 error occurs only if the null hypothesis is true (typically if a certain parameter, or difference in parameters, equals zero). In the applications I've worked on, in social science and public health, I've never come across a null hypothesis that could actually be true, or a parameter that could actually be zero.
+
+A Type 2 error occurs only if I claim that the null hypothesis is true, and I would certainly not do that, given my statement above!''
+\end{quotation}
+
+In unserem Beispiel, etwa, wäre es kaum vorstellbar, dass moderater Alkoholkonsum
+nicht den geringsten Effekt auf die Sprechgeschwindigkeit hätte. (Die Nullhypothese besagt ja, dass dieser Effekt gleich 0 ist; aber 0 heisst eben buchstäblich 0, also 0,000\dots)
+Die Fehler, die er dann aber sehr wohl gemacht hat, bezeichnet Gelman
+als \textit{Type-S}- und \textit{Type-M}-Fehler \citep{Gelman2014}.
+Das S steht für \textit{sign} (Vorzeichen); Typ-S-Fehler macht man, wenn man behauptet, ein Zusammenhang sei positiv, während er eigentlich negativ ist (oder umgekehrt.) Das M steht dann wieder für \textit{magnitude} (Grössenordnung);
+Typ-M-Fehler macht man, wenn man behauptet, ein Zusammenhang sei klein, während er eigentlich gross ist (oder umgekehrt).
+
+\mypar{Aufgabe}
+  In einem Forschungsgebiet wird eine grosse Anzahl von Experimenten durchgeführt.
+  In 45\% von diesen stimmt die Nullhypothese, in 55\% die Alternativhypothese.
+  Bei jedem Experiment, in dem die Nullhypothese stimmt, gibt es eine
+  Wahrscheinlichkeit von genau 5\%, dass diese Nullhypothese zu Unrecht abgelehnt wird.
+  Bei jedem Experiment, in dem die Alternativhypothese stimmt, gibt es eine 
+  Wahrscheinlichkeit von genau 60\%, dass die Nullhypothese zu Recht abgelehnt wird.
+  Wir wählen nun zufällig ein Experiment aus, in der die Nullhypothese abgelehnt wurde
+  Wie gross ist die Wahrscheinlichkeit, dass in diesem Experiment die Nullhypothese zu Recht
+  abgelehnt wurde?
+  
+  Hinweis: Siehe auch Beispiel \vref{bsp:medtest}.
+\parend
+
+\section{Randomisierungstests für Gruppenunterschiede}
+Randomisierungstests haben den Vorteil, dass sie wenig Annahmen machen.
+Angenommen haben wir bei den Berechnungen oben eigentlich nur,
+dass die Versuchspersonen nach dem Zufallsprinzip den
+Konditionen zugeteilt wurden. In der Praxis ist es in der Regel jedoch
+zu schwierig, alle möglichen Zuordnungen durchzuackern. Stattdessen
+generiert man lediglich $m$ solche zufälligen Zuordnungen. Dazu
+kann man die Gruppenlabels zufällig mit \texttt{sample()} permutieren.
+Dann zählt man die
+Anzahl Zuordnungen $r$, in denen das beobachtete Muster mindestens
+so extrem ist wie in den tatsächlichen Daten. Der $p$-Wert berechnet man dann
+als
+\[
+  p = \frac{r+1}{m+1}.
+\]
+Man fügt also sozusagen das tatsächlich beobachtete Muster noch den zufällig
+generierten hinzu, weil man dieses auch rein durch Zufall hätte beobachten können.
+Dies garantiert weiter, dass $p \neq 0$.
+Während dieses Vorgehen gültige $p$-Werte generiert, hängt das konkrete Ergebnis
+vom Zufall ab: Je nachdem, welche Zuordnungen man zufällig generiert, erhält
+man einen anderen Wert. Je grösser $m$, desto kleiner dieser Zufallsfaktor.
+
+Hier folgt ein Beispiel
+mit den Daten von \citet{Klein2014}, die wir bereits in
+Kapitel \ref{ch:gruppenunterschiede} analysiert haben:\label{page:kleinrandom}
+<<cache = TRUE, echo = TRUE, message = FALSE>>=
+klein <- read_csv(here("data", "Klein2014_money_abington.csv"))
+mean_difference <- tapply(klein$Sysjust, klein$MoneyGroup, mean) |> diff()
+mean_difference
+
+m <- 9999
+mean_diffs_H0 <- vector(length = m)
+for (i in 1:m) {
+  permuted_group <- sample(klein$MoneyGroup)
+  mean_diffs_H0[i] <- tapply(klein$Sysjust, permuted_group, mean) |> diff()
+}
+r <- sum(abs(mean_diffs_H0) >= abs(mean_difference))
+p <- (r + 1) / (m + 1)
+p
+@
+
+\mypar[Permutationstest für Unterschied zwischen Varianzen]{Aufgabe}
+  Stellen Sie sich vor, dass die Hypothese im \textit{money priming}-Beispiel
+  nicht den Unterschied zwischen den Konditionsmitteln, sondern den
+  Unterschied zwischen den Konditionsvarianzen betraf. Passen Sie den
+  Codeabschnitt oben an, um die entsprechende Nullhypothese zu testen,
+  und berechnen Sie einen passenden $p$-Wert.
+\parend
+
+\mypar[Unterschied zwischen mehr als zwei Gruppenmitteln]{Aufgabe}\label{ex:randtest_multiple}
+  In Abschnitt \ref{sec:unterschiede_mehrere_gruppen} haben wir gesehen,
+  wie man Unterschiede zwischen mehr als zwei Gruppen modellieren kann.
+  Wir können nun die Nullhypothese testen, dass die Unterschiede
+  zwischen den drei Konditionsmitteln in der Studie von \citet{Vanhove2018}
+  rein zufallsbedingt sind. Lesen Sie dazu die Daten wieder ein und berechnen
+  Sie die drei Konditionsmitteln. Statt den Unterschied zwischen diesen
+  Mitteln zu berechnen, sollten Sie diesmal die Varianz der drei Mittel berechnen.
+  (Es macht nicht aus, 
+  ob Sie dabei die Stichprobenvarianz oder die Populationsvarianz berechnen. Auch die Summe der Quadrate oder die Standardabweichung könnte man berechnen.)
+  Passen Sie nun den Codeabschnitt oben an, um diese Nullhypothese zu testen
+  und berechnen Sie einen passenden $p$-Wert.
+  
+  (Übrigens könnte man für den Vergleich von bloss zwei Gruppen
+  auch die Varianz (oder Standardabweichung) der zu vergleichenden Statistiken
+  statt des Unterschieds zwischen diesen berechnen. Wenn ein zweiseitiger Test verwendet, ergibt dies das gleiche Resultat, da die Varianz (Standardabweichung) eine streng monoton wachsende Funktion des absoluten Unterschieds ist.)
+\parend
+
+\mypar[Experiment mit \textit{blocking}]{Aufgabe}
+  Wir führen ein Prätest/Posttest-Experiment mit zufälliger Zuordnung durch.
+  Statt die Versuchspersonen jedoch komplett nach dem Zufallsprinzip 
+  den Gruppen zuzuordnen, ordnen wir die Versuchspersonen ihrem
+  Prätestergebnis nach und bilden wir wie folgt Paare von Versuchspersonen:
+  \[
+    (12)(34)(56)(78)\dots.
+  \]
+  Innerhalb von jedem Paar weisen wir dann nach dem Zufallsprinzip eine
+  Versuchsperson der Kontrollgruppe und eine Versuchsperson der Experimentalgruppe
+  zu. Diese Technik nennt man \term{blocking}. 
+  Sie kann die Power eines Experiment erhöhen und wird in unserem Forschungsgebiet
+  zu wenig eingesetzt.
+  
+  \begin{enumerate}
+    \item Es gibt $\binom{2n}{n}$ Möglichkeiten, um $2n$ Versuchspersonen
+          in zwei gleich grosse Gruppen aufzuteilen. Wie viele mögliche 
+          Zuordnungen gibt es in einem Experiment mit $2n$ Versuchspersonen,
+          in dem es einen Blocking-Faktor gibt, der die Versuchspersonen
+          in Paare gruppiert?
+          
+    \item Angenommen, die Nullhypothese lautet, dass
+          sich die Konditionsmittel nur aufgrund von Zufall unterscheiden.
+          Erklären Sie in Worten, 
+          wie man diese Nullhypothese in einem Experiment mit 
+          einem Blocking-Faktor mittels eines Randomisierungstests testen
+          kann. \parend
+  \end{enumerate}
+  
+\mypar[Wilcoxon-Rangsummentest]{Beispiel}\label{bm:wilcoxon}
+  In Aufgabe \vref{ex:gambler} haben Sie einen Datensatz zum 
+  \textit{gambler's fallacy} unter die Lupe genommen. Wie Sie dort
+  feststellen konnten, ist die Variable \texttt{RollsImagined} recht
+  schräg verteilt. Nun könnten wir hier zwar die Mediane statt den Mitteln
+  miteinander vergleichen, aber hier möchte ich eine Alternative vorstellen.
+  Eine intuitiv einleuchtende Art und Weise, um zu erfassen, inwiefern
+  die Werte in der einen Gruppe tendenziell höher sind als jene in der
+  anderen Gruppe, ist wie folgt: Wir wählen zufällig eine Beobachtung
+  aus der einen Gruppe und eine aus der anderen Gruppe aus und berechnen,
+  wie wahrscheinlich es ist, dass die erste Beobachtung einen höheren Wert
+  als die zweite hat.
+  
+  Die konkrete Berechnung dieser Wahrscheinlichkeit ist konzeptuell einfach:
+  Gibt es $n_1$ Beobachtungen in der ersten Gruppe und $n_2$ Beobachtungen
+  in der zweiten Gruppe, so führen wir alle $n_1n_2$ paarweisen Vergleiche
+  durch und berechnen wir die Proportion der Vergleiche, in denen der erste
+  Wert höher als der zweite ist; bei Gleichstand zählen wir den Vergleich als
+  halben Erfolg. Die selbst gestrickte Funktion \texttt{cles()}
+  führt diese Berechnung aus; ihr Name verweist nach der Bezeichnung 
+  \textit{common-language effect size} \citep{McGraw1992}:
+<<message = FALSE, warning = FALSE>>=
+# nur ufl-Daten; NAs ausser Acht lassen
+d <- read_csv(here("data", "Klein2014_gambler.csv")) |> 
+  filter(Sample == "ufl") |> 
+  filter(!is.na(RollsImagined))
+
+# Beobachtungen nach Kondition aufspalten
+x1 <- d$RollsImagined[d$Condition == "three6"]
+x2 <- d$RollsImagined[d$Condition == "two6"]
+
+# cles() laden und rechnen
+source(here("functions", "cles.R"))
+cles(x1, x2)
+@
+Wählt man also zufällig eine Beobachtung aus der \texttt{three6}-Gruppe
+und eine aus der \texttt{two6}-Gruppe, so hat erstere zu einer Wahrscheinlichkeit
+von 66.5\% einen höheren Wert als letztere. Mit einem Randomisierungtest
+könnten wir nun die Nullhypothese testen, dass diese Grösse nur durch
+Zufall von 50\% abweicht. Das praktische Problem, das sich hierbei stellt,
+ist, dass die in \texttt{cles()} implementierte Berechnung recht langsam
+ist: Wenn wir zig Rerandomisierungen durchführen und jeweils \texttt{cles()}
+auf diese anwenden würden, würden wir ewig auf das Ergebnis warten.
+
+Es stellt sich zum Glück heraus, dass wir eine wenige intuitive aber dafür
+effizientere Berechnung ausführen können, die unter dem Strich das gleiche
+Ergebnis liefert. Hierzu kombinieren wir die Beobachtungen der beiden
+Gruppen in einem Vektor, konvertieren diese zu Rängen und summieren
+die Ränge der ersten Gruppe. Die so erhaltene Rangsumme für unsere Daten
+beträgt $R = 3987.5$:
+<<>>=
+rank_sum <- function(x, y) {
+  ranks <- rank(c(x, y))
+  sum(ranks[1:length(x)])
+}
+rank_sum(x1, x2)
+@
+Für feste Gruppengrössen $n_1, n_2$ kann man den \texttt{cles}-Wert
+direkt aus der Rangsumme bestimmen:
+<<>>=
+n1 <- length(x1)
+n2 <- length(x2)
+(rank_sum(x1, x2) - n1*(n1 + 1)/2)/(n1 * n2)
+@
+Wir führen nun einen Randomisierungstest auf die Rangsumme durch.
+Die Logik ist hier stets identisch.
+<<cache = TRUE>>=
+m <- 19999
+rank_sums_H0 <- vector(length = m)
+for (i in 1:m) {
+  permuted_group <- sample(d$Condition)
+  x_H0 <- d$RollsImagined[permuted_group == "three6"]
+  y_H0 <- d$RollsImagined[permuted_group == "two6"]
+  rank_sums_H0[i] <- rank_sum(x_H0, y_H0)
+}
+r <- sum(abs(rank_sums_H0) >= abs(rank_sum(x, y)))
+p <- (r + 1) / (m + 1)
+p
+@
+Also $p = 0.00005$.
+
+Dieser Randomisierungstest entspricht dem \term{Wilcoxon-Rangsummentest},
+auch \term{Mann--Whitney-Test} genannt, der in R als \texttt{wilcox.test()}
+implementiert ist. In der Regel verlässt dieser sich jedoch auf
+eine Annäherung (siehe \texttt{Details} unter \texttt{?wilcox.test}):
+<<>>=
+wilcox.test(x1, x2)
+@
+Den Wert $W$ im Output können wir leicht zum \texttt{cles}-Wert umrechnen:
+<<>>=
+2276.5 / (n1*n2)
+@
+\parend
+
+\mypar[Konfidenzintervall für den \textit{common-language effect size}]{Aufgabe}
+  Verwenden Sie einen nicht-parametrischen Bootstrap, um ein 95\%-Konfidenzintervall
+  um den \textit{common-language effect size} aus Bemerkung \ref{bm:wilcoxon} zu konstruieren.
+  
+  Hinweis: Berechnen Sie in jedem Bootstrap-Durchgang die Rangsumme und konvertieren
+  diese zu einem \textit{common-language effect size}. Die Berechnung mit \texttt{cles()}
+  würde zu viel Zeit kosten.
+\parend
+
+\mypar[\texttt{coin}-Package]{Bemerkung}
+  Mit der Funktion \texttt{independence\_test()} aus dem \texttt{coin}-Package
+  können Randomisierungs- und Permutationstests bequem durchgeführt werden.
+  Die Gruppenvariable muss jedoch als Faktor umkodiert werden.
+  Die \textit{money priming}-Daten hätten wir beispielsweise auch so auswerten können:
+<<message = FALSE, warning = FALSE>>=
+library(coin)
+klein$f.MoneyGroup <- factor(klein$MoneyGroup)
+independence_test(Sysjust ~ f.MoneyGroup, data = klein,
+                  distribution = approximate(nresample = 9999))
+@
+  Um alle möglichen Permutationen zu berücksichtigen, kann man
+  \texttt{distribution = exact()} verwenden.
+  
+  Defaultmässig vergleicht \texttt{independence\_test()} Gruppenmittel.
+  Wenn Sie andere Grössen vergleichen möchten, müssen Sie sich jedoch
+  selber durch die Anleitungen von \texttt{coin} murksen. Ich finde es
+  sinnvoller, den Code selber zu schreiben; dann weiss ich sicher, was
+  überhaupt wie berechnet wird.
+\parend
+
+\section{Permutationstests für Assoziationen}\label{sec:permutationcorr}
+Permutationstests kann man auch einsetzen, um
+$p$-Werte für andere Muster als Gruppenunterschiede zu
+berechnen. Auf Seite \pageref{ex:poarch} haben Sie
+den Korrelationskoeffizienten für den Zusammenhang
+zwischen zwei Indikatoren für kognitive Kontrolle
+in einer Stichprobe von 34 Teilnehmenden berechnet
+(Daten von \citealp{Poarch2018}).
+<<message = FALSE>>=
+poarch <- read_csv(here("data", "poarch2018.csv"))
+cor_poarch <- cor(poarch$Flanker, poarch$Simon)
+cor_poarch
+@
+
+Das Vorgehen beim Berechnen von $p$-Werten ist
+immer gleich. Der $p$-Wert drückt aus, wie
+wahrscheinlich es denn wäre ein Muster zu
+beobachten, dass mindestens so extrem wäre
+wie das tatsächlich beobachtete Muster,
+\emph{wenn die Nullhypothese stimmen würde}.
+Beim Berechnen eines $p$-Wertes für einen
+Korrelationskoeffizienten ist die Aufgabe
+also, die Wahrscheinlichkeit zu berechnen,
+den beobachteten Korrelationskoeffizienten
+oder einen noch stärkeren Korrelationskoeffizienten
+in der Stichprobe anzutreffen, wenn es in der Population gar keinen
+Zusammenhang zwischen den zwei Variablen gäbe.
+
+Um diese Wahrscheinlichkeit zu berechnen,
+müssen wir zuerst die Verteilung der
+Korrelationskoeffizienten generieren, die
+wir in dieser Stichprobe feststellen würde,
+wenn die zwei Variablen (Flanker und Simon)
+unabhängig voneinander wären. Eine Möglichkeit,
+dies zu machen, besteht darin, die beobachteten
+Werte einer der Variablen zu permutieren, also durcheinanderzuschmeissen, 
+ohne die beobachteten Werte der anderen Variablen mitzupermutieren.
+Welche Variable permutiert wird, macht übrigens nichts aus.
+Hierdurch wird der systematische Zusammenhang
+zwischen den zwei Variablen gebrochen.\footnote{Noch ein kleines Beispiel: Stellen Sie sich vor, dass Sie drei Paare von Beobachtungen haben: $(1, 100)$, $(2, 200)$ und $(3, 300)$. Zwischen den zwei Werten pro Beobachtung gibt es eine perfekte Korrelation. Wenn nun die Werte der ersten Beobachtung permutiert werden, ohne die Werte der anderen Beobachtung mitzupermutieren, könnte man etwa diese Paare feststellen: $(2, 100), (3, 200), (1, 300)$. Oder auch: $(3, 100), (2, 200), (1, 300)$. Die Stärke der Korrelation bei jeder Permutation ist nun rein zufallsbedingt. Zum Beispiel ist es genau so wahrscheinlich, eine negative Korrelation anzutreffen als eine positive.}
+Abbildung \ref{fig:permutationenkorrelation} zeigt den beobachteten Zusammenhang
+und zwei Zusammenhänge, die man antreffen könnte, wenn man
+die Simon-Variable zufällig durcheinander schmeisst.
+Der R-Code unten zeigt Ihnen, wie Sie diese Abbildung selber zeichnen können.
+
+<<cache = TRUE, out.width = "\\textwidth", fig.width = 10, fig.height = 2.8, fig.cap = "\\textit{Links}: Der festgestellte Zusammenhang zwischen den Variablen Flanker und Simon in der Studie von Poarch et al. (2018). \\textit{Mitte und rechts}: Indem die eine Variable (hier: Simon) unabhängig von der anderen permutiert wird, wird der systematische Zusammenhang zwischen beiden Variablen gebrochen. Dies entspricht der Nullhypothese. Um zu wissen, wie die Korrelationskoeffizienten laut der Nullhypothese verteilt sind, kann man diese Permutierung ein paar tausend Mal vornehmen und jeweils die Korrelation zwischen den Variablen berechnen.\\label{fig:permutationenkorrelation}">>=
+p1 <- ggplot(poarch,
+             aes(x = Flanker,
+                 y = Simon)) +
+  geom_point(shape = 1) +
+  ggtitle("Eigentlicher Datensatz")
+
+# Wenn man bei sample() keine weiteren Parameter einstellt,
+# wird der Input zufällig permutiert.
+p2 <- ggplot(poarch,
+             aes(x = Flanker,
+                 y = sample(Simon))) +
+  geom_point(shape = 1) +
+  ggtitle("Eine mögliche Permutation")
+
+p3 <- ggplot(poarch,
+             aes(x = Flanker,
+                 y = sample(Simon))) +
+  geom_point(shape = 1) +
+  ggtitle("Eine andere mögliche Permutation")
+
+# Mit grid.arrange() aus dem Package gridExtra
+# können Sie mehrere Grafiken in einer Abbildung zeichnen.
+gridExtra::grid.arrange(p1, p2, p3, ncol = 3)
+@
+
+Bei 34 Beobachtungen gibt es fast 300 Sextillionen
+(eine 3 mit 38 Nullen) mögliche Permutationen
+der Simon-Variablen:
+\[
+ 34! = 34 \cdot 33 \cdot 32 \cdot \dots \cdot 3 \cdot 2 \cdot 1 \approx 2.95 \cdot 10^{38}.
+\]
+Es ist unmöglich, für all diese
+den Korrelationskoeffizienten zu berechnen. Daher
+begnügen wir uns hier mit 19'999 Permutationen:
+
+<<echo = FALSE>>=
+set.seed(2021-08-06)
+@
+
+<<cache = TRUE>>=
+m <- 19999
+cor_H0 <- vector(length = m)
+
+for (i in 1:m) {
+  cor_H0[i] <- cor(poarch$Flanker, sample(poarch$Simon))
+}
+@
+
+Die Verteilung der Korrelationskoeffizienten unter der
+Nullhypothese können Sie in einem Histogramm darstellen;
+Abbildung \ref{fig:distributionkorrelationpermutation} zeigt
+eine etwas ausführlichere Variante. Streng genommen muss
+man den tatsächlich beobachteten Korrelationskoeffizienten
+auch in diese Verteilung aufnehmen, denn diesen hätte man ebenfalls unter
+der Nullhypothese antreffen können. Insgesamt zählt die dargestellte
+Verteilung also 20'000 Korrelationskoeffizienten.
+
+<<fig.width = 5.5, fig.height = 2.5, echo = TRUE, fig.cap = "Die Verteilung der Korrelationskoeffizienten für diese Stichprobe mit 34 Beobachtungen, wenn man eine Variable zufällig permutiert.\\label{fig:distributionkorrelationpermutation}">>=
+df_cor_H0 <- tibble(cor_H0) |> 
+  add_row(cor_H0 = cor_poarch)
+ggplot(df_cor_H0,
+       aes(cor_H0)) +
+  geom_histogram(fill = "grey", colour = "black",
+                 breaks = seq(-1, 1, 0.05)) +
+  geom_vline(xintercept = -cor_poarch,
+             linetype = 2, colour = "red") +
+  geom_vline(xintercept = cor_poarch,
+             linetype = 2, colour = "red") +
+  ggtitle("Verteilung der Korrelationskoeffizienten unter H0",
+          subtitle = "(permutationsbasiert)") +
+  xlab("r (unter H0)") +
+  ylab("Anzahl") +
+  annotate("text", x = -0.75, y = 1200, label = "r <= -0.46") +
+  annotate("text", x = 0.75, y = 1200, label = "r >= 0.46")
+@
+
+Aus dieser Verteilung kann man ablesen, wie ungewöhnlich
+Korrelationskoeffizienten von $r = 0.46$ oder noch
+stärkere Korrelationskoeffizienten wären, wenn es
+keinen systematischen Zusammenhang zwischen den zwei Variablen
+gibt. Für den einseitigen Test ($H_A:$ Die Korrelation ist positiv.)
+schaut man sich an, welche Proportion der unter der $H_0$
+generierten Korrelationskoeffizienten gleich $0.46$ oder grösser sind:
+
+<<>>=
+mean(df_cor_H0$cor_H0 >= cor_poarch)
+@
+
+Also 0.24\% ($p = 0.0024$). Wenn Sie diese Berechnungen
+nochmals selber ausführen, werden Sie ein leicht anderes Ergebnis
+feststellen. Das liegt daran, dass die 19'999 zufälligen Permutationen
+bei Ihnen dann eben nicht die gleichen sind wie bei mir.
+
+Für den zweiseitigen Test ($H_A:$ Die Korrelation ist nicht gleich
+0, aber könnte sowohl positiv als auch negativ sein.) muss man
+sich zudem auch noch anschauen, welche Proportion der unter der
+$H_0$ generierten Korrelationskoeffizienten gleich $-0.46$ oder kleiner ist:\footnote{Wenn man einen gültigen linksseitigen $p$-Wert $p_{\ell}$ und einen gültigen rechtsseitigen $p$-Wert $p_r$ hat, so kann man auch einen zweiseitigen $p$-Wert $p_z$ wie folgt berechnen:
+\[
+  p_z := 2\min\{p_{\ell}, p_r\}.
+\]
+Hier berechnen wir ihn stattdessen als $p_z = p_{\ell} + p_r$, was ebenso ein gültiger $p$-Wert ist. Da die Verteilungen der bisher behandelten Statistiken unter der Nullhypothese symmetrisch waren, war der Unterschied jeweils vernachlässigbar. Das ist aber nicht zwangsläufig der Fall.}
+
+<<>>=
+mean(abs(df_cor_H0$cor_H0) >= abs(cor_poarch))
+@
+
+Also 0.54\% ($p = 0.0054$). Die Wahrscheinlichkeit,
+eine solche starke Korrelation oder eine noch stärkere
+anzutreffen, wenn die Nullhypothese tatsächlich stimmen
+würde, ist also recht klein.
+
+Mit der \texttt{independence\_test()}-Funktion
+wird dieses Vorgehen erleichert. Aber wichtiger
+ist eben vor allem die Logik hinter dem Vorgehen:
+<<>>=
+independence_test(Simon ~ Flanker, data = poarch,
+                  distribution = approximate(nresample = 19999))
+@
+
+Das Ergebnis fällt hier leicht
+anders aus als bei unseren manuellen Berechnungen,
+aber das liegt lediglich an der Zufallsauswahl der
+Permutationen.
+
+\mypar{Aufgabe}
+  Berechnen Sie Kendalls $\tau$ für den Zusammenhang der Flanker- und Simondaten.
+  Testen Sie die Nullhypothese, dass dieses sich nur aufgrund von Zufall von $0$
+  unterscheidet, mittels eines eigens gestrickten Permutationstests.
+\parend
