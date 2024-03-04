@@ -138,15 +138,14 @@ kann man also testen, ob die Daten mit diesem Unterschied kompatibel sind.
   dass die Stichproben aus Normalverteilung mit gleicher Varianz stammen.
 <<>>=
 n_runs <- 20000
-n1 <- 3
-n2 <- 5
-t_values <- vector(length = n_runs)
-
-for (i in 1:n_runs) {
+ttest_one_run <- function(n1, n2, sd1, sd2) {
   x1 <- rnorm(n1, mean = 0, sd = 3)
   x2 <- rnorm(n2, mean = 0, sd = 3)
-  t_values[i] <- t.test(x1, x2, var.equal = TRUE)$statistic
+  t.test(x1, x2, var.equal = TRUE)$statistic
 }
+n1 <- 3
+n2 <- 5
+t_values <- replicate(n_runs, ttest_one_run(n1, n2, 3, 3))
 @
  Wenn wir die 20'000 $t$-Werte grafisch darstellen, sehen wir,
  dass ihre Verteilung einer $t$-Verteilung mit $3 + 5 - 2 = 6$ Freiheitsgraden

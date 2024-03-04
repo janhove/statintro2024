@@ -104,14 +104,13 @@ Diese Tatsache können wir mit einer Simulation illustrieren.
 Mit den folgenden Befehlen wird das gleiche Szenario wie oben
 (3 Gruppen mit je 20 Beobachtungen; Nullhypothese stimmt;
 3 $t$-Tests) 20'000 durchlaufen. Jedes Mal wird der $p$-Wert
-der einzelnen $t$-Tests gespeichert sowie auch der kleinste
-der jeweils drei $p$-Werte.
+der einzelnen $t$-Tests gespeichert. Am Ende wird der 
+jeweils kleinste der drei $p$-Werte berechnet.
 <<cache = TRUE>>=
 n_runs <- 5000
 pval_ab <- vector(length = n_runs)
 pval_ac <- vector(length = n_runs)
 pval_bc <- vector(length = n_runs)
-min_pval <- vector(length = n_runs)
 
 for (i in 1:n_runs) {
   sim_df <- tibble(
@@ -119,24 +118,18 @@ for (i in 1:n_runs) {
     ergebnis = rnorm(n = 3*20, mean = 10, sd = 3)
   )
 
-  # A vs. B
-  sim_df_ab <- sim_df |>
-    filter(gruppe %in% c("A", "B"))
-  pval_ab[i] <- t.test(ergebnis ~ gruppe, data = sim_df_ab)$p.value
+  pval_ab[i] <- t.test(ergebnis ~ gruppe, data = sim_df |> 
+                         subset(gruppe %in% c("A", "B")))$p.value
 
-  # A vs. C
-  sim_df_ac <- sim_df |>
-    filter(gruppe %in% c("A", "C"))
-  pval_ac[i] <- t.test(ergebnis ~ gruppe, data = sim_df_ac)$p.value
-
-  # B vs. C
-  sim_df_bc <- sim_df |>
-    filter(gruppe %in% c("B", "C"))
-  pval_bc[i] <- t.test(ergebnis ~ gruppe, data = sim_df_bc)$p.value
-
-  # kleinsten der 3 p-Werte speichern
-  min_pval[i] <- min(c(pval_ab[i], pval_ac[i], pval_bc[i]))
+  pval_ac[i] <- t.test(ergebnis ~ gruppe, data = sim_df |> 
+                         subset(gruppe %in% c("A", "C")))$p.value
+  
+  pval_bc[i] <- t.test(ergebnis ~ gruppe, data = sim_df |> 
+                         subset(gruppe %in% c("B", "C")))$p.value
 }
+
+# kleinsten der 3 p-Werte speichern
+min_pval <- pmin(pval_ab, pval_ac, pval_bc)
 @
 
 Wenn die Nullhypothese stimmt, so müsste für jedes $\alpha \in (0,1)$ gelten,
@@ -177,7 +170,7 @@ mean(min_pval <= 0.05)
  zum Beispiel, weil im Forschungsbericht nur eine Auswahl der ausgeführten Signifikanztests
  beschrieben wird. Siehe hierzu Kapitel \ref{ch:QRP}.
 
-<<echo = FALSE, warning = FALSE, message = FALSE, out.width="\\textwidth", fig.width = 6, fig.height = 1.5, fig.pos = "tp", fig.cap = "Wenn die Nullhypothese stimmt, sollte der $p$-Wert aus einer Gleichverteilung stammen. Für die $p$-Werte aus den einzelnen $t$-Tests ist dies auch der Fall: Die Wahrscheinlichkeit, dass man einen $p$-Wert kleiner als 0.05 beobachtet, liegt tatsächlich bei 5\\%, wenn die Nullhypothese stimmt. Wenn man aber auf der Basis des jeweils kleinsten der drei $p$-Werte schliesst, ob sich die Gruppen unterscheiden, dann sind die relevanten $p$-Werte nicht gleich- sondern rechtsschief verteilt: Die Wahrscheinlichkeit, dass man \\emph{irgendeinen} $p$-Wert kleiner als 0.05 beobachtet, ist erheblich höher als 5\\%, auch wenn die Nullhypothese stimmt.\\label{fig:anova_pvalues}">>=
+<<echo = FALSE, warning = FALSE, message = FALSE, out.width="\\textwidth", fig.width = 6*1.4, fig.height = 1.5*1.4, fig.pos = "tp", fig.cap = "Wenn die Nullhypothese stimmt, sollte der $p$-Wert aus einer Gleichverteilung stammen. Für die $p$-Werte aus den einzelnen $t$-Tests ist dies auch der Fall: Die Wahrscheinlichkeit, dass man einen $p$-Wert kleiner als 0.05 beobachtet, liegt tatsächlich bei 5\\%, wenn die Nullhypothese stimmt. Wenn man aber auf der Basis des jeweils kleinsten der drei $p$-Werte schliesst, ob sich die Gruppen unterscheiden, dann sind die relevanten $p$-Werte nicht gleich- sondern rechtsschief verteilt: Die Wahrscheinlichkeit, dass man \\emph{irgendeinen} $p$-Wert kleiner als 0.05 beobachtet, ist erheblich höher als 5\\%, auch wenn die Nullhypothese stimmt.\\label{fig:anova_pvalues}">>=
 cols <- RColorBrewer::brewer.pal(3, "Set1")
 par(mfrow = c(1, 4), las = 2, mar = c(4, 4, 3, 1) + 0.1)
 hist(pval_ab, main = "Vergleich AB", xlab = "p",
@@ -237,7 +230,7 @@ zu lösen, ist, die Nullhypothese mit einem einzigen Test zu überprüfen
 statt mit mehreren Tests. Am häufigsten wird hierzu Varianzanalyse (\textsc{anova}: \textit{analysis of variance})
 bzw.\ der $F$-Test eingesetzt (siehe nächsten Abschnitt). Aber das Gleiche
 kann man bewirken mit einem Randomisierungstest, der m.E.\ einfacher nachvollziehbar ist.
-Wenn Sie sich Aufgabe \ref{ex:ex:randtest_multiple} bereits zur Brust genommen haben,
+Wenn Sie sich Aufgabe \ref{ex:randtest_multiple} zur Brust genommen haben,
 haben Sie diesen Test bereits implementiert. Der Deutlichkeit halber besprechen
 wir diesen Ansatz hier nochmals.
 

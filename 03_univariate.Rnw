@@ -32,7 +32,7 @@ Variablen: den Ergebnissen beim norwegischen Lesetest.
 Vorübergehend gehen wir davon aus, dass wir uns
 ausschliesslich für die 23 Ergebnisse im Datensatz
 interessieren und keine allgemeineren Aussagen machen
-möchten---z.B.\ über das Leseverständnis im Norwegischen
+möchten -- z.B.\ über das Leseverständnis im Norwegischen
 von Studierenden im zweiten Jahr im
 Fach schwedische Sprach- und Literaturwissenschaft, die
 nicht im Datensatz vorhanden sind.
@@ -46,8 +46,8 @@ die von Interesse wäre.
 Wenn wir über die Ergebnisse kommunizieren wollen
 und der Datensatz ganz klein ist, könnten wir
 ihn einfach direkt reproduzieren. Aber sogar
-für den relativ kleinen Datensatz hier---bloss 23
-Beobachtungen---würde es sich lohnen, die
+für den relativ kleinen Datensatz hier -- bloss 23
+Beobachtungen -- würde es sich lohnen, die
 Daten grafisch darzustellen und numerisch
 zusammenzufassen.
 
@@ -616,7 +616,7 @@ Das Mittel von $Z$ ist nun gerade
   \mu_Z = a\mu_X + b\mu_Y.
 \]
 
-Eine zweite praktische Eigenschaft ist die folgende. Sei $X$ und Vektor der
+Eine zweite praktische Eigenschaft ist die folgende. Sei $X$ ein Vektor der
 Länge $N_X$ mit Mittel $\mu_X$ und $Y$ ein Vektor der Länge $N_Y$ mit Mittel
 $\mu_Y$. Wir definieren einen dritten Vektor $Z$ der Länge $N_X + N_Y$, indem
 wir $X$ und $Y$ aufreihen: $Z := (X_1, \dots, X_{N_X}, Y_1, \dots, Y_{N_Y})$.
@@ -628,7 +628,7 @@ Das Mittel von $Z$ ist nun das \term{gewichtete Mittel} der Mittel von $X$ und $
 Eine dritte praktische Eigenschaft betrifft den zentralen Grenzwertsatz, den wir uns später anschauen.
 Ein wesentlicher Nachteil des Mittels ist aber, dass er stark von Ausreissern beeinflusst wird.
 Nimmt man zum Beispiel die Daten aus Abbildung \vref{fig:outlier} und berechnet man ihr Mittel,
-dann ist das Ergebnis 4.25---ein ziemlich untypischer Wert für die Beobachtungen,
+dann ist das Ergebnis 4.25 -- ein ziemlich untypischer Wert für die Beobachtungen,
 sind doch 6 der 7 Beobachtungen unter 2.6 und 1 über 17.5. Lässt man den Ausreisser weg,
 ist das Mittel 2.02, was der Tendenz des Hauptanteils der Beobachtungen besser entspricht.
 
@@ -680,10 +680,13 @@ Der Median ist weniger ausreisserempfindlich als das Mittel. Berechnet
 man für die Werte aus Abbildung \ref{fig:outlier} den Median mit
 dem Ausreisser, ist das Ergebnis 2.09; ohne ist es 2.04.
 
-Der Median ist zwar linear, aber anhand der Mediane von zwei Vektoren
-kann man nicht den Median des zusammengelegten Vektors bestimmen.
-Für den Median gibt es unter bestimmten Umständen eine (schwierigere)
-Variante des zentralen Grenzwertsatzes.
+Der Median ist kein linearer Operator. Beispielsweise ist der Median
+von $X := (1, 2, 3)$ klar $2$, während der Median von $Y := (0, 1, 0)$
+$0$ ist. Jedoch ist der Median von $X + Y = (1, 3, 3)$ $3 \neq 2+0$.
+Es ist auch nicht möglich, anhand der Mediane von zwei Vektoren
+den Median des zusammengelegten Vektors bestimmen.
+Für den Median gibt es unter bestimmten Bedingungen eine (schwierigere)
+Variante des zentralen Grenzwertsatzes; siehe \citet[][Satz 4.6]{Duembgen2016}.
 
 Grosse Unterschiede zwischen dem Mittel und
 dem Median sind öfters
@@ -855,7 +858,7 @@ Stichprobe systematisch die Spannweite der Population,
 aus der sie stammt.\footnote{Diese Tatsache scheint
 übrigens in der Zweit\-sprachs\-erwerbs\-forschung
 nicht allen Forschenden bekannt zu sein,
-die diesem Streuuungsmass eine zentrale Rolle in ihrer Forschung zuteilen
+die diesem Streuungsmass eine zentrale Rolle in ihrer Forschung zuteilen
 \citep{Vanhove2019b}.}
 (Mit Stichproben beschäftigen wir uns in späteren Kapiteln.)
 
@@ -877,7 +880,7 @@ Man kann auch direkt die Linearität des Mittels anwenden, um zum gleichen Schlu
 
 Um dieses Problem zu lösen, werden die Unterschiede zwischen den beobachteten
 Werten und dem Mittel quadriert, bevor sie beieinander aufgezählt werden.
-Dadurch werden sie alle positiv, sodass ihre Summe nicht länger 0 ist.
+Dadurch werden sie alle nicht-negativ, sodass ihre Summe nicht länger 0 ist.
 Diese \term{Summe der Quadrate} wird in Formeln als $d^2$ oder $SS$ (\textit{sum of squares}) abgekürzt:
 \begin{equation*}
 d^2 = \sum_{i = 1}^{N} (x_i - \mu)^2.
@@ -917,6 +920,12 @@ sollte das Ergebnis genau 0 sein, nicht \emph{fast} 0.
 Das Problem liegt bei der Genauigkeit, mit der ein Computer mit Zahlen
 umgeht. Wir werden auf dieses Problem hier nicht 
 näher eingehen, da es für uns nicht von riesiger Bedeutung ist.
+Jedoch ist dies ein Beispiel, wo das Testen auf Gleichheit mit \texttt{==}
+nicht das gewünschte Ergebnis liefert, aber \texttt{all.equal()} schon:
+<<>>=
+sum(d$Norwegian - mean(d$Norwegian)) == 0
+all.equal(sum(d$Norwegian - mean(d$Norwegian)), 0)
+@
 \parend
 
 \subsection{Varianz}

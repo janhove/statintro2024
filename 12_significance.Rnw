@@ -711,6 +711,36 @@ p
           kann. \parend
   \end{enumerate}
   
+\mypar[Experiment mit Schulklassen]{Aufgabe}
+  Für ein Experiment mit zwei Konditionen 
+  werden 16 Schulklassen mit je 20 Schüler:innen 
+  rekrutiert. Unter anderem folgende Methoden
+  bieten sich an, um die Schüler:innen den
+  Konditionen zuzuweisen:
+  \begin{enumerate}
+    \item Sämtliche 320 Schüler:innen werden mittels kompletter Randomisierung
+    den Konditionen zugewiesen. Es werden also nach dem Zufallsprinzip
+    160 Kinder der Kontrollgruppe
+    und 160 Kinder der Experimentalgruppe zugewiesen.
+    Dabei wird die Klasse, zu der sie gehören,
+    nicht berücksichtigt. Es ist also möglich, dass in einer bestimmten
+    Klasse mehr Kinder der Experimental- als der Kontrollkondition zugewiesen
+    werden.
+    
+    \item Innerhalb von jeder Klasse wird komplette Randomisierung angewendet.
+    In jeder Klasse gibt es also 10 Kinder in der Kontrollkondition und
+    10 Kinder in der Experimentalkondition.
+    
+    \item Die Klassen selber werden den Konditionen zugeordnet.
+    Das heisst, die Kinder aus 8 Klassen werden alle der Kontrollkondition
+    zugeordnet und die Kinder aus den anderen 8 Klassen werden alle
+    der Experimentalkondition zugeordnet.
+  \end{enumerate}
+  Berechnen Sie für jede der drei Möglichkeiten, wie viel mögliche Zuordnungen
+  es gibt. Beschreiben Sie für jede der drei Möglichkeiten einen geeigneten
+  Randomisierungstest für den Vergleich der Konditionsmittel.
+\parend
+  
 \mypar[Wilcoxon-Rangsummentest]{Beispiel}\label{bm:wilcoxon}
   In Aufgabe \vref{ex:gambler} haben Sie einen Datensatz zum 
   \textit{gambler's fallacy} unter die Lupe genommen. Wie Sie dort

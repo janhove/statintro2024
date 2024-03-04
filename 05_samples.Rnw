@@ -294,6 +294,15 @@ Varianz zu konstruieren, wenn die Stichprobe keine einfache Stichprobe ist.
   Der Satz von Gauss trifft hier nicht zu, da $X_1, X_2$ keine einfache
   Zufallsstichprobe darstellt: Die Beobachtungen stammen aus unterschiedlichen
   Verteilungen.
+  
+  Dieses Beispiel entspricht dem durchaus realistischen Fall, in dem 
+  zwei Stichproben unterschiedlicher Grösse aus der gleichen Population
+  mit Mittel $\mu$ und Varianz $\sigma^2$
+  gezogen wurden, jedoch nur ihre Mittel $\overline{X}_1, \overline{X}_2$ und Stichprobengrössen
+  $n_1, n_2$ bekannt sind.
+  Dann stammen die Stichprobenmittel aus Verteilungen mit dem gleichen Mittel
+  $\mu$, aber mit Varianzen $\sigma^2/n_1$ bzw.\ $\sigma^2/n_2$.
+  Das Mittel der Population schätzt man dan am besten durch dieses gewichtete Mittel.
 \parend
 
 \mypar[Vergleich von Schätzern von $\mu$]{Aufgabe}
@@ -325,7 +334,7 @@ hervorragend ab. Wir überprüfen nun, ob man die Populationsvarianz $\sigma^2$
 ebenso mit diesem Ansatz schätzen kann. Wir verzichten hier auf formale Beweise
 und gehen dieser Frage mittels einer Simulation nach.
 Dazu betrachten wir eine Zufallsstichprobe $X_1, \dots, X_n$
-aus der \textrm{Unif}($[-5, 5]$)-Verteilung. Dies Varianz dieser Verteilung
+aus der \textrm{Unif}($[-5, 5]$)-Verteilung. Die Varianz dieser Verteilung
 beträgt 
 \[
 \sigma^2  = \frac{(5 - (-5))^2}{12} \approx 8.33.

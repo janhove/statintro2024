@@ -189,10 +189,37 @@ op <- par(no.readonly = TRUE)
 <<QRPs, child = '17_QRP.Rnw'>>=
 @
 
-\part{Ausblick}
+% \part{Ausblick}
+
+% \chapter{Kategorische Daten auswerten}
+
+% \chapter{Weiterbildung}
+% \citep{Wickham2023}
+% 
+% % \section{Grafische Darstellungen}
+% \citep{Wilke2019}
+% 
+% \citep{McElreath2020, Winter2019}
+% 
+% % \section{Berichte schreiben}
+% \citep{Vanhove2021b}
+% 
+% % \section{Gemischte Modelle}
+% % 
+% % \section{Prädiktive Modellierung}
+% \citep{Kuhn2013,Yarkoni2017}
+
+% \section{Robuste Modellierung}
+
+
+% \chapter{Abschliessende Tipps}
+
+% # <<CategoricalData, child = '18_categorical.Rnw'>>=
+% # @
 
 \appendix
 \part*{Anhänge}
+\addcontentsline{toc}{part}{Anhänge}
 
 <<Errors, child = '99_errormessages.Rnw'>>=
 @
