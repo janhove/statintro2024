@@ -80,8 +80,10 @@ Die Ja-/Nein-Frage \textit{Ist die Karte schwarz?} entspricht dem Ereignis
          6\spadesuit, 7\spadesuit, \dots, A\spadesuit\},
 \end{align*}
 das 18 Elemente zählt.
-Die Ja-/Nein-Frage \textit{Steht eine gerade Zahl auf der Karte oder ist die Karte schwarz}
-entspricht nun der mengentheoretischen \term{Vereinigung} von $A$ und $B$:
+Die Ja-/Nein-Frage \textit{Steht eine gerade Zahl auf der Karte oder ist die Karte schwarz?}
+entspricht nun der mengentheoretischen \term{Vereinigung} von $A$ und $B$;
+Abbildung \ref{fig:sets} stellt die hier verwendeten mengentheoretischen
+Operationen dar:
 \begin{align*}
   A \cup B
   &= \textrm{$A$ oder $B$} \\
@@ -92,7 +94,7 @@ entspricht nun der mengentheoretischen \term{Vereinigung} von $A$ und $B$:
         6\heartsuit, 8\heartsuit, 10\heartsuit\}.
 \end{align*}
 Das Ereignis $A \cup B$ enthält 24 Ergebnisse.
-Die Ja-/Nein-Frage \textit{Steht eine gerade Zahl auf der Karte \emph{und} ist die Karte schwarz}
+Die Ja-/Nein-Frage \textit{Steht eine gerade Zahl auf der Karte \emph{und} ist die Karte schwarz?}
 entspricht dahingegen dem mengentheoretischen \term{Schnitt} von $A$ und $B$:
 \begin{align*}
   A \cap B
@@ -111,6 +113,97 @@ entspricht dann wieder dem mengentheoretischen \term{Komplement} von $A$:
 Wir beantworten die Ja-/Nein-Frage genau dann mit `ja',
 wenn das tatsächliche Ergebnis $\omega$ im entsprechenden Ereignis $E$ enthalten ist, 
 also wenn $\omega \in E$.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.80]
+          % Omega
+          \draw[fill=blue!20] (0,0) ellipse (3.5cm and 2cm);
+          \node[above] at (3,1.5) {$\Omega$};
+          % Filling the area in Omega not part of A
+          \begin{scope}
+            \clip (-1,0) ellipse (1.8cm and 1.2cm);
+            \draw[fill=white] (0,0) ellipse (3.5cm and 2cm);
+          \end{scope}
+          % Set A
+          \draw[fill=none] (-1,0) ellipse (1.8cm and 1.2cm);
+          \node[below] at (-1.3,-1.2) {$A$};
+          % Set B
+          \draw[fill=none] (1,0) ellipse (1.8cm and 1.2cm);
+          \node[below] at (1.3,-1.2) {$B$};
+        \end{tikzpicture}
+        \caption{$A^c$.}
+        \label{fig:sub1}
+    \end{subfigure}
+    \hspace{0.05\textwidth}
+    \begin{subfigure}[b]{0.4\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.80]
+          \draw[fill=none] (0,0) ellipse (3.5cm and 2cm);
+          \draw[fill=blue!20] (-1,0) ellipse (1.8cm and 1.2cm);
+          \draw[fill=none] (1,0) ellipse (1.8cm and 1.2cm);
+
+          \begin{scope}
+              \clip (-1,0) ellipse (1.8cm and 1.2cm);
+              \clip (1,0) ellipse (1.8cm and 1.2cm);
+              \draw[fill=white] (0,0) ellipse (3.5cm and 2cm);
+          \end{scope}
+        
+          \node[below] at (-1.3,-1.2) {$A$};
+          \node[above] at (3,1.5) {$\Omega$};
+
+          \node[below] at (1.3,-1.2) {$B$};
+        \end{tikzpicture}
+        \caption{$A \setminus B$.}
+        \label{fig:sub2}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.80]
+          \draw[fill=none] (0,0) ellipse (3.5cm and 2cm);
+          \draw[fill=none] (-1,0) ellipse (1.8cm and 1.2cm);
+          \draw[fill=none] (1,0) ellipse (1.8cm and 1.2cm);
+
+          \begin{scope}
+              \clip (-1,0) ellipse (1.8cm and 1.2cm);
+              \clip (1,0) ellipse (1.8cm and 1.2cm);
+              \draw[fill=blue!20] (0,0) ellipse (3.5cm and 2cm);
+          \end{scope}
+        
+          \node[below] at (-1.3,-1.2) {$A$};
+          \node[above] at (3,1.5) {$\Omega$};
+
+          \node[below] at (1.3,-1.2) {$B$};
+        \end{tikzpicture}
+        \caption{$A \cap B$.}
+        \label{fig:sub3}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.80]
+     \fill[blue!20] (-1,0) ellipse (1.8cm and 1.2cm);
+      \node[below] at (-1.3,-1.2) {$A$};
+      
+      \draw[fill=blue!20] (1,0) ellipse (1.8cm and 1.2cm);
+      \node[below] at (1.3,-1.2) {$B$};
+      \draw[fill=none] (-1,0) ellipse (1.8cm and 1.2cm);
+      
+      % Draw Omega
+      \draw (0,0) ellipse (3.5cm and 2cm);
+      \node[above] at (3,1.5) {$\Omega$};
+        \end{tikzpicture}
+        \caption{$A \cup B$.}
+        \label{fig:sub4}
+    \end{subfigure}
+    \caption{Das Komplement von $A$ (`nicht $A$', $A^c$); 
+    das relative Komplement von $B$ in $A$ (`$A$, aber nicht $B$', $A \setminus B$); 
+    der Schnitt von $A$ und $B$ (`$A$ und $B$', $A \cap B$); 
+    und die Vereinigung von $A$ und $B$ (`$A$ oder $B$', $A \cup B$).}
+    \label{fig:sets}
+\end{figure}
 
 Im zweiten Zufallsexperiment besteht der Grundraum $\Omega_2$ aus den 1260 Tupeln,
 die aus zwei ungleichen Karten bestehen.
@@ -155,7 +248,8 @@ Dazu muss die Abbildung $\Prob$ folgende Bedingungen (Axiome) genügen:
 
 \mypar[Rechenregeln für Wahrscheinlichkeiten]{Lemma}
 Aus den Bedingungen an der Abbildung $\Prob$ können ein paar wichtige Rechenregeln
-abgeleitet werden.
+abgeleitet werden; Abbildung \ref{fig:sets} stellt die verwendeten mengentheoretischen
+Operationen dar.
 \begin{enumerate}
   \item Für jedes Ereignis $A$ gilt $A \cup A^c = \Omega$ und $A \cap A^c = \emptyset$.
   Daher gilt
@@ -199,7 +293,7 @@ abgeleitet werden.
   \item In diskreten Wahrscheinlichkeitsräumen lässt sich jedes Ereignis schreiben
   als die Vereinigung einer Liste von Elementarereignissen. Diese Elementarereignisse
   überlappen nicht. Also wird die Wahrscheinlichkeit jedes Ereignisses bereits
-  festgelegt von den Wahrscheinlichkeiten der Elementarereignissen.
+  festgelegt von den Wahrscheinlichkeiten der Elementarereignisse.
   \parend
 \end{enumerate}
 
@@ -228,6 +322,7 @@ Das Zipfmodel besagt, dass die relative Häufigkeit eines Wortes in einer Sprach
   \Prob(\{\omega_k\}) = C_n\frac{1}{k}
 \]
 für irgendeine von $n$ abhängige Konstante $C_n$ und für alle $k = 1, \dots, n$.
+Die Konstante $C_n$ bestimmen wir wie folgt.
 Es muss gelten, dass
 \[
   1 = \Prob(\Omega) = \Prob(\bigcup_{k = 1}^n \{\omega_k\}) = \sum_{k=1}^n C_n\frac{1}{k} = C_n \sum_{k=1}^n \frac{1}{k}.
@@ -266,19 +361,20 @@ weil $\sum_{k=1}^{\infty}\frac{1}{k}$ gegen unendlich divergiert.
 
 Diskrete Wahrscheinlichkeitsräume lassen sich relativ einfach beschreiben,
 denn sie werden komplett charakterisiert von den Elementarereignissen
-und den Wahrscheinlichkeiten, die wir ihnen zuordnen.
+und den Wahrscheinlichkeiten, die wir diesen zuordnen.
 Für viele Anwendungen sind diskrete Wahrscheinlichkeitsräume jedoch ungeeignet,
 da sich der Grundraum besser als die Menge der reellen Zahlen ($\mathbb{R}$)
 auffassen lässt. Diese Menge kann jedoch nicht aufgelistet werden.
 Es stellt sich nun heraus, dass wir in solchen Fällen
 nicht länger beliebige Teilmengen des Grundraums als Ereignisse betrachten können
 und sinnvolle Wahrscheinlichkeitsaussagen über diese machen können.\label{comment:messbar}
-Auf die Gründe dafür wollen wir hier nicht eingehen. Praktisch gesehen
-hält sich das Problem glücklicherweise in Grenzen, denn die Teilmengen, die
-man nicht als Ereignis betrachten kann, sind recht schwierig zu konstruieren
-und für uns nicht relevant. In der nächsten Definition verzichten wir daher
-auf eine nähere Beschreibung der Eigenschaften, welche die Familie von
-Ereignissen, über die man Wahrscheinlichkeitsaussagen machen kann, erfüllen muss.
+Auf die Gründe dafür wollen wir hier nicht eingehen; 
+Interessierte können die Suchbegriffe `messbare Menge' und `$\sigma$-Algebra' verwenden.
+Praktisch gesehen hält sich das Problem glücklicherweise in Grenzen, 
+denn die Teilmengen, die man nicht als Ereignis betrachten kann, 
+sind recht schwierig zu konstruieren und für uns nicht relevant. 
+In der nächsten Definition verzichten wir daher auf eine nähere Beschreibung der Eigenschaften, welche die Familie von Ereignissen, 
+über die man Wahrscheinlichkeitsaussagen machen kann, erfüllen muss.
 
 \mypar[allgemeine Wahrscheinlichkeitsräume]{Definition}
 Ein \term{allgemeiner Wahrscheinlichkeitsraum} besteht aus (1) einer
@@ -384,7 +480,9 @@ Betrachten wir das zweite Zufallsexperiment. Sind die Ereignisse
 
 \mypar{Aufgabe}
   Es seien $F$ und $G$ irgendwelche Ereignisse mit $\Prob(F) = 0.6$,
-  $\Prob(G) = 0.2$ und $\Prob(F \cup G) = 0.72$. Sind $F$ und $G$ unabhängig?
+  $\Prob(G) = 0.2$ und $\Prob(F \cup G) = 0.72$. 
+  Sind $F$ und $G$ unabhängig?
+  Begründen Sie Ihre Antwort.
 \parend
 
 \mypar[Unabhängigkeit (2)]{Definition} Wir sagen, dass $n$ Ereignisse $A_1, \dots, A_n$
@@ -396,7 +494,7 @@ Untermenge $I \subset \{1, \dots, n\}$ gilt, dass
 \[
   \Prob\left(\cap_{i \in I} A_i\right) = \prod_{i \in I}\Prob(A_i).
 \]
-In Worten: Für jede Auswahl von höchstens $n$ Ereignissen ist die
+In Worten: Für \emph{jede} Auswahl von höchstens $n$ Ereignissen ist die
 Wahrscheinlichkeit, dass all die ausgewählten Ereignisse eintreten,
 gleich dem Produkt der Wahrscheinlichkeiten, dass sie einzeln eintreten.
 Unabhängigkeit impliziert paarweise Unabhängigkeit. Dies sieht man, wenn man
@@ -421,7 +519,8 @@ Jedoch gilt
 Somit sind $A, B, C$ nicht unabhängig.
 \parend
 
-Die nächste Definition brauchen wir nur, um später die Gesetze der grossen Zahlen zu verstehen.
+Die nächste Definition brauchen wir nur, 
+um später etwa die Voraussetzungen des zentralen Grenzwertsatzes zu verstehen.
 
 \mypar[Unabhängigkeit (3)]{Definition} Haben wir eine Familie von unendlich vielen
 Ereignissen, so sagen wir, dass diese unabhängig ist, wenn jede endliche Teilfamilie
@@ -828,8 +927,8 @@ Bevor wir uns ein paar klassische Wahrscheinlichkeitsverteilungen genauer
 anschauen, wollen wir die zwei am häufigst verwendeten numerischen Merkmale
 von Wahrscheinlichkeitsverteilungen genauer anschauen.
 Das erste Merkmal ist der \term{Erwartungswert}. Dieser drückt aus,
-welcher Wert Zufallsvariablen, die einer bestimmten Verteilung folgen,
-im Schnitt annimmt. Der Erwartungswert ist die Verallgemeinerung
+welchen Wert Zufallsvariablen, die einer bestimmten Verteilung folgen,
+im Schnitt annehmen. Der Erwartungswert ist die Verallgemeinerung
 des arithmetischen Mittels auf beliebig grosse Grundräume bzw.\ Populationen.
 
 Für eine diskrete Zufallsvariable $X$ auf einem Grundraum $\Omega$
@@ -1025,7 +1124,7 @@ Die Standardabweichung beträgt etwa 103.9.
   muss es überhaupt möglich sein, über die Ereignisse $X \in E_1, Y \in E_2$
   Wahrscheinlichkeitsaussagen machen zu können -- vgl.\ die Bemerkung auf
   Seite \pageref{comment:messbar}. Für unsere Zwecke ist diese Randbemerkung
-  jedoch bloss eine Spitzfindigkeit, da es recht schwierig ist, eine Zahlmenge $E$
+  jedoch bloss eine Spitzfindigkeit, da es recht schwierig ist, eine Zahlenmenge $E$
   zu konstruieren, sodass wir über das Ereignis $X \in E$ keine Wahrscheinlichkeitsaussagen machen können.} dass
   \[
     \Prob(X \in E_1, Y \in E_2) = \Prob(X \in E_1)\Prob(Y \in E_2).
@@ -1090,21 +1189,15 @@ dass
   Sei $X$ eine Zufallsvariable mit einer diskreten Gleichverteilung
   auf 
   \[
-  \{1, 2, \dots, n-1, n\}.
+  \{1, 2, \dots, n-2, n-1\}.
   \]
   Wir definieren $Y := X/2 + 1/2$.
   Dann hat $Y$ eine diskrete Gleichverteilung auf 
   \[
-  \{1, 1.5, 2, \dots, n/2 - 0.5\}.
+  \{1, 1.5, 2, \dots, n/2\}.
   \] 
   Verwenden Sie die Eigenschaften des Erwartungswerts und der Varianz,
   um $\E(Y), \Var(Y)$ zu bestimmen.
-  
-  Betrachten wir nun eine Zufallsvariable $Z \sim \textrm{Unif}(\Omega)$, wo
-  \[
-    \Omega = \{1, 1.5, 2, \dots, n/2 - 0.5, n/2\}.
-  \]
-  Bestimmen Sie $\E(Z), \Var(Z)$.
 \parend
 
 \mypar[Daten aus einer diskreten Gleichverteilung generieren]{Bemerkung}
@@ -1127,7 +1220,7 @@ daten
 \subsection{Die Bernoulliverteilung}
 Die \term{Bernoulliverteilung} beschreibt den Ausgang $X$ eines Zufallsexperiments mit
 zwei möglichen Ergebnissen, die wir als $0$ und $1$ bezeichnen.
-Sie hat einen Parameter $p \in [0, 1]$, die die Wahrscheinlichkeit einer $1$
+Sie hat einen Parameter $p \in [0, 1]$, der die Wahrscheinlichkeit einer $1$
 ausdrückt. Also gelten $\Prob(X = 1) = p$ und $\Prob(X = 0) = 1-p$.
 Folgt eine Zufallsvariable einer Bernoulliverteilung mit Parameter $p$,
 so schreiben wir $X \sim \textrm{Bernoulli}(p)$.
@@ -1168,7 +1261,7 @@ Wegen der Linearität des Erwartungswerts gilt
 \]
 Wegen der Unabhängigkeit von $X_1, \dots, X_n$ gilt weiter
 \[
-  \Var(X) = np(1-p).
+  \Var(X) = \Var(X_1) + \dots + \Var(X_n) = np(1-p).
 \]
 
 Die Wahrscheinlichkeit, dass genau die ersten $k$ von $n$ unabhängigen und identischen
@@ -1201,7 +1294,7 @@ berechnet werden.
 Auch eingebaut in R sind einige Funktionen, mit denen man Informationen über
 die Binomialverteilung abfragen kann und binomialverteilte Zufallsdaten
 generieren kann. Als Beispiel können wir uns hier vorstellen, dass 
-wir 10 Mal mit einem 6-seitigen Würfel werfen und dabei zählen, wie oft
+wir 10 Mal mit einem 6-seitigen Würfel würfeln und dabei zählen, wie oft
 wir eine 6 würfeln. Dies entspricht einer Binomial($10$, $1/6$)-Verteilung.
 Mit der Funktion \texttt{dbinom()} können wir $\Prob(X = k)$ abfragen.
 Beispielsweise beträgt die Wahrscheinlichkeit, dass wir genau fünf Mal eine
@@ -1210,10 +1303,15 @@ Beispielsweise beträgt die Wahrscheinlichkeit, dass wir genau fünf Mal eine
 dbinom(5, 10, 1/6)
 @
 Abbildung \ref{fig:dbinom} zeigt diese Wahrscheinlichkeit für $k = 0, \dots, 10$.
-<<fig.cap = "Wahrscheinlichkeit der Anzahl Erfolg bei einer Binomial($10$, $1/6$)-Verteilung.\\label{fig:dbinom}", fig.width = 4, fig.height = 3, out.width=".4\\textwidth">>=
+<<echo = FALSE, fig.cap = "Links: Wahrscheinlichkeit der Anzahl Erfolge bei der Binomial($10$, $1/6$)-Verteilung. Rechts: Verteilungsfunktion derselben Verteilung.\\label{fig:dbinom}", fig.width = 7, fig.height = 3.5, out.width=".8\\textwidth">>=
 k <- 0:10
+par(mfrow = c(1, 2))
 plot(k, dbinom(k, 10, 1/6), pch = 16,
      xlab = "k", ylab = "Prob(X = k)")
+plot(k, pbinom(k, 10, 1/6), pch = 16, ylim = c(0, 1),
+     xlab = "k", ylab = "Prob(X ≤ k)")
+segments(k, pbinom(k, 10, 1/6), k + 1)
+par(op)
 @
 
 Mit \texttt{pbinom()} können wir $\Prob(X \leq k)$ abfragen.
@@ -1275,7 +1373,7 @@ und
 \[
   \Var(X) = \frac{(b-a)^2}{12}.
 \]
-Eine Wahrscheinlichkeitsdichte einer Gleichverteilung auf $[a,b]$ ist gegeben
+Eine Wahrscheinlichkeitsdichte der Gleichverteilung auf $[a,b]$ ist gegeben
 durch
 \[
   f_U(x) = 
@@ -1307,7 +1405,7 @@ punif(2, -pi, pi)
 Das heisst, bei einer Unif($[-\pi, \pi$])-Verteilung beträgt die Wahrscheinlichkeit,
 einen Wert unter (oder nicht grösser als) 2 zu beobachten, etwa 82\%.
 Mit \texttt{qunif()} können wir die Quantile von kontinuierlichen Gleichverteilungen berechnen
-und \texttt{runif()} können unabhängige Beobachtung aus kontinuierlichen
+und \texttt{runif()} können unabhängige Beobachtungen aus kontinuierlichen
 Gleichverteilungen generiert werden:
 <<>>=
 runif(10, -pi, pi)
@@ -1325,7 +1423,7 @@ Abbildung \ref{fig:dnorm} zeigt die Wahrscheinlichkeitsdichten von vier
 Normalverteilungen. Links oben sehen Sie die \term{Standardnormalverteilung},
 das heisst, die Normalverteilung mit Mittel 0 und Varianz 1.
 
-<<echo = FALSE, fig.cap = "Wahrscheinlichkeitsdichten von vier Normalverteilungen.\\label{fig:dnorm}", fig.width = 4, fig.height = 3, out.width=".4\\textwidth">>=
+<<echo = FALSE, fig.cap = "Wahrscheinlichkeitsdichten von vier Normalverteilungen.\\label{fig:dnorm}", fig.width = 6, fig.height = 5, out.width=".6\\textwidth">>=
 op <- par(no.readonly = TRUE)
 par(mfrow = c(2, 2))
 curve(dnorm(x), from = -6, to = 6, ylab = "f(x)", ylim = c(0, 0.42), main = "N(0, 1)")
@@ -1356,9 +1454,9 @@ So können wir $\Prob(X \leq 0)$ wie folgt berechnen; siehe auch Abbildung \ref{
 pnorm(0, mean = 3, sd = sqrt(16))
 @
 
-<<echo = FALSE, fig.cap = "Die $\\mathcal{N}(3, 16)$-Verteilung. Die Wahrscheinlichkeit, einen Wert unter 0 anzutreffen, entspricht der Fläche unter der Wahrscheinlichkeitsdichte bis 0.\\label{fig:dnormex}", fig.width = 4, fig.height = 2.8, out.width=".4\\textwidth">>=
+<<echo = FALSE, fig.cap = "Die $\\mathcal{N}(3, 16)$-Verteilung. Links: Die Wahrscheinlichkeit, einen Wert unter 0 anzutreffen, entspricht der Fläche unter der Wahrscheinlichkeitsdichte bis 0. Rechts: Mittels der Verteilungsfunktion können wir diesen Wert abrufen.\\label{fig:dnormex}", fig.width = 4*7/4, fig.height = 2.8*7/8, out.width=".8\\textwidth">>=
 library(RColorBrewer)
-ggplot(data.frame(x = c(-12, 18)),
+plot_dnorm <- ggplot(data.frame(x = c(-12, 18)),
              aes(x)) +
   stat_function(fun = function(x) dnorm(x, mean = 3, sd = sqrt(16))) +
   ylab("f(x)") +
@@ -1367,6 +1465,16 @@ ggplot(data.frame(x = c(-12, 18)),
     y[x > 0] <- NA
     return(y)
   }, geom = "area", fill = "blue", alpha = 0.2)
+
+plot_pnorm <- ggplot(data.frame(x = c(-12, 18)),
+             aes(x)) +
+  stat_function(fun = function(x) pnorm(x, mean = 3, sd = sqrt(16))) +
+  ylab("F(x)") +
+  geom_segment(x = 0, xend = 0, y = 0, yend = pnorm(0, 3, sqrt(16)),
+               linetype = "dashed", colour = "blue") +
+  geom_segment(x = -20, xend = 0, y = pnorm(0, 3, sqrt(16)), yend = pnorm(0, 3, sqrt(16)),
+               linetype = "dashed", colour = "blue")
+gridExtra::grid.arrange(plot_dnorm, plot_pnorm, ncol = 2)
 @
 
 
@@ -1599,7 +1707,7 @@ pnorm(3 + 2/21, 3.5, sd = sqrt(0.42)) - pnorm(3 + 1/21, 3.5, sd = sqrt(0.42))
   Wir generieren $n$ unabhängige Zahlen mit dem Zufallsgenerator aus
   Beispiel \ref{bsp:2k}. Es gilt also $\mu = 2, \sigma^2 = 2$.
   \begin{enumerate}
-    \item Sei $n = 2$. Wie gross ist die Wahrscheinlichkeit, dass
+    \item Sei $n = 2$. Wie gross ist die tatsächliche Wahrscheinlichkeit, dass
     die durchschnittliche Zahl kleiner als $1/2$ ist? Was wäre unsere
     Schätzung für diese Wahrscheinlichkeit, wenn wir den zentralen
     Grenzwertsatz anwenden würden?

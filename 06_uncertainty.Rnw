@@ -638,7 +638,7 @@ d.h., $\alpha = 0.2$. Also
 \]
 Mit der \texttt{rank()}-Funktion bestimmen wir die \term{Ränge} der GJT-Beobachtungen:
 Die niedrigste GJT-Beobachtung hat Rang 1, die höchste Rang 76.
-Falls mehrere GJT-Beobachtungen den gleichen Rang haben, werden ihre Ränge
+Falls mehrere GJT-Beobachtungen den gleichen Wert haben, werden ihre Ränge
 zufällig zugeteilt (\texttt{ties.method = "random"}). Dann wird das
 Mittel derjenigen GJT-Beobachtungen mit einem Rang grösser als 15 und 
 kleiner als 72 (bzw.\ kleiner-gleich 71) berechnet:
@@ -905,7 +905,7 @@ Für ein Konfidenzintervall brauchen wir ein Verfahren, das ein Intervall
 konstruiert, das zu einer Wahrscheinlichkeit von mindestens $1-\alpha$ den
 Parameter $\theta$ enthält.
 
-\mypar[exacte Vertrauensschranken für das Mittel einer Normalverteilung mit bekannter Varianz]{Beispiel}\label{bsp:ci_exact_norm}
+\mypar[exakte Vertrauensschranken für das Mittel einer Normalverteilung mit bekannter Varianz]{Beispiel}\label{bsp:ci_exact_norm}
   Sei $X_1, \dots, X_n$ eine Zufallsstichprobe unabhängiger Beobachtungen
   aus der Verteilung $\mathcal{N}(\mu, \sigma^2)$, wobei $\sigma^2$ bekannt ist.
   Wir wissen, dass
@@ -1083,7 +1083,7 @@ folgenden Punkte wichtig:
 Im Folgenden beschäftigen wir uns noch mit der Konstruktion
 von Vertrauensintervallen für drei realistischere Szenarien.
 
-\mypar[exacte Vertrauensschranken für das Mittel einer Normalverteilung mit unbekannter Varianz]{Beispiel}\label{bsp:ci_exact_t}
+\mypar[exakte Vertrauensschranken für das Mittel einer Normalverteilung mit unbekannter Varianz]{Beispiel}\label{bsp:ci_exact_t}
   Haben wir eine Zufallsstichprobe mit unabhängigen Beobachtungen
   $X_1, \dots, X_n \sim \mathcal{N}(\mu, \sigma^2)$, wo sowohl $\mu$ als auch $\sigma^2$
   unbekannt sind, so liefert die Methode aus Beispiel \ref{bsp:ci_exact_norm} nicht
@@ -1295,47 +1295,3 @@ Mit \texttt{binom.test()} geht es natürlich einfacher:
 binom.test(7, 23, conf.level = 0.80)$conf.int
 @
 \parend
-
-
-% 
-% Unter \url{https://rpsychologist.com/d3/CI/} finden Sie
-% eine lehrreiche App zu Konfidenzintervallen. Unter anderem
-% zeigt die App, dass Konfidenzintervalle manchmal schmal
-% sein können, aber die Schätzung trotzdem weit
-% vom Populationswert entfernt liegen kann.
-% 
-% \section{Aufgaben}
-% Es kommt eher selten vor, dass man das Mittel, den Median
-% oder die Standardabweichung (usw.) einer Population schätzen muss.
-% Stattdessen schätzt man in der Regel Unterschiede zwischen Gruppen
-% oder Zusammenhänge zwischen Variablen. Für solche Fälle werden
-% die gleichen Prinzipien wie jene in diesem Kapitel zutreffen,
-% aber es scheint mir Beschäftigungstherapie zu sein, weitere praktische
-% Aufgaben für dieses Kapitel zu erledigen. Stattdessen folgen
-% hier ein paar Denkaufgaben.
-% 
-% \begin{enumerate}
-%  \item Welche Faktoren bestimmen die tatsächliche Unsicherheit
-%  einer Parameterschätzung (z.B.\ eines Mittels)?
-% 
-%  \item Wie könnte man als ForscherIn die Unsicherheit bei der
-%  Schätzung verringern?
-% 
-%   \item 
-% 
-%  \item Beim Arbeiten mit $t$-Verteilungen geht man davon aus,
-%  dass die Population, aus der die Stichprobe stammt, normalverteilt ist.
-%  Warum?
-% 
-%  \item Warum ist diese Normalitätsannahme weniger wichtig bei
-%  grösseren Stichproben?
-% 
-%  \item Auf Seite \pageref{par:trimmed} mussten Sie ein Konfidenzintervall um ein getrimmtes Mittel konstruieren.
-%  Dazu mussten Sie dazu Bootstrap-Stichproben mit je 76 Beobachtungen
-%  generieren und dann das 20\%-getrimmte Mittel dieser Stichproben berechnen.
-%  Wäre es stattdessen auch sinnvoll gewesen, zuerst die
-%  die 20\% niedrigsten und 20\% höchsten Werte aus der Stichprobe zu entfernen
-%  und anschliessend Bootstrap-Stichproben aus der restlichen Datenmenge von 46
-%  Beobachtungen zu generieren und bei diesen das normale Mittel zu berechnen?
-% 
-% \end{enumerate}

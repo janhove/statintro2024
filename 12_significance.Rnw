@@ -302,8 +302,8 @@ ggplot(df_diffs, aes(diffs, y = sample)) +
 
 \mypar[Verknüpfung zum Forschungsdesign]{Bemerkung}
 Der Hypothesentest, den wir soeben durchgeführt haben,
-ist ein \term{Randomisierungstest} (manchmal auch \term{Permutationstest}
-genannt). Sein Gebrauch wird
+ist ein \term{Randomisierungstest}. 
+Sein Gebrauch wird
 durch das Forschungsdesign, genauer gesagt: durch
 die uneingeschränkte Randomisierung und der Blindierung,
 legitimiert:
@@ -656,7 +656,7 @@ p <- (r + 1) / (m + 1)
 p
 @
 
-\mypar[Permutationstest für Unterschied zwischen Varianzen]{Aufgabe}
+\mypar[Randomisierungstest für Unterschied zwischen Varianzen]{Aufgabe}
   Stellen Sie sich vor, dass die Hypothese im \textit{money priming}-Beispiel
   nicht den Unterschied zwischen den Konditionsmitteln, sondern den
   Unterschied zwischen den Konditionsvarianzen betraf. Passen Sie den
@@ -846,7 +846,7 @@ Den Wert $W$ im Output können wir leicht zum \texttt{cles}-Wert umrechnen:
 
 \mypar[\texttt{coin}-Package]{Bemerkung}
   Mit der Funktion \texttt{independence\_test()} aus dem \texttt{coin}-Package
-  können Randomisierungs- und Permutationstests bequem durchgeführt werden.
+  können Randomisierungstests bequem durchgeführt werden.
   Die Gruppenvariable muss jedoch als Faktor umkodiert werden.
   Die \textit{money priming}-Daten hätten wir beispielsweise auch so auswerten können:
 <<message = FALSE, warning = FALSE>>=
@@ -866,9 +866,11 @@ independence_test(Sysjust ~ f.MoneyGroup, data = klein,
 \parend
 
 \section{Permutationstests für Assoziationen}\label{sec:permutationcorr}
-Permutationstests kann man auch einsetzen, um
-$p$-Werte für andere Muster als Gruppenunterschiede zu
-berechnen. Auf Seite \pageref{ex:poarch} haben Sie
+Um $p$-Werte für andere Muster als Gruppenunterschiede zu berechnen,
+kann man sehr ähnliche Verfahren zu Randomisierungstests verwenden.
+Diese nennt man \term{Permutationstests}; 
+öfters werden beide Begriffe aufgrund ihrer Ähnlichkeit als Synonyme verwendet.
+Auf Seite \pageref{ex:poarch} haben Sie
 den Korrelationskoeffizienten für den Zusammenhang
 zwischen zwei Indikatoren für kognitive Kontrolle
 in einer Stichprobe von 34 Teilnehmenden berechnet

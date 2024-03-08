@@ -6,7 +6,7 @@ standen, die ganze Population, für die wir uns
 interessierten, darstellten. 
 Eine Population kann eine endliche Menge von tatsächlichen
 oder potenziellen Beobachtungen sein, wie zum Beispiel
-die Wahlpräferenz aller AmerikanerInnen, die vorhaben, 
+die Wahlpräferenz aller Amerikaner:innen, die vorhaben, 
 zur Urne zu gehen.
 Öfters sollte man die Population von Interesse
 aber eher als einen abstrakteren datengenerierenden Mechanismus
@@ -52,7 +52,7 @@ werden wir in diesem Skript nicht behandeln.}
 Dieses Kapitel widmet sich der Frage, wie wir anhand einer (einfachen)
 Zufallsstichprobe Rückschlüsse über die Population machen können.
 Insbesonders die \term{Schätzung} der zentralen Tendenz (vor allem des Mittels) 
-und der Streuung (Varianz und Standardabweichungen) steht dabei im Fokus.
+und der Streuung (Varianz und Standardabweichung) steht dabei im Fokus.
 
 Fünf Sekunden kritisches Überlegen zeigen aber, dass wir es in der Praxis
 nie wirklich mit Zufallsstichproben zu tun haben. Auf dieses Problem
@@ -130,7 +130,6 @@ eigene, endliche Verteilung. Wir können nun das Mittel (den Erwartungswert)
 und die Varianz und Standardabweichung von $\widehat{P}$ mit den Formeln
 aus Kapitel \ref{ch:descriptives} berechnen und diese als unsere Schätzung
 für die entsprechenden Merkmale von $P$ verwenden.
-
 Hierbei stellt sich die Frage, wie gut solche sogenannten \textit{plug-in}-Schätzer sind.
 
 \mypar[Estimand, Schätzung und Schätzer]{Definition}
@@ -146,7 +145,7 @@ Hierbei stellt sich die Frage, wie gut solche sogenannten \textit{plug-in}-Schä
 
 Beispielsweise wäre das (unbekannte) Mittel der Population, aus der die
 Daten generiert wurden, ein Estimand. Ein Schätzer wäre eine Vorschrift
-wie `summiere alle Beobachtungen und teile durch die Anzahl Beobachtungen'.
+wie `summiere alle Beobachtungen in der Stichprobe und teile die Summe durch die Anzahl Beobachtungen'.
 Wird dieser Schätzer auf eine konkrete Stichprobe angewandt, so erhält man
 eine konkrete Zahl -- die Schätzung.
 
@@ -180,8 +179,8 @@ mathematische Konzepte einzuführen. Daher soll eine konzeptuelle Definition hie
   \]
   beliebig klein wird für grosse $n$.
   Anders gesagt ist ein Schätzer konsistent für $\theta$, wenn 
-  die Unterschiede zwischen den resultierenden Schätzungen und $\theta$
-  beliebig klein gemacht werden, wenn die Stichprobengrösse wächst.
+  der erwartete Unterschied zwischen den resultierenden Schätzungen und $\theta$
+  beliebig klein wird, wenn die Stichprobengrösse wächst.
 \parend
 
 \mypar[Varianz eines Schätzers]{Definition}
@@ -374,7 +373,7 @@ voraussetzen würden (hier: $\mu = 0$), so würde die Formel schon einen
 unverzerrten Schätzer darstellen.} Der plug-in-Schätzer ist jedoch schon konsistent.
 
 Die Unterschätzung der Populationsvarianz lässt sich einfach korrigieren.
-Wie Sie anhand von Aufgabe \ref{ex:estimate_var} ergibt die plug-in-Schätzung
+Wie Sie anhand von Aufgabe \ref{ex:estimate_var} feststellen können, ergibt die plug-in-Schätzung
 von $\sigma^2$ im Schnitt den Wert $\frac{n-1}{n}\sigma^2$. Um diese Unterschätzung
 zu korrigieren, wird die \term{Stichprobenvarianz}
 (Kürzel: $S^2$) nicht wie die Populationsvarianz ($\sigma^2$),
@@ -436,7 +435,7 @@ ggplot(data.frame(x = c(0, 40)),
   wie gross die Wahrscheinlichkeit ist, dass $S^2 \leq 14$, so bemerken wir,
   dass
   \begin{align*}
-    \Prob\left(S^2 \leq 14)\right)
+    \Prob\left(S^2 \leq 14\right)
     &= \Prob\left(\frac{10-1}{12} S^2 \leq \frac{(10-1)14}{12}\right) \\
     &= \Prob\left(\frac{n-1}{\sigma^2} S^2 \leq 10.5\right) \\
     &= \Prob(H^2 \leq 10.5),
@@ -465,7 +464,7 @@ jedoch \emph{kein} erwartungstreuer Schätzer: Die Stich\-proben\-standard\-abwe
 unterschätzt die Populationsstandardabweichung ganz leicht. Diese Schätzung
 zu korrigieren, ist im besten Fall schwierig und meistens unmöglich, weshalb
 man sie einfach in Kauf nimmt.\footnote{Nur weil $g(X_1, \dots, X_n)$ einen
-Estimanden $\theta$ unverzerrt schätzt, heisst das nicht, dass $h(g(X_1, \dots, X_n))$
+Estimanden $\theta$ unverzerrt schätzt, heisst das noch nicht, dass $h(g(X_1, \dots, X_n))$
 den Estimanden $h(\theta)$ unverzerrt schätzt. Beispielsweise
 schätzt das Stichprobenmittel $\overline{X}$ das Populationsmittel $\mu$ unverzerrt,
 aber die Grösse $(\overline{X})^2$ überschätzt $\mu^2$. Hiervon kann man sich
@@ -529,7 +528,7 @@ mehr Gedanken machen muss, wenn man Rückschlüsse über eine Population
 ziehen möchte, als wenn die Stichprobe zufällig ausgewählt worden wäre.
 
 \begin{itemize}
-\item Eine Meinungsumfrage auf Twitter erreicht
+\item Eine Meinungsumfrage auf sozialen Medien erreicht
 tendenziell Menschen ähnlicher Meinung. Aber sogar die angesehensten Meinungs\-forschungs\-institute können keine
 Zufallsstichproben organisieren: Bei Telefonumfragen in den USA
 nehmen nur \href{http://www.pewresearch.org/2017/05/15/what-low-response-rates-mean-for-telephone-surveys/}{etwa 10\%} der Ausgewählten teil.

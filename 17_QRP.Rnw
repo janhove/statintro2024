@@ -54,8 +54,8 @@ aber anstatt dass sie ihre Befunde darstellen als
 das Ergebnis einer exploratorischen Analyse, wird
 der Bericht geschrieben, als ob sie das beobachtete
 Muster vorhergesagt hätten. Diese Praxis bezeichnet
-\citeauthor{Kerr1998} als \term{\textsc{hark}ing} -- \textit{hypothesizing
-after the results are known}. Als Kosten von \textsc{hark}ing
+\citeauthor{Kerr1998} als \term{HARKing} -- \textit{hypothesizing
+after the results are known}. Als Kosten von HARKing
 sieht er unter anderen die folgenden (S.~211):
 
 \begin{itemize}
@@ -68,7 +68,7 @@ sieht er unter anderen die folgenden (S.~211):
  \item ``Implicitly violating basic ethical principles.''
 \end{itemize}
 
-\textsc{hark}ing ist eng verknüpft mit Rosinenpickerei (\textit{cherry picking}).
+HARKing ist eng verknüpft mit Rosinenpickerei (\textit{cherry picking}).
 Hierbei schaut man sich (explizit aber auch implizit!) unterschiedliche
 Muster an (Muster könnten hier etwa Gruppenunterschiede oder Korrelationen sein)
 und berichtet dann nur die stärksten oder anderswie auffälligsten. Das Problem
@@ -122,7 +122,7 @@ dass man signifikante Ergebnisse als `gut' oder `informativ'
 und nicht-signifikante Ergebnisse als `schlecht' oder `nicht informativ' betrachtet.
 Daher betrachtet man dann wiederum Entscheide in der Datenerhebung oder Analyse, die zu signifikanten
 Ergebnissen führen (z.B.\ das Weglassen bzw.\ das Hinzufügen einer
-Kontrollvariable oder das Weglassen bzw.\ Behalten einiger Ausreisser),
+Kontrollvariablen oder das Weglassen bzw.\ Behalten einiger Ausreisser),
 als verteidigbar oder logisch, während man dies vielleicht nicht gemacht hätte,
 wenn diese Entscheide zu nicht-signifikanten Ergebnissen geführt hätten.
 
@@ -138,8 +138,8 @@ von \citet{Gelman2013} und \citet{Steegen2016},
 in denen gezeigt wird, wie viel Flexibilität
 Forschende bei der Auswertung überhaupt haben
 (siehe auch \citealp{Poarch2018}). Wissenschaftliche
-Theorien können meistens mehreren statistischen Hypothesen
-entsprechen. Diese Flexibilität kann dazu
+Hypothesen können meistens mehreren statistischen Hypothesen
+entsprechen (und vice versa). Diese Unterdeterminiertheit kann dazu
 führen, dass sich Forschende (auch unbewusst) auf jene
 Muster in den Daten fokussieren, die sie als kompatibel
 mit ihrer Theorie betrachten. Dabei können sie dann
@@ -148,3 +148,9 @@ Auswertungsmöglichkeiten geben dürfte, die zu
 Ergebnissen führen, die nicht mit der Theorie kompatibel
 sind. Ähnliches wird auch in einer ethnografischen
 Studie von \citet{Peterson2016} aufgezeigt.
+
+\section{Mögliche Lösungen}
+
+\mypar{Aufgabe}
+(Präregistrierung und Artikel nebeneinander legen.)
+\parend

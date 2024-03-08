@@ -6,6 +6,7 @@
 
 % Deutsch
 \usepackage[ngerman]{babel, varioref}
+\usepackage{doi}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \hyphenation{Stich-proben-standard-abweichung Populations-standard-abweichung Standard-abweichung Stichproben-mittel Populations-mittel Ver-trauens-schranke Kon-fi-denz-inter-vall Code-switches}
@@ -34,7 +35,9 @@
 \newcommand{\df}{\,\textrm{d}}
 
 % Abbildungen und Tabellen
+\usepackage{tikz}
 \usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage{booktabs}
 \usepackage[margin=10pt, labelfont=bf, width=.8\textwidth]{caption}
 
@@ -179,6 +182,8 @@ op <- par(no.readonly = TRUE)
 
 <<ANOVA, child = '14_anova.Rnw'>>=
 @
+% 
+% \chapter{Signifikanztests für kategorische Daten}
 
 <<Power, child = '15_power.Rnw'>>=
 @

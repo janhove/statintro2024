@@ -822,7 +822,8 @@ Sie können ihn also ohne Weiteres ignorieren.
  \item $p$-Werte schätzen in der Regel die Wahrscheinlichkeit, mit der man das beobachtete
  Muster (z.B.\ einen Gruppenunterschied oder eine andere Parameterschätzung)
  oder noch extremere Muster antreffen würde, wenn die Nullhypothese tatsächlich
- stimmen würde. Ist diese Wahrscheinlichkeit niedrig, d.h., unter einer im
+ stimmen würde. 
+ Ist diese Wahrscheinlichkeit niedrig, d.h., unter einer im
  Vorfeld definiert $\alpha$-Schwelle (meistens $\alpha = 0.05$), so betrachtet man
  das beobachtete Muster als inkompatibel mit der Nullhypothese und verwirft man letztere.
 
@@ -848,6 +849,10 @@ Sie können ihn also ohne Weiteres ignorieren.
  \item $t$- und $F$-Tests können vom allgemeinen linearen Modell, unter Annahme eines
  i.i.d.\ normalverteilten Restfehlers, abgeleitet
  werden. Oft dienen sie als Annäherungen zu Randomisierungs- bzw.\ Permutationstests.
+ 
+ \item Es gibt nicht für jede Situation \emph{den} richtigen Signifikanztest.
+ Wenn es mehrere vertretbare Tests gibt, so brauche ihre Ergebnisse
+ nicht miteinander übereinzustimmen.
 
  \item Es gibt Signifikanztests, denen wir noch nicht begegnet sind.
  Von der Berechnung her unterscheiden diese sich von den $t$- und $F$-Tests,

@@ -1227,8 +1227,8 @@ background <- read_csv(here("data", "helascot_background.csv"))
  \item nur die französischen Lesetestergebnisse von Teilnehmenden, die
        einen Heimatsprache und -kulturkurs
        belegen (\texttt{HLC == "yes"});
- \item Versuchspersonen ohne französisches Lesetestergebnis
-       sollten nicht im resultierenden Datensatz vorkommen;
+ \item Versuchspersonen, die kein einziges französisches Lesetestergebnis
+       haben, sollten nicht im resultierenden Datensatz vorkommen;
  \item die Lesetestergebnisse an den drei Zeitpunkten sollten
        in Spalten nebeneinander stehen;
  \item der resultierende Datensatz soll für die übrig gebliebenen Versuchspersonen
