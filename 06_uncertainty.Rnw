@@ -1,19 +1,19 @@
 \chapter{Die Ungenauigkeit von Schätzungen schätzen}\label{ch:uncertainty}
-Eine unumgängliche Gegebenheit beim Arbeiten mit Stichproben
-ist, dass wir Eigenschaften von Populationen
-nur \emph{schätzen} können. Die Frage stellt sich, wie
-genau diese Schätzungen denn sind. Interessanterweise wissen wir
-dies in der Regel auch nicht genau, weshalb diese Ungenauigkeit
-\emph{auch} anhand der Stichprobe geschätzt werden muss.
+Eine unumgängliche Gegebenheit beim Arbeiten mit Stichproben ist, 
+dass wir Eigenschaften von Populationen nur \emph{schätzen} können. 
+Die Frage stellt sich, wie genau diese Schätzungen denn sind. 
+Leider wissen wir dies in der Regel auch nicht genau, 
+weshalb diese Ungenauigkeit \emph{auch} 
+anhand der Stichprobe geschätzt werden muss.
 
 Das Ziel dieses Kapitels ist es, anhand eines Beispiels zu
-illustrieren, wie man mit einer Stichprobe die Unsicherheit
-in einer Parameterschätzung einschätzen kann.
-Dazu introduziert dieses Kapitel den sog.\ \term{Bootstrap},
+illustrieren, wie man mit einer Stichprobe die Ungenauigkeit
+einer Parameterschätzung einschätzen kann.
+Dazu introduziert dieses Kapitel den \term{Bootstrap} --
 ein flexibles, mechanistisches Verfahren,
-um Ungenauigkeit einzuschätzen.
-Danach wird gezeigt, wie man anhand des zentralen Grenzwertsatzes
-(vgl.\ Abschnitt \ref{sec:clt}) das Gleiche machen kann.
+um diese Ungenauigkeit zu schätzen.
+Danach wird gezeigt, wie man den zentralen Grenzwertsatz
+(vgl.\ Abschnitt \ref{sec:clt}) zum gleichen Zweck einsetzen kann.
 
 Im Folgenden arbeiten wir mit einem Datensatz
 aus der Studie von \citet{DeKeyser2010}.
@@ -28,7 +28,7 @@ Die Grammatikaufgabe bestand aus 204 richtig/falsch-Items.
 In den nächsten Kapiteln werden wir uns mit dem
 Zusammenhang zwischen AOA und GJT befassen;
 hier verwenden wir den Datensatz von \citet{DeKeyser2010},
-um zu zeigen, wie man die Unsicherheit bei Stichprobenschätzungen
+um zu zeigen, wie man die Ungenauigkeit bei Stichprobenschätzungen
 quantifizieren kann.
 
 <<message = FALSE, echo = FALSE>>=
@@ -57,27 +57,27 @@ ggplot(data = d,
 \section{Stichprobenmittel variieren}
 Gehen wir davon aus,
 dass die GJT-Daten in der ganzen
-Population genau so verteilt wären wie in
-Abbildung \ref{fig:gjthistogram}.
-Dies ist nur eine Annahme für didaktische Zwecke.
+Population genau so verteilt wären wie im 
+Datensatz von \cite[][vgl.\ Abbildung \ref{fig:gjthistogram}]{DeKeyser2010}.
+Dies ist nur eine Annahme für didaktische Zwecke:
 Als Forschende haben wir keinen Zugriff zur ganzen Population,
 d.h., wir wissen eigentlich nicht,
-wie dieses Populationsverteilung aussieht.
+wie diese Populationsverteilung aussieht.
 Stattdessen müssen wir uns mit Stichproben begnügen.
 Aber nehmen wir vorübergehend an, dass die Daten in der Population
-genau so verteilt wären wie in dieser Stichprobe.
+genau so verteilt wären wie in dieser Studie.
 
-Wie schon in Kapitel \ref{ch:stichproben} besprochen,
+Wie schon in Abschnitt \ref{sec:clt} besprochen,
 bilden die Mittel von Zufallsstichproben mit der gleichen Grösse
 eine Stichprobenmittelverteilung, deren Mittel gleich dem
 Populationsmittel ist ($\mu_{\bar{x}} = \mu$).
 Abbildung \ref{fig:stichprobenauspopulation} zeigt exemplarisch fünf
-Stichproben mit Grösse 20 aus dieser GJT-Population und die
-Verteilung der Mittel von 20'000 Stichproben mit je 20 Beobachtungen aus
+Stichproben mit Grösse 20 aus dieser GJT-Population sowie 
+die Verteilung der Mittel von 20'000 Stichproben mit je 20 Beobachtungen aus
 der Population; bereits gezogene GJT-Werte konnten dabei nochmals
 gezogen werden (\textit{sampling with replacement}).
 Die Standardabweichung der Stichprobenmittelverteilung,
-der Standardfehler (siehe Kapitel \ref{ch:stichproben}),
+der Standardfehler (siehe Abschnitt \ref{sec:clt}),
 beträgt 6.07 Punkte.
 2.5\% der Stichprobenmittel sind kleiner als 138.95;
 2.5\% sind grösser als 162.60.
@@ -87,7 +87,7 @@ Der Standardfehler oder die Breite eines solchen Intervalls
 wären sinnvolle Masse für die Genauigkeit, mit der man mit einer
 Stichprobe einen Populationsparameter (hier: das Mittel) schätzen kann.
 
-<<echo = FALSE, fig.cap = "Wenn eine grosse Anzahl Zufallsstichproben der gleichen Grösse aus der Population gezogen werden und je ihr Mittel berechnet wird (senkrechte Linie), ergibt sich die Stichprobenmittelverteilung. In diesem Fall ist diese in etwa normalverteilt, aber dies ist nicht unbedingt der Fall. Exemplarisch werden fünf der Stichproben gezeigt.\\label{fig:stichprobenauspopulation}", cache = TRUE, fig.width = 9, fig.height = 5.5, out.width = "\\textwidth", message = FALSE, warning = FALSE>>=
+<<echo = FALSE, fig.cap = "Wenn wir eine grosse Anzahl Zufallsstichproben der gleichen Grösse aus der Population ziehen und je ihr Mittel berechnen (senkrechte Linie), ergibt sich die Stichprobenmittelverteilung. In diesem Fall ist diese in etwa normalverteilt, aber dies ist nicht zwangsläufig der Fall. Exemplarisch werden fünf der Stichproben gezeigt.\\label{fig:stichprobenauspopulation}", cache = TRUE, fig.width = 9, fig.height = 5.5, out.width = "\\textwidth", message = FALSE, warning = FALSE>>=
 theme_set(theme_grey(9))
 p_population <- ggplot(data = d,
        aes(x = GJT, y = after_stat(density))) +
@@ -172,10 +172,10 @@ Stichprobe schätzen.
 \emph{Enter the plug-in principle.}
 Abbildung \ref{fig:stichprobenauspopulation} zeigt zwar,
 dass jede einzelne Stichprobe die Population nur imperfekt
-widerspiegelt. Aber gleichzeitig ist diese Widerspieglung
-das Beste, was wir in der Praxis haben.\footnote{Sogenannte bayessche
-Methoden erlauben es einem aber, auch Informationen, die man nicht
-aus den Daten selber ableiten kann, in der Analyse zu berücksichtigen.}
+widerspiegelt. Aber gleichzeitig ist diese Widerspiegelung
+das Beste, was wir in der Praxis haben.\footnote{Wir könnten jedoch allenfalls zusätzliche
+Annahmen über die Population machen, die sich nicht rein auf der Basis der Daten
+herleiten lassen.}
 Um den Standardfehler bzw.\ die
 Form der Stichprobenmittelverteilung zu schätzen, können wir
 die Stichprobe als Stellvertreter der Population
@@ -187,7 +187,7 @@ Zur Verfügung steht uns die erste (rote) Stichprobe aus Abbildung
 \ref{fig:stichprobenauspopulation}. Wir tun nun, als ob die GJT-Population
 genau so wie diese Stichprobe verteilt wäre, denn wir haben
 keine besseren Anknüpfungspunkte. Um die Stichprobenmittelverteilung
-zu generieren, ziehen wir Zufallsstichproben mit Grösse 20
+unter dieser Annahme zu generieren, ziehen wir Zufallsstichproben mit Grösse 20
 aus dieser Stichprobe.\footnote{Ein Detail: Eine Beobachtung
 darf mehrmals in der gleichen Stichprobe vorkommen. Dies nennt
 man \textit{sampling with replacement} und man macht es, weil
@@ -199,7 +199,7 @@ drei solche \textit{Bootstrap}-Stichproben.
 Für jede Bootstrap-Stichprobe können wir das Mittel berechnen;
 die Verteilung von 20'000 dieser Mittel steht in der unteren Grafik.
 
-<<echo = FALSE, cache = TRUE, fig.cap = "Die erste Stichprobe aus Abbildung \\ref{fig:stichprobenauspopulation} dient hier als Stellvertreter der GJT-Population. Exemplarisch werden drei Bootstrap-Stichproben mit Grösse 20 gezeigt. Wenn man 20'000 solche Bootstrap-Stichproben generiert, bilden ihre Mittel die Verteilung in der unteren Grafik. Diese hier schaut normalverteilt aus, aber dies ist nicht zwingend der Fall.\\label{fig:bootstrap_rot}", echo = FALSE, fig.width = 9, fig.height = 6.5, out.width="\\textwidth">>=
+<<echo = FALSE, cache = TRUE, fig.cap = "Die erste Stichprobe aus Abbildung \\ref{fig:stichprobenauspopulation} dient hier als Stellvertreter der GJT-Population. Exemplarisch werden drei Bootstrap-Stichproben der Grösse 20 gezeigt. Wenn man 20'000 solche Bootstrap-Stichproben generiert, bilden ihre Mittel die Verteilung in der unteren Grafik. Diese hier schaut normalverteilt aus, aber dies ist nicht zwangsläufig der Fall.\\label{fig:bootstrap_rot}", echo = FALSE, fig.width = 9, fig.height = 6.5, out.width="\\textwidth">>=
 p_sample <- ggplot(stichprobe1, aes(x = GJT)) +
   geom_histogram(breaks = seq(90, 210, 5), fill = colours[1], colour = "black") +
   geom_vline(xintercept = mean(stichprobe1$GJT), linetype = 2) +
@@ -339,10 +339,10 @@ $\rightarrow$ Verteilung von Schätzungen in Stichproben generieren,\\
 $\rightarrow$ Variabilität in Schätzung berechnen.
 \end{itemize}
 
-Mangels einer grossen Anzahl Stichproben aus der gleichen Population,
+Mangels einer grossen Anzahl Stichproben aus der gleichen Population
 verlässt man sich auf das \textit{plug-in}-Prinzip: Die Stichprobe
-tritt stellvertretend für die Population auf, und geschaut wird,
-wie gut Stichproben einer bestimmten Grösse aus dieser Stichprobe
+tritt stellvertretend für die Population auf 
+und geschaut wird, wie gut Stichproben einer bestimmten Grösse aus dieser Stichprobe
 den untersuchten Parameter schätzen können.
 \begin{itemize}
 \item Stichprobe definieren, \\
@@ -359,10 +359,10 @@ und Tabelle \ref{tab:bootstrap} anschaut.
 Abbildung \ref{fig:bootstrapdistributions} zeigt die
 Verteilung der gebootstrappten Mittel für die fünf Stichproben;
 Tabelle \ref{tab:bootstrap} fasst ihre Standardabweichung,
-ihre 2.5. und 97.5. Perzentile, und den Unterschied zwischen
-diesen Perzentilen zusammen.
+ihre 2.5. und 97.5. Quantile, und den Unterschied zwischen
+diesen Quantilen zusammen.
 Die Standardabweichungen und die Breite der Intervalle
-zwischen dem 2.5.\ und dem 97.5.\ Perzentil sind in keinem
+zwischen dem 2.5.\ und dem 97.5.\ Quantil sind in keinem
 der fünf Beispiele dem entsprechenden
 tatsächlichen, aber unbekannten Wert, gleich.
 Aber im Schnitt sind sie ihm recht ähnlich.
@@ -371,7 +371,7 @@ verfügt
 (z.B.\ vorherige Studien, sachlogische Überlegungen),
 kann der Bootstrap also nützliche, wenn auch imperfekte,
 Informationen über
-die Unsicherheit einer Parameterschätzung liefern.
+die Ungenauigkeit einer Parameterschätzung liefern.
 
 <<echo = FALSE, cache = TRUE, warning = FALSE, fig.cap = "Die Verteilung der gebootstrappten Mittel auf der Basis von fünf Stichproben.\\label{fig:bootstrapdistributions}", echo = FALSE, fig.width = 1.7*3, fig.height = 1.7*8, out.width = ".5\\textwidth">>=
 
@@ -446,12 +446,12 @@ gridExtra::grid.arrange(p_stichprobenmittel,
 
 \begin{table}[tbp]
 \centering
-\caption{Standardabweichung, Perzentile und der Unterschied zwischen den Perzentilen für die eigentliche Stichprobenmittelverteilung
-und die fünf Verteilungen der gebootstrappten Mittel. Die Perzentile und der Unterschied zwischen ihnen stimmen wegen Rundung nicht komplett miteinander übrein.}
+\caption{Standardabweichung, Quantile und der Unterschied zwischen den Quantilen für die eigentliche Stichprobenmittelverteilung
+und die fünf Verteilungen der gebootstrappten Mittel. Die Quantile und der Unterschied zwischen ihnen stimmen wegen Rundung nicht komplett miteinander übrein.}
 \label{tab:bootstrap}
 \begin{tabular}{lrrrr}
 \toprule
-Stichprobenmittelverteilung     & $SD$  & 2.5. Perzentil  & 97.5. Perzentil & Unterschied \\
+Stichprobenmittelverteilung     & $SD$  & 2.5. Quantil  & 97.5. Quantil & Unterschied \\
 \midrule
 Tatsächlich (unbekannt)         & 6.1   & 139          & 163          & 24 \\
 \midrule
@@ -472,26 +472,27 @@ Bootstraps sind die folgenden.
  Dies erlaubt uns, wichtige Konzepte unabhängig von ihrer üblichen
  mathematischen Umsetzung zu besprechen.
 
- \item Der Bootstrap ist flexibel. Hier haben wir uns mit der Unsicherheit eines
+ \item Der Bootstrap ist flexibel. Hier haben wir uns mit der Ungenauigkeit eines
  Stichprobenmittels befasst. Diese kann man auch mit einer relativ
  einfachen analytischen Methode ausdrücken (siehe unten). Den Bootstrap
- kann man aber auch verwenden, um die Unsicherheit vieler anderer
+ kann man aber auch verwenden, um die Ungenauigkeit vieler anderer
  Schätzungen auszudrücken, zum Beispiel eines getrimmten
  oder winsorisierten Mittels, eines Medians,
  einer Standardabweichung, eines bestimmten
- Perzentils, oder irgendwelcher anderen Masse. Dies wird in den Aufgaben gemacht.
+ Quantils, oder irgendwelcher anderen Masse. 
+ Beispiele gibt es in den Aufgaben.
  Ausserdem kann der Bootstrap auch bei komplexeren Modellen
  (z.B., wenn wir den Zusammenhang zwischen verschiedenen Variablen untersuchen)
  verwendet werden.
 
  \item Je nachdem sind die Annahmen des Bootstraps plausibler
  als die Annahmen anderer geläufiger Verfahren.
- Dieser Punkt wird später in diesem Kapitel deutlicher werden,
- aber hier sei bereits darauf hingewiesen, dass wir in den
+ Dieser Punkt wird später in diesem Kapitel klarer.
+ Hier sei bereits darauf hingewiesen, dass wir in den
  obigen Beispielen nirgends davon ausgegangen sind, dass die
  Stichprobenmittelverteilung normalverteilt ist.
  In den Beispielen sind die Verteilungen der gebootstrappten Mittel zwar
- annäherend normalverteilt, aber hiervon sind wir nicht a priori \emph{ausgegangen}.
+ annähernd normalverteilt, aber hiervon sind wir nicht a priori \emph{ausgegangen}.
  Wir sind insbesondere nicht davon ausgegangen,
  dass die Population, aus der
  die Stichproben stammen, normalverteilt ist. \parend
@@ -502,37 +503,38 @@ Bootstraps sind die folgenden.
 Bootstrap keine perfekte Lösung.
 \begin{itemize}
  \item ``Bootstrapping does not overcome the \textbf{weakness of small samples} as a basis for inference.'' \citep[][S.~379]{Hesterberg2015}
- Einerseits ist die \emph{tatsächliche} Unsicherheit einer Parameterschätzung
+ Einerseits ist die \emph{tatsächliche} Ungenauigkeit einer Parameterschätzung
  bei einer kleinen Stichprobe natürlich grösser als bei einer grösseren (siehe auch
  den zentralen Grenzwertsatz). Aber andererseits ist unsere \emph{Schätzung} dieser
- Unsicherheit bei kleineren Stichproben auch weniger genau als bei grösseren.
+ Ungenauigkeit bei kleineren Stichproben auch weniger genau als bei grösseren.
  Dies ist aber nicht sosehr ein Nachteil des Bootstraps, sondern von kleinen
  Stichproben im Allgemeinen: Andere Verfahren bieten hier keine bessere Lösung.\footnote{Ausser 
  sie machen striktere Annahmen oder sie berücksichtigen Informationen, 
  die man nicht aus den Daten selber ableiten kann.}
 
  \item Die Implementierung des Bootstraps, die oben illustriert wurde, tendiert dazu,
- die Unsicherheit einer Parameterschätzung eher zu unter- als zu überschätzen.
+ die Ungenauigkeit einer Parameterschätzung eher zu unter- als zu überschätzen.
  Dies ist umso mehr der Fall bei kleinen Stichproben.
  Der Grund dafür ist, dass die Streuung einer Stichprobe die Streuung der Population eher
  unter- als überschätzt; deswegen wird die Varianz einer Stichprobe ja leicht
  anders berechnet als jene einer Population (siehe Abschnitt \vref{sec:stichprobenvarianz}).
  Beim Bootstrap tritt die Stichprobe aber stellvertretend für die Population auf.
  Insofern die Stichprobe die Streuung in der Population unterschätzt, unterschätzt
- der Bootstrap die Unsicherheit der Parameterschätzung.
+ der Bootstrap die Ungenauigkeit der Parameterschätzung.
  Es gibt ein paar Möglichkeiten, diese Verzerrung zu korrigieren
  \citep[siehe][]{Efron1993}, aber pädagogisch sind diese hier nicht so interessant.
 
  \item Da der Bootstrap so flexibel ist, ist es schwierig, eine allgemeine,
  benutzerfreundliche Funktion für ihn zu schreiben.
- Daher muss man den Bootstrap meistens selber programmieren. \parend
+ Am besten programmiert man den Bootstrap meines Erachtens selber.
+ \parend
 \end{itemize}
 
 Die obigen Beispiele dienten nur einem pädagogischen Zweck:
 Wenn wir eine Stichprobe von 76 Versuchspersonen haben,
 ist es ja kaum sinnvoll, kleinere Stichproben aus ihr zu ziehen.
 Stattdessen werden hier zuerst die Befehle gezeigt,
-mit denen Sie die Unsicherheit von DeKeyser et al.'s
+mit denen Sie die Ungenauigkeit von DeKeyser et al.'s
 ursprünglichem Stichprobenmittel schätzen können.
 Übrigens befinden wir uns dabei in der komischen aber noch recht üblichen
 Situation, dass wir nicht wirklich wissen, über welche
@@ -541,28 +543,21 @@ Dann folgen zwei Übungen, die die Flexibilität des Bootstrap
 illustrieren.
 
 \mypar{Beispiel}\label{bsp:bootstrap}
-Der erste Codeabschnitt definiert, wie
-viele bootstrap replicates generiert werden
-sollen, generiert diese dann anhand
-eines \textit{for-loops} und berechnet
-jeweils das Mittel.
-In diesem Codeabschnitt wird davon ausgegangen,
+Die Funktion \texttt{btstrp\_mean\_one\_run()} generiert
+ein bootstrap replicate und berechnet ihr Mittel. Mithilfe der Funktion
+\texttt{replicate()} wird sie dann \texttt{n\_bootstraps} Mal ausgeführt.
+Es wird davon ausgegangen,
 dass Sie den Datensatz \texttt{d} genannt haben.
 Wenn dies nicht der Fall ist, müssen Sie
 überall noch \texttt{d} durch den richtigen
 Objektnamen ersetzen oder eben den Datensatz umbenennen.
 <<cache = TRUE>>=
-# Anzahl bootstrap replicates
-n_bootstraps <- 20000
-bootstraps <- vector(length = n_bootstraps)
-
-for (i in 1:n_bootstraps) {
-  # Sampling with replacement, daher 'replace = TRUE'.
-  bootstrap_sample <- sample(d$GJT, replace = TRUE)
-
-  # Mittel des bootstrap replicates berechnen und speichern.
-  bootstraps[[i]] <- mean(bootstrap_sample)
+btstrp_mean_one_run <- function(x) {
+  btstrp_sample <- sample(x, replace = TRUE)
+  mean(btstrp_sample)
 }
+n_bootstraps <- 20000
+bootstraps <- replicate(n_bootstraps, btstrp_mean_one_run(d$GJT))
 @
 
 \citet{Hesterberg2015} empfiehlt, 20'000 bootstrap replicates zu
@@ -583,10 +578,10 @@ die Standardabweichung der gebootstrappten Mittel.
 sd(bootstraps)
 @
 
-Berichten würde ich die Schätzung des Mittels und die Unsicherheit über diese Schätzung als $150.8 \pm 3.1$ oder sogar als $151 \pm 3$.
-$150.7763 \pm 3.1352$ wären aber zu viele Zahlen, über
+Berichten würde ich die Schätzung des Mittels und die Ungenauigkeit über diese Schätzung als $150.8 \pm 3.1$ oder sogar als $151 \pm 3$.
+$150.7763 \pm 3.1170$ wären aber zu viele Zahlen, über
 die es zu viel Unsicherheit gibt. In \citet{Vanhove2020b} habe ich versucht, ein paar
-Richtschnuren fürs Abrunden von Schätzungen zu formulieren.
+Richtschnuren fürs Runden von Schätzungen zu formulieren.
 
 Etwa 95\% der gebootstrappten Mittel liegen
 zwischen 145 und 157. Dieses Intervall stellt
@@ -597,14 +592,14 @@ quantile(bootstraps, probs = c(0.025, 0.975))
 @
 
 Da die Verteilung der gebootstrappten Mittel in etwa
-normalverteilt aussieht, können wir diese Perzentile
+normalverteilt aussieht, können wir diese Quantile
 auch mithilfe der Eigenschaften von Normalverteilungen
-berechnen. Das 2.5.\ Perzentil jeder Normalverteilung
+berechnen. Das 2.5.\ Quantil jeder Normalverteilung
 liegt etwa 1.96 Standardabweichungen unter dem Mittel:
 <<>>=
 qnorm(0.025)
 @
-Und das 97.5.\ Perzentil liegt genauso weit über dem Mittel:
+Und das 97.5.\ Quantil liegt genauso weit über dem Mittel:
 <<>>=
 qnorm(0.975)
 @
@@ -613,7 +608,7 @@ Diese Berechnungsmethode ergibt daher grundsätzlich die gleiche Lösung:
 mean(d$GJT) + c(-1.96, 1.96) * sd(bootstraps)
 @
 Dies gilt natürlich nur, wenn die Verteilung der gebootstrappten
-Mittel normalverteilt ist; die Perzentilmethode ist allgemeiner
+Mittel normalverteilt ist; die Quantilmethode ist allgemeiner
 gültig. \parend
 
 \mypar{Aufgabe}
@@ -627,7 +622,8 @@ Das $100\alpha$\% \term{getrimmte Mittel} ist eine weitere Methode, um anhand ei
 Stichprobe das Mittel einer Population zu schätzen.
 Um es zu berechnen, legen wir zunächst eine Zahl $\alpha \in (0, 0.5)$ fest.
 Für eine Stichprobengrösse $n$ berechnen wir dann die Zahl 
-$\lfloor \alpha n \rfloor$. Wir entfernen dann die $\lfloor \alpha n\rfloor$
+$\lfloor \alpha n \rfloor$. Das heisst, wir berechnen $\alpha n$ und ignorieren
+die Zahlen nach der Komma. Wir entfernen dann die $\lfloor \alpha n\rfloor$
 niedrigsten und die $\lfloor \alpha n\rfloor$ höchsten Beobachtungen aus
 der Stichprobe und berechnen das arithmetische Mittel der restlichen Beobachtungen.
 
@@ -641,7 +637,7 @@ Die niedrigste GJT-Beobachtung hat Rang 1, die höchste Rang 76.
 Falls mehrere GJT-Beobachtungen den gleichen Wert haben, werden ihre Ränge
 zufällig zugeteilt (\texttt{ties.method = "random"}). Dann wird das
 Mittel derjenigen GJT-Beobachtungen mit einem Rang grösser als 15 und 
-kleiner als 72 (bzw.\ kleiner-gleich 71) berechnet:
+kleiner als 62 (bzw.\ kleiner-gleich 61) berechnet:
 <<>>=
 n <- length(d$GJT)
 alpha <- 0.2
@@ -659,13 +655,13 @@ dar und kann nützlich sein, wenn die Stichprobe möglicherweise verunreinigt
 wurde.
 
 Schätzen Sie den Standardfehler des 20\% getrimmten Mittels der GJT-Daten
-anhand des Bootstraps. Dazu brauchen Sie lediglich eine Zeile aus dem
-Code unter Beispiel \ref{bsp:bootstrap} zu ändern. Zeichnen Sie auch
+anhand des Bootstraps. Dazu brauchen Sie lediglich eine Zeile im
+Code aus Beispiel \ref{bsp:bootstrap} zu ändern. Zeichnen Sie auch
 ein Histogramm der Bootstrap-Schätzungen.
 \parend
 
 \mypar[Ungenauigkeit der Standardabweichung]{Aufgabe}
-Der Bootstrap ist nicht nur nützlich, um die Unsicherheit
+Der Bootstrap ist nicht nur nützlich, um die Ungenauigkeit
 in der Schätzung eines Mittels zu quantifizieren.
 Berechnen Sie die Standardabweichung der GJT-Daten
 und verwenden Sie den Bootstrap, um die Ungenauigkeit dieser
@@ -722,8 +718,8 @@ Dieses Konfidenzintervall ist dem Konfidenzintervall,
 das mit dem Bootstrap konstruiert wurde, sehr ähnlich, was natürlich
 beruhigend ist.
 Diesmal sind wir aber
-davon \emph{ausgegangen}, dass die Stichprobenmittel aus
-der Population normalverteilt sind; diese Annahme haben
+davon \emph{ausgegangen}, dass die Mittel von Stichproben der Grösse 76 aus
+der Population normalverteilt sind. Diese Annahme haben
 wir beim Bootstrap nicht gemacht. Bei sehr schiefen oder
 anderen asymmetrischen Verteilungen ist es durchaus möglich,
 dass der zentrale Grenzwertsatz auch bei Stichproben von 76
@@ -739,9 +735,9 @@ gibt es andere Formeln, aber der Bootstrap ist wesentlich flexibler.
 \section{Die $t$-Verteilungen}
 Die Stichprobenstandardabweichung ($S$)
 ist bloss eine Schätzung der Populationsstandardabweichung ($\sigma$).
-Insofern $S$ $\sigma$ unterschätzt, wird die Unsicherheit
+Insofern $S$ $\sigma$ unterschätzt, wird die Ungenauigkeit
 in der Parameterschätzung unterschätzt; überschätzt $S$ $\sigma$,
-dann wird die Unsicherheit in der Parameterschätzung überschätzt.
+dann wird die Ungenauigkeit in der Parameterschätzung überschätzt.
 Damit könnte man sich abfinden, wenn sich Unter- und Überschätzungen 
 ausgleichen würden. In Abschnitt \ref{sec:sd} wird diesbezüglich
 jedoch auf ein Problem hingewiesen: 
@@ -785,7 +781,9 @@ eine Standardnormalverteilung. Je mehr Freiheitsgrade,
 desto ähnlicher ist die Verteilung einer Standardnormalverteilung.
 Dies entspricht der Tatsache, dass grössere Stichproben $\sigma$
 tendenziell weniger unterschätzen als kleinere Stichproben.
-`Student' war übrigens das Pseudonym von William S.\ Gosset.
+`Student' war übrigens das Pseudonym von William S.\ Gosset, dessen
+Arbeitgeber Guinness ihm untersagte, seine Ergebnisse unter seinem echten
+Namen zu veröffentlichen, aus Angst, die Konkurrenz auf Ideen zu bringen.
 
 <<echo = FALSE, warning = FALSE, fig.cap = "Wahrscheinlichkeitsdichten der Student-$t$-Verteilung mit 2 (rot), 5 (blau) und 20 (grün) Freiheitsgraden. Die schwarze Kurve ist die Wahrscheinlichkeitsdichte der Standardnormalverteilung.\\label{fig:dt}", fig.width = 4, fig.height = 2.8, out.width=".4\\textwidth">>=
 my_col <- RColorBrewer::brewer.pal(3, "Set1")
@@ -811,9 +809,9 @@ ggplot(data.frame(x = c(-6, 6)),
 
 Um das 95\%-Konfidenzintervall um ein Stichprobenmittel mithilfe
 der $t$-Verteilungen zu finden, sucht man zuerst mit \texttt{qt()} 
-das 2.5.\ und das 97.5.\ Perzentil der $t$-Verteilung mit $n-1$ Freiheitsgraden
+das 2.5.\ und das 97.5.\ Quantil der $t$-Verteilung mit $n-1$ Freiheitsgraden
 (hier: $76-1=75$). Dann multipliziert man den geschätzten Standardfehler
-mit diesen Perzentilen. Dies ist komplett analog zur Berechnung
+mit diesen Quantilen. Dies ist komplett analog zur Berechnung
 auf der Basis des zentralen Grenzwertsatzes, nur wird mit einer
 $t$- statt einer Normalverteilung gearbeitet.
 <<>>=
@@ -833,7 +831,7 @@ verteilt ist, ist dies aber nicht unbedingt der Fall.
 
 Von den drei besprochenen Methoden macht die $t$-Methode die meisten Annahmen:
 Sie geht nicht nur davon aus, dass man anhand
-der Stichprobe sinnvolle Aussagen über die Unsicherheit machen kann
+der Stichprobe sinnvolle Aussagen über die Ungenauigkeit machen kann
 und dass die Population irgendwelche Verteilung hat,
 für die den zentralen Grenzwertsatz bei dieser Stichprobengrösse greift,
 sondern auch, dass die Population \emph{selber} normalverteilt ist.
@@ -866,7 +864,7 @@ konstruiert, sodass es nun die höchste Zeit ist, zu erklären,
 was diese überhaupt sind. Eine leider schwierige Definition ist
 die folgende.
 
-\mypar[Vertrauensschranken und Konfidenzintervall]{Definition}
+\mypar[Vertrauensschranken und Konfidenzintervalle]{Definition}
   Sei $X_1, \dots, X_n$ eine Stichprobe aus einer Population
   und sei $\theta$ ein zu schätzender Parameter (Estimand).
   Eine Abbildung (Funktion) $a(\alpha, X_1, \dots, X_n)$ liefert
@@ -945,7 +943,7 @@ simulation <- replicate(
   20000, known_sigma_one_run(n = 5, mu = -34, sigma = 9, alpha = 0.13))
 mean(simulation <= -34)
 @
-Für 87\% der simulierten Stichproben liegen die untere 87\%-Vertrauensschranke also
+Für 87\% der simulierten Stichproben liegt die untere 87\%-Vertrauensschranke also
 unter dem zu schätzenden Parameter $\mu$.
 Tatsächlich gilt für dieses Verfahren, dass die Ungleichheit in (\ref{eq:ci})
 mit Gleichheit gilt.
@@ -976,7 +974,8 @@ dass
 \[
   \Prob(16.58 \leq \mu) \geq 0.80,
 \]
-denn im Ausdruck `$16.58 \leq \mu$' kommt keine Zufälligkeit vor.\footnote{Ein anderes Beispiel:
+denn im Ausdruck `$16.58 \leq \mu$' kommt keine Zufälligkeit vor: Er ist einfach
+falsch.\footnote{Ein anderes Beispiel:
 Bevor wir mit einem sechsseitigen Würfel würfeln, beträgt die Wahrscheinlichkeit, dass wir mindestens
 eine $4$ würfeln, 50\%. Wenn wir aber eine $2$ beobachten, so ergibt es nicht länger Sinn, 
 zu behaupten, dass zu einer Wahrscheinlichkeit von 50\% 2 mindestens gleich gross 4 ist.}
@@ -1053,7 +1052,7 @@ of statement is generally similar.'' (S.\ 125)
 
 Statt Konfidenzintervallen empfehlen
 \citet{Morey2016} den Gebrauch
-von `Kredibilitätsintervallen'. Diese sind
+von \term{Kredibilitätsintervallen}. Diese sind
 in der bayesschen Statistik
 angesiedelt und kommen momentan in
 unserer Forschungsliteratur kaum vor,
@@ -1073,11 +1072,12 @@ folgenden Punkte wichtig:
 
  \item Rein durch Zufall kann eine Stichprobe die Streuung
  in der Population unterschätzen und daher kann das Konfidenzintervall
- die Unsicherheit in der Schätzung ebenso unterschätzen.
+ die Ungenauigkeit in der Schätzung ebenso unterschätzen.
 
- \item Genauere Unsicherheitseinschätzungen erhält man mit
- grösseren Stichproben oder indem man weitere nützliche Annahmen
- über die Daten macht (wie in der bayesschen Statistik).
+ \item Genauere Ungenauigkeitseinschätzungen erhält man mit
+ grösseren Stichproben, ausgefeiltere Forschungsdesigns,
+ oder indem man weitere nützliche Annahmen
+ über die Daten macht.
 \end{itemize}
 
 Im Folgenden beschäftigen wir uns noch mit der Konstruktion
@@ -1101,8 +1101,7 @@ von Vertrauensintervallen für drei realistischere Szenarien.
   Obere Vertrauensschranken und Konfidenzintervalle konstruiert man analog.
   
   Mit der Funktion \texttt{t.test()} können Sie diese Konfidenzschranken
-  schnell berechnen. Den restlichen Output dieser Funktion behandeln
-  wir erst später:
+  schnell berechnen:
 <<>>=
 # 80%-Konfidenzintervall fürs Mittel der GJT-Daten
 t.test(d$GJT, conf.level = 0.80)$conf.int
@@ -1201,7 +1200,7 @@ uniform_one_run <- function(n, min, max, conf_level) {
 simulation <- replicate(20000, uniform_one_run(9, -12, 2, 0.7))
 mean(simulation)
 @
-  In diesem Fall enthalten also etwa 70.5\% der 70\%-Konfidenzintervalle 
+  In diesem Fall enthalten also etwa 70.7\% der 70\%-Konfidenzintervalle 
   den tatsächlichen Parameterwert. 
   \begin{enumerate}
     \item Wiederholen Sie diese Simulation
@@ -1209,7 +1208,7 @@ mean(simulation)
   von \texttt{conf\_level}. Was schlussfolgern Sie?
     
     \item Gleichverteilungen sind, wie auch Normalverteilungen, symmetrisch
-    um ihr Mittel. $\chi^2$-Verteilungen sind dahingegen rechtsschief:
+    um ihr Mittel. $\chi^2$-Verteilungen (Bemerkung \ref{bem:chisq}) sind dahingegen rechtsschief:
     Es gibt mehr Wahrscheinlichkeitsmasse unter als über dem Mittel,
     vor allem für geringe Freiheitsgrade.
     Wir wollen nun überprüfen, ob die $t$-Methode auch in etwa
@@ -1231,7 +1230,7 @@ mean(simulation)
   \[
     \widehat{p} := \frac{X}{n}.
   \]
-  Wir wollen nun untere und obere exakte Vertrauensschranken für $p$ konstruieren.
+  Wir wollen nun exakte untere und obere Vertrauensschranken für $p$ konstruieren.
   Dazu betrachten wir die Verteilungsfunktion $F_{n,p}$ der $\textrm{Binomial}(n,p)$-Verteilung.
   Ein nützliches Resultat, das wir nicht beweisen werden, lautet, dass für
   alle $\alpha \in (0,1)$ gilt, dass
@@ -1244,7 +1243,7 @@ mean(simulation)
   \begin{align*}
     \Prob(F_{n,p}(X) > \alpha) \geq 1 - \alpha. \tag{$\ast$}
   \end{align*}
-  Wir fassen den Ausdruck $F_{n,p}(r)$ diesmal jedoch nicht auf als eine Funktion von $r$,
+  Wir fassen den Ausdruck $F_{n,p}(r)$ diesmal jedoch nicht als eine Funktion von $r$ auf,
   sondern als eine Funktion von $p$. Für $r$ setzen wir die beobachtete
   Anzahl Erfolge $X$ ein. Die Funktion, die wir so erhalten, ist streng monoton fallend
   in $p$: Für eine feste Anzahl Erfolge ist die Wahrscheinlichkeit, dass

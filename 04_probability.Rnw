@@ -565,8 +565,9 @@ unabhängig ist (im Sinne der vorigen Definition). \parend
 \parend
 
 Manchmal nützlich ist der Satz der totalen Wahrscheinlichkeit,
-der es uns erlaubt, ein komplexes Ereignis zu zerlegen in handlicheren
-Ereignissen.
+der es uns erlaubt, ein komplexes Ereignis in handlichere
+Ereignisse zu zerlegen.
+
 \mypar[totale Wahrscheinlichkeit]{Satz}
 Seien $E_1, E_2, \dots$ nicht-überlappende Ereignisse, die zusammen den
 ganzen Grundraum umfassen, also $E_1 \cup E_2 \cup \dots = \Omega$.
@@ -623,11 +624,12 @@ Das heisst, etwa 46\%.
 Etwas eleganter kann man dies auch so lösen:
 Die Wahrscheinlichkeit, dass beide Karte den gleichen Rang haben,
 beträgt $3/35$. Also beträgt die Wahrscheinlichkeit, dass die
-beiden Karten unterschiedlichen Ranges sind $32/35$.
+beiden Karten unterschiedlichen Ranges sind, $32/35$.
 Es ist dann klar, dass die Wahrscheinlichkeiten, dass die erste niedriger
 als die zweite ist und dass die zweite niedriger
 als die erste ist, gleich sind. Daher beträgt die Wahrscheinlichkeit,
-dass die erste Karte niedrigeren Ranges als die zweite ist $(32/35)/2 \approx 0.4571$.
+dass die erste Karte niedrigeren Ranges als die zweite ist,
+$(32/35)/2 \approx 0.4571$.
 \parend
 
 \mypar[M\&Ms]{Aufgabe}\label{ex:mm}
