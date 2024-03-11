@@ -1,16 +1,15 @@
 \chapter{Ein anderer Blick aufs Mittel}\label{ch:linmod}
-In diesem und den folgenden Kapiteln behandeln wir das
-sog.\ \term{allgemeine lineare Modell}
+In diesem und den folgenden Kapiteln behandeln wir das \term{allgemeine lineare Modell}
 (\textit{general linear model}).\footnote{Nicht zu verwechseln
 mit dem \term{verallgemeinerten linearen Modell}
 (\textit{generalized linear model}).
 Dieses ist eine Erweiterung des allgemeinen linearen Modells, 
 mit der wir uns in diesem Kurs nur kurz befassen; 
 siehe Kapitel \ref{ch:logistic}.}
-Das allgemeine lineare Modell ist eine Methode,
+Dies ist eine Methode,
 um zu auszudrücken, wie ein oder mehrere \term{Prädiktoren}
 mit dem \term{\textit{outcome}} zusammenhängen.
-Oft redet man statt von Prädiktoren und outcome
+Oft redet man statt von Prädiktoren und outcomes
 von unabhängigen bzw.\ abhängigen Variablen,
 aber ich finde die Begriffe Prädiktor und outcome
 deutlicher.
@@ -76,7 +75,7 @@ Im Prinzip geht die Gleichung für jeden $\beta_0$-Wert
 auf, denn wir können uns die $\widehat{\varepsilon}$-Werte
 eben so aussuchen, wie es uns passt.
 Die ersten beiden GJT-Werte im Datensatz sind
-151 und 182. Wenn wir nun beispielsweise für $\beta_0$ einen beliebligen
+151 und 182. Wenn wir nun beispielsweise für $\beta_0$ einen beliebigen
 Wert, z.B.\ 1823, wählen,
 wählen wir $\widehat{\varepsilon_1} = -1672$ und $\widehat{\varepsilon_2} = -1641$ und die Gleichung geht auf:
 \[
@@ -109,7 +108,7 @@ die Summe der absoluten Restfehler
 Wenn wir für $\widehat{\beta_0}$ den Wert 135 wählen,
 beträgt die Summe der absoluten Restfehler 1993.
 Hier gehen wir davon aus, dass der Datensatz
-\texttt{dekeyser2010.csv} als den Objektnamen \texttt{d} hat.
+\texttt{dekeyser2010.csv} den Objektnamen \texttt{d} hat.
 
 <<>>=
 sum(abs(d$GJT - 135))
@@ -133,6 +132,7 @@ Mediane der GJT-Werte; \emph{der} Median ist entsprechend 150.5.
 Tatsächlich: Wenn man $\beta_0$
 mit der Methode der kleinsten absoluten Abweichungen schätzt, ist
 das Ergebnis der Median der Stichprobe.
+Den Beweis schenken wir uns; siehe \citet{Schwertman1990}.
 Dass wir es hier mit einer Schätzung zu tun haben,
 wird klar, wenn man sich überlegt, dass diese Methode
 ein anderes Ergebnis liefern könnte, wenn man eine neue
@@ -188,13 +188,13 @@ Anders gesagt: Grosse Abweichungen (darunter auch Ausreisser) üben
 einen stärkeren Einfluss auf das Ergebnis aus.
 Wie Abbildung \ref{fig:optimisation} (rechts) zeigt,
 ist die optimal $\beta_0$-Schätzung laut der Methode
-der kleinsten Quadrate 150.78---nicht zufällig das Mittel
+der kleinsten Quadrate 150.78 -- nicht zufällig das Mittel
 der Stichprobe!
 
 Während wir in Kapitel 3 die Summe der Quadrate als eine
 Funktion des Mittels betrachtet haben, kann man die Rollen
 auch umkehren: Das Mittel ist jener Wert, der die Summe
-der Quadrate minimiert! Ebenso ist der Median jener Wert,
+der Quadrate minimiert. Ebenso ist der Median jener Wert,
 der die Summe der absoluten Abweichungen minimiert.
 Der Modus ist übrigens der Wert, der die Summe der binären
 Abweichungen minimiert.
@@ -212,6 +212,38 @@ angesprochen.)
 % in den Sprachwissenschaften ist dies aber selten der Fall.
 % Im Prinzip kann man sogar selber Optimierungskriterien
 % definieren, aber dies kommt noch weniger vor.
+
+\mypar[Mittel minimiert die Summe der Quadrate]{Bemerkung}
+  Dass das Stichprobenmittel die Summe der Quadrate minimiert, sieht man so.
+  Die Summe der Quadrate ist eine Summe von quadratischen Funktionen in $\widehat{\beta_0}$
+  und daher selber eine quadratische Funktion in $\widehat{\beta_0}$:
+  \[
+    \sum_{i=1}^n \widehat{\varepsilon_i}^2
+    = \sum_{i=1}^n (x_i - \widehat{\beta_0})^2
+    = \sum_{i=1}^n x_i^2 - 2x_i\widehat{\beta_0} + \widehat{\beta_0}^2.
+  \]
+  Aus der Schule wissen wir, dass eine quadratische Funktion dort ihr Minimum
+  oder Maximum erreicht, wo ihre Ableitung 0 beträgt. Die quadratische Funktion,
+  mit der wir es zu tun haben, hat einen positiven Leitkoeffizienten, also 
+  erreicht sie nur ein Minimum. Wir berechnen die Ableitung:
+  \[
+    \frac{\df}{\df \widehat{\beta_0}}  \sum_{i=1}^n x_i^2 - 2x_i\widehat{\beta_0} + \widehat{\beta_0}^2
+    =  \sum_{i=1}^n \frac{\df}{\df \widehat{\beta_0}}\left(x_i^2 - 2x_i\widehat{\beta_0} + \widehat{\beta_0}^2\right)
+    = \sum_{i=1}^n \left(-2x_i + 2\widehat{\beta_0}\right).
+  \]
+  Dieser Ausdruck ist genau dann gleich 0, wenn 
+  \[
+    \sum_{i=1}^n 2x_i = \sum_{i=1}^n 2\widehat{\beta_0},
+  \]
+  also wenn
+  \[
+    \sum_{i=1}^n x_i = n\widehat{\beta_0}.
+  \]
+  Also wenn
+  \[
+    \widehat{\beta_0} = \frac{1}{n}\sum_{i=1}^n x_i = \overline{x}.
+  \]
+\parend
 
 \section{Lineare Modelle in R}
 Mit der \texttt{lm()}-Funktion können lineare Modelle aufgebaut werden.
@@ -329,13 +361,13 @@ for (i in 1:n_bootstrap) {
   bs_mod <- lm(bs_outcome ~ 1)
 
   # Schätzung speichern
-  bs_b0[[i]] <- coef(bs_mod)[[1]]
+  bs_b0[i] <- coef(bs_mod)[1]
 }
 @
 
 Wir können jetzt wieder die Verteilung der
 gebootstrappten Parameterschätzungen visualisieren,
-und ihre Standardabweichung und 2.5.\ und 97.5.\ Perzentile
+und ihre Standardabweichung und 2.5.\ und 97.5.\ Quantile
 berechnen. Die Ergebnisse sind natürlich identisch
 mit jenen aus Kapitel \ref{ch:uncertainty}.
 
@@ -415,8 +447,8 @@ sd_residuals <- sigma(mod.lm)
 predictions <- predict(mod.lm)
 
 for (i in 1:n_bootstrap) {
-  # Neue Residuen aus Normalverteilung generieren
-  bs_residual <- rnorm(n = 76, sd_residuals)
+  # neue Residuen aus Normalverteilung generieren
+  bs_residual <- rnorm(n = 76, mean = 0, sd = sd_residuals)
 
   # neuen Outcome kreieren
   bs_outcome <- predictions + bs_residual
@@ -425,7 +457,7 @@ for (i in 1:n_bootstrap) {
   bs_mod <- lm(bs_outcome ~ 1)
 
   # Schätzung speichern
-  bs_b0[[i]] <- coef(bs_mod)[1]
+  bs_b0[i] <- coef(bs_mod)[1]
 }
 @
 
@@ -436,26 +468,26 @@ hist(bs_b0)
 
 
 <<>>=
-# Geschätzter Standardfehler
+# geschätzter Standardfehler
 sd(bs_b0)
 
 # 95% Konfidenzintervall
 quantile(bs_b0, probs = c(0.025, 0.975))
 @
 
-Diese Art von Bootstrap---bei der wir davon ausgehen,
+Diese Art von Bootstrap -- bei der wir davon ausgehen,
 dass die Residuen eine bestimmte Verteilung haben,
 und wir die relevanten Parameter dieser Verteilung
-anhand der Stichprobe schätzen---nennt man
+anhand der Stichprobe schätzen -- nennt man
 einen \term{parametrischen Bootstrap}.
-Den Bootstrap aus dem letzten Abschnitt---bei der man
+Den Bootstrap aus dem letzten Abschnitt -- bei der man
 Bootstrapstichproben der Modellresiduen
 mit den Modellvorhersagen kombiniert und die relevanten
-Parameter anhand dieser neuen Werte schätzt---nennt
+Parameter anhand dieser neuen Werte schätzt -- nennt
 man einen \term{semiparametrischen Bootstrap}.
-Den Bootstrap aus dem letzten Kapitel---bei der man
+Den Bootstrap aus dem letzten Kapitel -- bei der man
 Bootstrapstichproben aus dem ursprünglichen Datensatz
-generiert---nennt man einen \term{nichtparametrischen Bootstrap}.
+generiert -- nennt man einen \term{nichtparametrischen Bootstrap}.
 
 Man bemerke hier übrigens, dass sowohl die Annahme,
 dass die Residuen in der Population genau so wie in der Stichprobe
@@ -466,8 +498,49 @@ vorkommen können. Die Tatsache, dass wir unter unterschiedlichen
 Annahmen zum gleichen Ergebnis kommen, deutet bereits darauf hin,
 dass bei dieser Stichprobengrosse und bei dieser Art von Datenverteilung 
 die Schätzung der Unsicherheit eines
-Mittels nicht massgeblich von Annahmen über die genaue Verteilung der
+Mittels nicht massgeblich von solchen Annahmen über die genaue Verteilung der
 Residuen in der Population abhängt.
+
+\mypar[Rundung im Bootstrap]{Bemerkung} Vielleicht möchten wir zwar die
+Annahme treffen, dass die Residuen grob gesagt normalverteilt sind, aber nicht,
+dass die Beobachtungen beliebig feinkörnig sein können. Mit dem unten stehenden
+Code wird erneut ein parameterischer Bootstrap durchgeführt, aber die generierten Beobachtungen werden
+auf Ganzzahlen gerundet. Ausserdem werden allfällige generierte Beobachtungen,
+die ausserhalb dem zulässigen Bereich der \texttt{GJT}-Variablen liegen,
+auf 204 bzw.\ auf 0 gesetzt.
+<<cache = TRUE>>=
+n_bootstrap <- 20000
+bs_b0 <- vector(length = n_bootstrap)
+sd_residuals <- sigma(mod.lm)
+predictions <- predict(mod.lm)
+
+for (i in 1:n_bootstrap) {
+  # neue Residuen aus Normalverteilung generieren
+  bs_residual <- rnorm(n = 76, mean = 0, sd = sd_residuals)
+
+  # neuen Outcome kreieren
+  bs_outcome <- predictions + bs_residual
+  
+  # runden + einschränken
+  bs_outcome <- round(bs_outcome)
+  bs_outcome[bs_outcome > 204] <- 204
+  bs_outcome[bs_outcome < 0] <- 0
+
+  # Modell neu berechnen mit diesem Outcome
+  bs_mod <- lm(bs_outcome ~ 1)
+
+  # Schätzung speichern
+  bs_b0[i] <- coef(bs_mod)[1]
+}
+
+# geschätzter Standardfehler
+sd(bs_b0)
+
+# 95% Konfidenzintervall
+quantile(bs_b0, probs = c(0.025, 0.975))
+@
+
+\parend
 
 \subsection{Mit $t$-Verteilungen}
 Wenn man ohnehin davon ausgehen will, dass die Residuen
