@@ -1305,7 +1305,7 @@ Beispielsweise beträgt die Wahrscheinlichkeit, dass wir genau fünf Mal eine
 dbinom(5, 10, 1/6)
 @
 Abbildung \ref{fig:dbinom} zeigt diese Wahrscheinlichkeit für $k = 0, \dots, 10$.
-<<echo = FALSE, fig.cap = "Links: Wahrscheinlichkeit der Anzahl Erfolge bei der Binomial($10$, $1/6$)-Verteilung. Rechts: Verteilungsfunktion derselben Verteilung.\\label{fig:dbinom}", fig.width = 7, fig.height = 3.5, out.width=".8\\textwidth">>=
+<<echo = FALSE, fig.cap = "Links: Wahrscheinlichkeit der Anzahl Erfolge bei der Binomial($10$, $1/6$)-Verteilung. Rechts: Verteilungsfunktion derselben Verteilung.\\label{fig:dbinom}", fig.width = 7, fig.height = 3.3, out.width=".8\\textwidth">>=
 k <- 0:10
 par(mfrow = c(1, 2))
 plot(k, dbinom(k, 10, 1/6), pch = 16,

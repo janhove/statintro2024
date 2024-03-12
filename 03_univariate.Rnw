@@ -390,7 +390,7 @@ ggplot(data = d,
   Wir zeichnen ein Histogramm auf der Basis dieser Prozentsätzen
   und verwenden hierbei vier \textit{bins}, genau wie im rechten Histogramm
   in Abbildung \ref{fig:histogramdensity}. Das heisst, wir verwenden 
-  vier Intervalle der Breite 25.
+  vier Intervalle der Breite 20.
   Wie wird sich dies auf die Dichtewerte auswirken?
   Beantworten Sie diese Frage, ohne das Histogram zu zeichnen.
 \parend

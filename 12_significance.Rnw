@@ -1042,3 +1042,126 @@ Permutationen.
   Testen Sie die Nullhypothese, dass dieses sich nur aufgrund von Zufall von $0$
   unterscheidet, mittels eines eigens gestrickten Permutationstests.
 \parend
+
+\section{Der Binomialtest}
+\mypar[ABX-Tests]{Beispiel}
+  Wir wollen untersuchen, ob ein Lerner des Englischen den Unterschied
+  zwischen den Phonemen /\textipa{E}/ (wie in \textit{bet})
+  und /\textipa{\ae}/ (wie in \textit{bat}) wahrnimmt.
+  Zu diesem Zweck gleisen wir einen ABX-Test auf: Wir erstellen
+  eine Liste mit 30 Minimalpaaren, dessen Komponenten sich nur 
+  durch in diesen Phonemen voneinander unterscheiden (\textit{bed}--\textit{bad},
+  \textit{fed}--\textit{fad}, \textit{peck}--\textit{pack}, usw.).
+  Die insgesamt 60 Wörter werden je zwei Mal von einem Muttersprachler aufgenommen.
+  Dem Lerner spielen wir pro Minimalpaar eine Aufnahme des /\textipa{E}/-Wortes
+  und eine Aufnahme des /\textipa{\ae}/-Wortes vor, und zwar in einer zufälligen
+  Reihenfolge. 
+  Anschliessend spielen wir ihm die zweite Aufnahme eines der beiden Wörter vor. 
+  Seine Aufgabe besteht darin, zu entscheiden, ob die letzte Aufnahme (`X') zur 
+  gleichen Kategorie der ersten (`A') oder der zweiten (`B') Aufnahme gehört.
+  Der Lerner kategorisiert 20 der 30 Aufnahmen richtig ($X = 21$).
+  Dies könnte zwar darauf hindeuten, dass er gewissermassen den Unterschied
+  zwischen /\textipa{E}/ und /\textipa{\ae}/ heraushört, 
+  aber wir sollten uns auch mit der Möglichkeit befassen, 
+  dass er bloss geraten hat.
+  
+  Wenn der Lerner nur geraten hätte, so hätte er bei jedem Minimalpaar eine
+  Wahrscheinlichkeit von $p_0 = 0.5$, um richtig zu liegen -- sei es, weil
+  er jeweils zufällig `A' oder `B' wählt oder weil er beispielsweise 
+  abwechselnd `A' und `B' wählt.
+  Aus der Richtigkeit einer Antwort könnte man in diesem Fall nichts herleiten
+  bezüglich der Richtigkeit einer anderen Antwort, d.h., die Antworten wären
+  unabhängig voneinander. 
+  Folglich können wir die Nullhypothese wie folgt ausdrücken:
+  \[
+    H_0 : X \sim \textrm{Binomial}(30, 0.5).
+  \]
+  Die übliche Alternativhypothese wäre nun bloss, 
+  dass die Erfolgswahrscheinlichkeit nicht gleich $p_0 = 0.5$ ist. 
+  In diesem Fall sind wir jedoch nur an der Alternative interessiert,
+  dass die Erfolgswahrscheinlichkeit \emph{grösser} als $p_0 = 0.5$ ist.
+  
+  Die obige Nullhypothese können wir mit einem \term{Binomialtest} überprüfen.
+  Unter der Nullhypothese gilt $X \sim \textrm{Binomial}(30, 0.5)$.
+  Abbildung \ref{fig:binomialtest} zeigt die $\textrm{Binomial}(30, 0.5)$-Verteilung.
+  Wir können nun ablesen bzw.\ recht einfach berechnen, wie wahrscheinlich
+  es wäre, mindestens $X = 20$ zu beobachten:
+  \[
+    \Prob(X \geq 21) = 1 - \Prob(X \leq 20),
+  \]
+  wobei wir diesen Wert mit \texttt{pbinom()} berechnen können:
+<<>>=
+1 - pbinom(20, 30, 0.5)
+@
+  Ein einseitiger Binomialtest liefert also einen $p$-Wert von etwa $0.02$.
+  
+<<echo = FALSE, fig.cap = "Links: Wahrscheinlichkeit der Anzahl Erfolge bei der Binomial($30$, $0.5$)-Verteilung. Rechts: Verteilungsfunktion derselben Verteilung.\\label{fig:binomialtest}", fig.width = 7, fig.height = 3.3, out.width=".8\\textwidth">>=
+k <- 0:30
+p0 <- 0.5
+X <- 21
+par(mfrow = c(1, 2))
+plot(k, dbinom(k, max(k), p0), pch = 16,
+     xlab = "k", ylab = "Prob(X = k)")
+abline(v = X, lty = "dashed", col = "blue")
+plot(k, pbinom(k, max(k), p0), pch = 16, ylim = c(0, 1),
+     xlab = "k", ylab = "Prob(X ≤ k)")
+segments(k, pbinom(k, max(k), p0), k + 1)
+segments(-1, pbinom(X, max(k), p0), X, lty = "dashed", col = "blue")
+segments(X, -1, y1 = pbinom(X, max(k), p0), lty = "dashed", col = "blue")
+par(op)
+@
+
+Mit \texttt{binom.test()} erhalten wir das gleiche Ergebnis:
+<<>>=
+binom.test(21, 30, 0.5, alternative = "greater")
+@
+Hantieren wir eine $\alpha$-Schwelle von $0.05$, so würden wir schlussfolgern,
+dass der Lerner nicht nur Glück beim Raten hatte und den Unterschied zwischen
+den zwei Phonemen gewissermassen wahrnimmt.
+\parend
+
+Der Binomialtest aus dem obigen Beispiel ist ein exakter Test, mit dem
+man einen Binomialparameter mit einem hypothetischen Referenzwert (im Beispiel
+$p_0 = 0.5$) vergleichen kann. Im Beispiel wurde ein rechtseitiger Test
+verwendet, da wir uns nur für die Alternative interessieren, 
+dass die Erfolgswahrscheinlichkeit grösser als $p_0$ ist.
+Falls wir uns nur für die Alternative interessieren, dass die Erfolgswahrscheinlichkeit
+kleiner als $p_0$ ist, so bietet sich ein linksseitiger Test an.
+Für diesen würden wir $\Prob(X \leq x)$ berechnen, mit $x$ der beobachteten Anzahl Erfolge.
+
+Etwas mühsamer ist die Herleitung des zweiseitigen Tests, der sich anbietet,
+wenn wir uns für die Alternative interessieren, dass die Erfolgswahrscheinlichkeit
+nicht gleich $p_0$ ist -- egal, ob grösser oder kleiner.
+Ist die Nullhypothese, dass $X \sim \textrm{Binom}(n, p_0)$, so berechnen wir
+für alle $k = 0, \dots, n$ die Wahrscheinlichkeit
+\[
+  p_k := \Prob(X = k).
+\]
+Für eine beobachtete Anzahl von Erfolgen $x$ berechnen wir den zweiseitigen $p$-Wert
+nun als die Summe aller $p_k$s, für welche $p_k \leq p_x$.
+
+\mypar[zweiseitiger Binomialtest]{Beispiel}
+  Angenommen, die Nullhypothese lautet $X \sim \textrm{Binomial}(17, 1/3)$
+  und wir beobachten 4 Erfolge. Wir berechnen $p_k$ für $k = 0, \dots, 17$:
+<<>>=
+p_k <- dbinom(0:17, 17, 1/3)
+@
+  Die Wahrscheinlichkeit $p_4$ ist der 5.\ Eintrag dieses Vektors.
+  Der zweiseitige $p$-Wert beträgt folglich
+<<>>=
+sum(p_k[p_k <= p_k[5]])
+@
+  Einfacher geht es mit \texttt{binom.test()}:
+<<>>=
+binom.test(4, 17, 1/3)
+@
+\parend
+
+Binomialtests kommen zugegebenermassen nicht allzu häufig vor.
+Sie illustrieren jedoch schön, wie Signifikanztests durchgeführt werden können,
+wenn man die Verteilung des Ausgangs eines Versuchs bzw.\ eines Experiments
+unter der Nullhypothese kennt: Man berechnet lediglich, wie ungewöhnlich
+das beobachtete Result oder noch extremere Resultate nach dieser Verteilung sind.
+In den vorigen Abschnitten haben wir die Verteilungen unter der Nullhypothese
+durch stures Rechnen geschätzt; hier konnten wir mit gutem Gewissen eine 
+der klassischen Wahrscheinlichkeitsverteilungen einsetzen.
