@@ -1,0 +1,505 @@
+\chapter{Within-subjects-Experimente}
+In den Experimenten, die wir bisher betrachtet haben, wurden die Versuchspersonen
+nach dem Zufallsprinzip den Konditionen des Experiments zugeordnet.
+Der Wert der Variablen \textit{Kondition} variiert in solchen Experimenten
+daher \emph{zwischen} den Versuchspersonen,
+ist aber innerhalb jeder Versuchsperson konstant.
+Man spricht daher auch von \term{between-subjects}-Experimenten.
+Es ist jedoch manchmal möglich, ein Experiment so zu gestalten,
+dass alle Teilnehmenden in mehreren Konditionen mitmachen.
+In diesem Fall variiert die Variable \textit{Kondition} auch innerhalb der
+Versuchspersonen, denn für jede Versuchsperson wird der Datensatz Ergebnisse
+in mehreren (meistens sogar allen) Konditionen enthalten.
+Man spricht dann von \term{within-subjects}-Experimenten.
+Verglichen mit between-subjects-Experimenten haben within-subjects-Experimente
+den Vorteil,
+dass eine wichtige Quelle der Fehlervarianz komplett kontrolliert wird --
+die bereits existierenden Unterschiede zwischen den Versuchspersonen.
+Within-subjects-Experimente führen daher meistens zu genaueren Schätzungen
+und zu mehr power als between-subjects-Experimente
+mit der gleichen Anzahl Teilnehmende.
+Eine mögliche Gefahr bei within-subjects-Experimenten ist aber,
+dass die Reihenfolge, in der die Versuchspersonen die Konditionen absolvieren,
+ihre Leistung beeinflusst.
+Um zu verhindern, dass ein solcher Reihenfolgeeffekt den Vergleich der Konditionen
+beeinträchtigt, variiert man in der Regel die Reihenfolge der Konditionen
+zwischen den Versuchspersonen -- zum Beispiel mithilfe von
+komplettem \textit{counterbalancing} oder lateinischen Quadraten
+(\textit{Latin squares}). Siehe hierzu das Skript
+\href{https://janhove.github.io/resources.html}{\textit{Quantitative methodology: An introduction}}.
+
+Öfters sind Experimente in der angewandten Linguistik und Psycholinguistik
+komplizierter aufgegleist,
+als dass es bloss einen between-subjects- oder within-subjects-Faktor gibt.
+Versuchspersonen reagieren ausserdem oft auf Stimuli,
+und die Konditionen können je nachdem innerhalb der Stimuli oder zwischen den
+Stimuli variieren.
+Heutzutage werden die Daten von Studien mit solchen komplizierteren in der Regel
+mit sog.\ gemischten Modellen ausgewertet.
+Es ist jedoch oftmals möglich, Datensätze aus diesen Studien so umzugestalten,
+dass sie mit einfacheren Mitteln analysiert werden können.
+Dieses Kapitel zeigt, wie das geht.
+% 
+% % MEISTE EXPERIMENTE RELATIV SCHWIERIG AUFGEGLEIST:
+% % MEHRERE ITEMS PRO VPN. VARIIEREN ITEMS WITHIN ODER BETWEEN SUBJECTS? 
+% % ZUSÄTZLICHE FAKTOREN (WITHIN-ITEMS, WITHIN-SUBJECTS, BETWEEN-ITEMS, BETWEEN-SUBJECTS)
+% % HEUTZUTAGE MEISTENS ANALYSIERT MIT SOG. GEMISCHTEN MODELLEN
+% % HIER WERDEN TECHNISCH EINFACHERE ALTERNATIVEN VORGESTELLT, DIE MAN IN BESTIMMTEN FÄLLEN SINNVOLL EINSETZEN KANN
+% 
+% % Wir wollen uns nun anschauen, wie man die Daten von within-subjects-Experimenten
+% % auswerten kann. Wir behandeln dabei zunächst den einfachsten Fall, nämlich
+% % jenen eines Experiments mit zwei Konditionen.
+% % 
+% % \section{Zwei Konditionen vergleichen}
+% 
+% 
+\citet{VanDenBroek2018} untersuchten, ob Vokabeln in einer Fremdsprache
+besser gelernt werden, wenn die Lernenden diese mit kontextreichen oder
+mit kontextarmen Aufgaben einüben. An ihrem ersten Experiment nahmen
+45 Versuchspersonen teil, die insgesamt 104 Wörter in einer ihnen unbekannten
+Sprache (Swahili) lernen sollten.
+Beim Einüben sollten die Lernenden die zu lernenden Wörter aus dem Swahili
+ins Niederländische übersetzen. Jeweils die Hälfte der Wörter wurde dabei
+mit semantisch nützlichem Kontext präsentiert (z.B.\ \textit{Ich gehe zur
+Bäckerei. Wir haben kein \emph{mkate} mehr,}, wo \emph{mkate} `Brot' heisst)
+und die Hälfte ohne solchen Kontext
+(z.B.\ \textit{Wir haben kein \emph{mkate} mehr.}).
+Je nach Versuchspersonen wurde ein Wort mit oder ohne hilfreichen Kontext eingeübt.
+Der Faktor \textit{Kontext} variierte somit sowohl innerhalb der Versuchspersonen
+als auch innerhalb der Wörter.
+Die Reihenfolge der zu lernenden Wörter wurde pro Versuchsperson randomisiert.
+Anschliessend gab es einen direkten Posttest mit insgesamt 50 Wörtern
+(25 Wörter pro Kondition).
+Eine Woche später folgte ein weiterer Posttest mit den restlichen 54 Wörtern
+(27 Wörter pro Kondition).
+Je nach Versuchsperson wurde ein Wort direkt oder erst später abgefragt.
+
+  Im Folgenden werden wir den Effekt der Lernkondition auf die Richtigkeit der
+  Übersetzungen vom Swahili ins Niederländische untersuchen.
+  Die Daten können beim Zusatzmaterial zur Studie von \citet{VanDenBroek2018}
+  unter \url{https://osf.io/eujyn/} heruntergeladen werden; ich habe sie aber auch
+  als \texttt{VanDenBroek2018\_Exp1.csv} gespeichert.
+  Wir lesen sie ein, behalten dabei jedoch nur die Spalten, die wir tatsächlich brauchen:
+  
+<<message = FALSE, warning = FALSE>>=
+d <- read_csv(here("data", "VanDenBroek2018_Exp1.csv")) |>
+  select(PP, Word, Translation, Condition, RepeatedTest, Test2Swa2NlLenient)
+@
+  
+  Die Spalte \texttt{PP} enthält die Identifikationsnummern der Versuchspersonen.
+  Die Spalten \texttt{Word} und \texttt{Translation} enthalten das Wort auf Swahili
+  und seine richtige niederländische Übersetzung.
+  Die Spalte \texttt{Condition} zeigt, in welcher Kondition die Versuchsperson
+  das Wort eingeübt hat: mit Kontext (\texttt{context}) oder eben ohne (\texttt{retrieval}).
+  Die Spalte \texttt{RepeatedTest} zeigt, ob das Wort bereits beim direkten Posttest
+  vorkam; wir interessieren uns hier nur für die Zeilen, in denen der Wert \texttt{FALSE} ist.
+  Die Spalte \texttt{Test2Swa2NlLenient} zeigt, ob das Wort richtig übersetzt wurde (\texttt{TRUE})
+  oder nicht (\texttt{FALSE}).
+
+<<echo = FALSE>>=
+d_vpn <- d |>
+  filter(!RepeatedTest) |>
+  group_by(PP, Condition) |>
+  summarise(prop_correct = mean(Test2Swa2NlLenient),
+            .groups = "drop") |>
+  pivot_wider(names_from = "Condition", values_from = "prop_correct")
+@
+
+\mypar[Zusammenfassung pro Versuchsperson]{Aufgabe}
+  Erstellen Sie einen tibble \texttt{d\_vpn},
+  der für jede Versuchsperson die Proportion richtig übersetzter Wörter,
+  die in der \texttt{retrieval}-Kondition eingeübt wurden,
+  sowie die Proportion richtig übersetzter Wörter,
+  die in der \texttt{context}-Kondition eingeübt wurden, enthält.
+  Nur die Zeilen mit \texttt{RepeatedTest == FALSE} sollten hierbei berücksichtigt werden.
+  Der tibble sollte drei Spalten haben: \texttt{PP}, \texttt{retrieval} und \texttt{context}.
+
+  Hinweis zur Selbstkontrolle: Sie sollten anschliessend für Versuchsperson 42
+  folgende Werte haben.
+
+<<>>=
+d_vpn |> filter(PP == 42)
+@
+\parend
+
+Die Frage ist nun, inwieweit die Werte in der \texttt{retrieval}-Kondition
+sich von den Werten in der \texttt{context}-Kondition unterscheiden.
+Wir fügen dem tibble \texttt{d\_vpn} eine Spalte mit den Differenzen und
+eine mit dem Mittel der beiden Konditionen hinzu:
+
+<<>>=
+d_vpn <- d_vpn |>
+  mutate(differenz = retrieval - context,
+         durchschnitt = (retrieval + context) / 2)
+@
+
+Jetzt können wir einen \term{Tukey mean--difference plot} (auch
+\term{Bland--Altmann plot} genannt) zeichnen. Dieser zeigt pro Versuchsperson
+die Differenz zwischen den Konditionen im Zusammenhang mit ihrer durchschnittlichen
+Leistung über die Konditionen hinweg. Abbildung \ref{fig:tukey_md} wurde
+ausserdem noch eine Trendlinie hinzugefügt, um diesen Zusammenhang hervorzuheben.
+Im Schnitt scheinen die Versuchspersonen in der \texttt{retrieval}-Kondition
+etwas besser abzuschneiden als in der \texttt{context}-Kondition, aber recht
+viele Versuchspersonen schneiden trotzdem besser in der \texttt{context}-
+als in der \texttt{retrieval}-Kondition ab.
+
+<<echo = FALSE, out.width=".6\\textwidth", cache = TRUE, fig.width = 5, fig.height = 3.5, fig.cap= "Zusammenhang zwischen den Differenzen zwischen den Konditionen und durchschnittlicher Leistung pro Versuchsperson.\\label{fig:tukey_md}">>=
+ggplot(d_vpn,
+       aes(x = durchschnitt,
+           y = differenz)) +
+  geom_point(shape = 1) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  xlab("(retrieval + context) / 2") +
+  ylab("retrieval - context") +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE)
+@
+
+Wir bezeichnen mit $X_i$ das Ergebnis der $i$-ten Versuchsperson in der
+\texttt{retrieval}-Kondition,
+mit $Y_i$ ihr Ergebnis in der \texttt{context}-Kondition
+und mit $D_i := X_i - Y_i$ die Differenz zwischen ihrem Ergebnis in der \texttt{retrieval}-Kondition
+und ihrem Ergebnis in der \texttt{context}-Kondition.
+Die Nullhypothese besagt, dass jeglicher Unterschied, den wir
+zwischen der \texttt{retrieval}- und der \texttt{context}-Kondition
+beobachten, das Ergebnis reinen Zufalls ist. 
+In der Studie von \citet{VanDenBroek2018} wurden pro Versuchsperson die 
+zu lernenden Wörter zufällig den Konditionen zugeordnet. 
+Ausserdem wurden Reihenfolgeeffekte neutralisiert, indem die Reihenfolge
+der Wörter pro Versuchsperson zufällig festgelegt wurde.
+Unter diesen Voraussetzungen ist es laut der Nullhypothese genau so wahrscheinlich,
+bei der $i$-ten Versuchsperson die Differenz $D_i$ festzustellen als die 
+Differenz $-D_i$.
+Man sagt in diesem Fall auch, dass der Vektor der Differenzen $D = (D_1, \dots, D_n)$
+\term{vorzeichensymmetrisch} ist.
+
+Ein erster möglicher Test nutzt aus, dass, unter der Nullhypothese der
+Vorzeichensymmetrie, es genau so wahrscheinlich ist, 
+eine positive Differenz zu beobachten als eine negative. 
+Wir bezeichnen mit $n_+$ die Anzahl Versuchspersonen, die besser
+in der \texttt{retrieval}-Kondition abschneiden als in der \texttt{context}-Kondition,
+und mit $n_-$ die Anzahl Versuchspersonen, die schlechter 
+in der \texttt{retrieval}-Kondition abschneiden als in der \texttt{context}-Kondition.
+Die Fälle, wo die Differenz Null beträgt, lassen wir also ausser Betracht.
+
+<<>>=
+mehr <- sum(d_vpn$differenz > 0)    # n+
+weniger <- sum(d_vpn$differenz < 0) # n-
+@
+
+Die Nullhypothese impliziert nun, dass
+\[
+  n_+ \sim \textrm{Binomial}(n_+ + n_-, 0.5).
+\]
+
+Mit \texttt{binom.test()} können wir den sog.\ \term{Vorzeichentest} 
+(\textit{sign test})
+durchführen. Dessen Ergebnis ist hier trivial, da in diesem Fall $n_+ = n_-$:
+<<>>=
+binom.test(mehr, mehr + weniger, p = 0.5)
+@
+
+Der Vorzeichentest ist zwar ein valider Test der Nullhypothese,
+aber bei seiner Durchführung lassen wir die Grössen der Differenzen ausser
+Betracht. Es wäre also möglich, dass es zwar in etwa gleich viele positive
+als negative Differenzen gibt, die positiven Differenzen aber tendenziell
+grösser sind. 
+Eine weitere Möglichkeit, um die Nullhypothese der Vorzeichensymmetrie zu testen,
+besteht darin, das Mittel oder die Summe der beobachteten Differenzen zu berechnen
+und zu berechnen, wie oft man mindestens ein solches Mittel oder eine solche Summe
+beobachtet, wenn man die Vorzeichen der Differenzen zufällig abändert.
+Die ungefähre Verteilung der Summe der Differenzen 
+unter der Nullhypothese der Vorzeichensymmetrie
+können wir mit einer Simulation konstruieren. 
+Im Code unten ist \texttt{b} ein zufälliger Vorzeichenvektor, 
+d.h., ein Vektor mit $n$ unabhängigen Einträgen aus $\{-1, 1\}$,
+wobei $-1$ und $1$ mit der gleichen Wahrscheinlichkeit vorkommen.
+
+<<>>=
+sum_diffs_H0 <- function(d, m) {
+  n <- length(d)
+  distr <- vector(length = m)
+  for (i in 1:m) {
+    b <- 2 * rbinom(n, 1, 0.5) - 1
+    distr[i] <- sum(b * d)
+  }
+  distr
+}
+
+m <- 19999
+sum_diffs_H0_distr <- sum_diffs_H0(d_vpn$differenz, m)
+@
+
+Den linksseitigen, rechtseitigen und zweiseitigen $p$-Wert können wir wie
+gehabt berechnen:
+<<>>=
+l <- sum(sum_diffs_H0_distr <= sum(d_vpn$differenz))
+r <- sum(sum_diffs_H0_distr >= sum(d_vpn$differenz))
+p_l <- (l + 1) / (m + 1)
+p_r <- (r + 1) / (m + 1)
+(p <- 2 * min(p_l, p_r))
+@
+
+\citet{Duembgen2016} nennt diesen Test den \term{Vorzeichen-$t$-Test}.
+Wie Randomisierungs- und Permutationstests war dieser Test anno dazumal
+zu aufwendig, um durchzuführen. Eine approximative Alternative, die auch
+noch recht verbreitet ist, ist der \term{$t$-Test für gepaarte Stichproben}.
+Für diesen berechnet man die Grösse
+\[
+  T = \frac{\overline{D}}{S / \sqrt{n}},
+\]
+wo $\overline{D}$ das Mittel der Differenzen ist,
+$S$ ihre Standardabweichung und $n$ die Anzahl Differenzen.
+Wenn man davon ausgeht, dass die Differenzen nicht nur vorzeichensymmetrisch,
+sondern ausserdem auch noch normalverteilt sind, so gilt
+\[
+  T \sim t_{n-1}.
+\]
+Anhand der $t_{n-1}$-Verteilung kann dann ein $p$-Wert berechnet werden.
+Sind die Differenzen nicht normalverteilt, so kann man diesen Test als
+Annäherung auffassen:
+<<>>=
+mean_diff <- mean(d_vpn$differenz)
+sd_diff <- sd(d_vpn$differenz)
+(t_stat <- mean_diff / (sd_diff / sqrt(length(d_vpn$differenz))))
+p_l <- pt(t_stat, df = length(d_vpn$differenz) - 1)
+p_r <- 1 - pt(t_stat, df = length(d_vpn$differenz) - 1)
+2 * min(p_l, p_r)
+@
+
+Schneller geht es natürlich mit der \texttt{t.test()}-Funktion:
+<<>>=
+t.test(d_vpn$differenz)
+# alternativ:
+# t.test(d_vpn$retrieval, d_vpn$context, paired = TRUE)
+@
+
+Sowohl beim Vorzeichen-$t$-Test als auch beim $t$-Test für gepaarte Stichproben
+besteht die Gefahr, dass Ausreisser das Ergebnis übermässig beeinflussen.
+Statt mit den Rohdaten zu arbeiten, kann man aber auch mit den Rängen der
+Differenzen arbeiten.
+Das geht so:
+\begin{enumerate}
+  \item Wir entfernen die Differenzen, bei denen $D_i = 0$.
+  \item Für die übrigen Differenzen berechnen wir die Ränge ihrer Absolutbeträge.
+        Diese bezeichnen wir mit $\widetilde{R}_i$.
+  \item Wir versehen diese Ränge nun mit den Vorzeichen der Differenzen:
+  \[
+    R_i :=
+    \begin{cases}
+      \widetilde{R}_i, & \textrm{falls $D_i > 0$,} \\
+      -\widetilde{R}_i, & \textrm{falls $D_i < 0$}.
+    \end{cases}
+  \]
+  \item Wir berechnen die Summe der $R_i$s.
+\end{enumerate}
+
+In R:
+
+<<>>=
+signed_rank_sum <- function(d) {
+  d <- d[d != 0]
+  signed_ranks <- sign(d) * rank(abs(d))
+  sum(signed_ranks)
+}
+signed_rank_sum(d_vpn$differenz)
+@
+
+Diesen Wert vergleichen wir mit der Verteilung, die er unter der Nullhypothese
+der Vorzeichensymmetrie hätte.
+Das Vorgehen und die Logik sind dabei identisch wie beim Vorzeichen-$t$-Test,
+nur wir mit der Summe der mit Vorzeichen versehenen Ränge gearbeitet:
+
+
+<<>>=
+sum_signed_ranks_H0 <- function(d, m) {
+  n <- length(d)
+  distr <- vector(length = m)
+  for (i in 1:m) {
+    b <- 2 * rbinom(n, 1, 0.5) - 1
+    distr[i] <- signed_rank_sum(b * d)
+  }
+  distr
+}
+
+m <- 19999
+sum_signed_ranks_H0_distr <- sum_signed_ranks_H0(d_vpn$differenz, m)
+
+l <- sum(sum_signed_ranks_H0_distr <= signed_rank_sum(d_vpn$differenz))
+r <- sum(sum_signed_ranks_H0_distr >= signed_rank_sum(d_vpn$differenz))
+p_l <- (l + 1) / (m + 1)
+p_r <- (r + 1) / (m + 1)
+(p <- 2 * min(p_l, p_r))
+@
+
+Also $p = 0.53$. 
+
+Dieser Test entspricht dem \term{Wilcoxon-Vorzeichen-Rang-Test},
+der in der R-Funktion \texttt{wilcox.test()} implementiert ist.
+Diese Funktion fällt jedoch öfters auf eine Annäherung zurück,
+nämlich bei grösseren Datenmengen, falls mindestens eine Differenz 0 beträgt,
+oder falls einige der Ränge $\widetilde{R}_i$ einander gleich sind:
+<<>>=
+wilcox.test(d_vpn$differenz)
+# oder: wilcox.test(d_vpn$retrieval, d_vpn$context, paired = TRUE)
+@
+
+Die Teststatistik \texttt{V} im Output bezieht sich nicht auf die Summe
+aller $R_i$s, sondern auf die Summe der positiven $R_i$s oder auf die
+Summe der negativen $R_i$s, je nachdem welche grösser ist.
+Diese Statistik steht jedoch in einem direkten Zusammenhang mit der
+Summe aller $R_i$s:
+<<>>=
+n_not0 <- length(d_vpn$differenz[d_vpn$differenz != 0])
+2 * 414 - n_not0 * (n_not0 + 1) / 2
+@
+
+\mypar{Aufgabe}
+  Die Datei \texttt{correspondencerules.csv} enthält die Daten aus der Studie
+  von \citet{Vanhove2016}. Achtzig deutsche Muttersprachler:innen lasen
+  niederländische Wörter mit deutschen Kognaten. Dabei wurden sie
+  nach dem Zufallsprinzip einer von zwei Lernkonditionen zugeordnet:
+  etwa die Hälfte der Teilnehmenden erhielten einige niederländische Wörter mit
+  dem Digraphen \textit{oe}, der dem deutschen \textit{u} entspricht
+  (z.B.\ \textit{proesten}--\textit{prusten}),
+  und die anderen Teilnehmenden erhielten einige niederländische Wörter mit dem
+  Digraphen \textit{ij}, der dem deutschen \textit{ei} entspricht (z.B.\ \textit{twijfel}--\textit{Zweifel}).
+  Diese Lernkonditionen sind im Datensatz in der Spalte \texttt{LearningCondition}
+  als \texttt{oe-u} bzw.\ \texttt{ij-ei} aufgeführt.
+  Anschliessend wurden allen Teilnehmenden neue niederländische Wörter gezeigt,
+  darunter sowohl einige mit \textit{oe} als auch einige mit \textit{ij}.
+  Die Frage war, ob die Teilnehmenden,
+  die vorherige Erfahrung mit einem Digraphen (also \textit{oe} oder \textit{ij})
+  hilfreich ist beim Dekodieren von neuen Wörtern mit diesem Digraphen.
+  Die Versuchspersonen wurden also zwar nur einer der zwei Lernkonditionen zugeordnet,
+  wurden aber alle in zwei Konditionen getestet. Es handelt sich hier also sehr wohl
+  um ein within-subjects-Experiment.
+  
+  \begin{enumerate}
+    \item Lesen Sie den Datensatz ein.
+    
+    \item Behalten Sie nur die Zeilen, bei denen \texttt{Category}
+          entweder \texttt{oe cognate} oder \texttt{ij cognate} ist und bei denen
+          \texttt{Block != "Training"} ist. Es sollten 3360 Zeilen übrig bleiben.
+          Nennen Sie diesen Datensatz \texttt{correspondences}.
+    
+    \item Berechnen Sie für jede Versuchsperson (\texttt{Subject}) die Proportion
+          der Übersetzungen, bei denen sie den Digraphen richtig dekodiert hat
+          (\texttt{CorrectVowel == "yes"}) und dies für beide relevante Wortkategorien
+          (\texttt{Category}).
+          
+    \item Berechnen Sie pro Versuchsperson die Differenz zwischen der Proportion
+          richtiger Dekodierungen des gelernten Digraphen und der Proportion
+          richtiger Dekodierungen des neuen Digraphen.
+          Eine positive Differenz soll heissen, dass die Proportion richtiger
+          Dekodierungen des bereits gelernten Digraphen höher ist als die
+          andere Proportion.
+          
+          Hinweis: Verwenden Sie im vorigen Schritt auch \texttt{LearningCondition}
+          als Gruppierungsfaktor. 
+          Konvertieren Sie die erhaltene Zusammenfassung dann in ein breiteres Format
+          und verwenden Sie fürs Berechnen der Differenzen \texttt{ifelse()}.
+          
+    \item Zeichnen Sie einen Tukey mean--difference plot.
+    
+    \item Führen Sie einen geeigneten Signifikanztest aus und fassen Sie 
+          ein kurzes Fazit (1--3 Sätze). \parend
+  \end{enumerate}
+
+
+<<eval = TRUE, message = FALSE, warning = FALSE, echo = FALSE>>=
+correspondences <- read_csv(here("data", "correspondencerules.csv")) |> 
+  filter(Block != "Training") |> 
+  filter(Category %in% c("oe cognate", "ij cognate"))
+@
+
+\mypar[gleiche Daten, andere Perspektive]{Bemerkung}
+Wir haben sowohl die Daten von \citet{VanDenBroek2018}\footnote{Jetzt wissen
+Sie auch, wie dieser Name auszusprechen ist.} als auch jene von \citet{Vanhove2016}
+aus der Perspektive der Teilnehmenden betrachtet.
+In beiden Studien ist es jedoch auch möglich, die Daten aus der Perspektive
+der \emph{Stimuli} zu betrachten.
+In der Studie von \citet{VanDenBroek2018} wurden alle Wörter sowohl 
+in der \texttt{retrieval}- als auch in der \texttt{context}-Kondition gelernt,
+sodass wir die Daten auch wie folgt zusammenfassen und grafisch darstellen 
+können; siehe Abbildung \ref{fig:vdbroek_items}.
+Statt die Differenzen zwischen den Konditionen bei den Versuchspersonen
+einem Signifikanztest zu unterziehen, hätten wir auch die Differenzen
+zwischen den Konditionen bei den Wörtern analysieren können.
+
+<<fig.width = 5, fig.height = 4, fig.cap = "Tukey mean--difference plot für die Daten von \\citet{VanDenBroek2018}. Diesmal wurden die Daten jedoch pro Wort statt pro Versuchspreson zusammengefasst.\\label{fig:vdbroek_items}">>=
+# d ist nach wie vor der Datensatz von Van den Broek et al. (2018)
+d_items <- d |>
+  filter(!RepeatedTest) |>
+  group_by(Word, Translation, Condition) |>
+  summarise(prop_correct = mean(Test2Swa2NlLenient),
+            .groups = "drop") |> 
+  mutate(Item = paste0(Word, " (", Translation, ")")) |> 
+  pivot_wider(names_from = "Condition", values_from = "prop_correct") |> 
+  mutate(Difference = retrieval - context)
+
+ggplot(d_items,
+       aes(x = (context + retrieval) / 2,
+           y = Difference)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_smooth(method = "lm", se = FALSE, formula = y ~ x) +
+  xlab("(context + retrieval) / 2") +
+  ylab("retrieval - context")
+@
+
+Ein möglicher Vorteil einer Analyse aus der Perspektive der Stimuli ist,
+dass die Bezeichnungen der Stimuli uns oft mehr sagen als die in der Regel
+anonymisierten Bezeichnungen der Versuchspersonen.
+Vor allem wenn die Anzahl der Stimuli noch übersichtlich ist,
+bieten sich grafische Darstellungen wie Abbildung \ref{fig:vanhove2016_items} an.
+Diese zeigt einerseits, dass es innerhalb jeder Kategorie einen recht konsistenten Unterschied
+zwischen den Konditionen gibt,
+und andererseits, dass gewisse Wörter für alle einfach waren (\textit{schrijven} `schreiben'),
+während andere für alle schwierig waren (\textit{schijf} `Scheibe', \textit{schoen} `Schuh').
+
+<<fig.width = 4, fig.height = 6, fig.cap = "Proportion richtiger Dekodierungen pro Wort bei \\citet{Vanhove2016}. Die Wörter sind nach ihrer Kategorie gruppiert und innerhalb ihrer Kategorie nach der durchschnittlichen Proportion richtiger Dekodierungen geordnet.\\label{fig:vanhove2016_items}">>=
+# correspondences ist der Datensatz mit den Daten von Vanhove (2016),
+# siehe Aufgabe
+correspondences_items <- correspondences |> 
+  group_by(Item, Category, LearningCondition) |> 
+  summarise(prop_correct = mean(CorrectVowel == "yes"),
+            .groups = "drop")
+ 
+ggplot(correspondences_items,
+       aes(x = prop_correct,
+           y = reorder(Item, prop_correct),
+           shape = LearningCondition)) +
+  geom_point() +
+  scale_shape_manual(values = c(1, 3),
+                     name = "Lernkondition") +
+  facet_grid(rows = vars(Category),
+             scales = "free_y") +
+  xlab("Proportion richtiger Dekodierungen") +
+  ylab(element_blank()) +
+  theme(legend.position = "bottom")
+@
+
+Welche dieser Perspektiven am aufschlussreichsten ist, hängt wohl 
+vom konkreten Fall ab.
+Es spricht auf jeden Fall nichts dagegen, die Daten auf beide Arten und Weisen
+grafisch darzustellen.
+Was man jedoch \emph{nicht} tun sollte, ist, die Daten mehreren Signifikanztests zu
+unterziehen und dann nur denjenigen berichten, der den niedrigsten $p$-Wert ergab.
+\parend
+
+\mypar[\textsc{rm-anova} und gemischte Modelle]{Bemerkung}
+  In den beiden Beispielen in diesem Kapitel werden nur zwei Konditionen 
+  miteinander verglichen. Für within-subjects-Studien mit mehr als zwei Konditionen
+  wurde vor allem früher meistens \term{Varianzanalyse mit Messwiederholungen}
+  (\textit{repeated measures}-\textsc{anova} oder \textsc{rm-anova}) eingesetzt.
+  Heutzutage werden Studien mit mehreren Datenpunkte pro Versuchsperson oder
+  pro Stimulus oft mit sog.\ \term{gemischten Modellen} analysiert.
+  Tatsächlich analysierten sowohl \citet{VanDenBroek2018} als auch \citet{Vanhove2016}
+  ihre Daten in einem gemischten logistischen Modell.
+  Die technischen Anforderungen bei solchen Modellen sind jedoch erheblich;
+  die in diesem Kapitel besprochenen Alternativen dürften zugänglicher sein.
+  Aber, egal für welche Auswertungsmethode Sie sich entscheiden,
+  lohnt es sich, Zeit und Denkarbeit in grafische Darstellungen zu investieren,
+  sodass auch Lesende, die nicht mit dieser Auswertungsmethode vertraut sind,
+  Ihren Forschungsbericht verstehen können.
+\parend

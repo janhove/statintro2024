@@ -1157,7 +1157,7 @@ Wir wollen uns nun einige klassische Wahrscheinlichkeitsverteilungen näher
 anschauen.
 
 \subsection{Die diskrete Gleichverteilung}
-Sei $n$ eine natürlich Zahl und $\Omega := \{1, \dots, n\}$.
+Sei $n$ eine natürliche Zahl und $\Omega := \{1, \dots, n\}$.
 Gilt für jedes $k \in \Omega$, dass $\Prob(X = k) = 1/n$,
 so hat $X$ eine diskrete Gleichverteilung über $\Omega$.
 Wir schreiben $X \sim \textrm{Unif}(\Omega)$.

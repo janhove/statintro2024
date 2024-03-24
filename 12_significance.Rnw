@@ -129,7 +129,7 @@ uns mit einer trivialeren Erklärung beschäftigen: Vielleicht
 beruht der Unterschied auf reinem Zufall. Dies ist unsere
 \term{Nullhypothese} ($H_0$),
 die wir mit einer ziemlich vagen \term{Alternativhypothese} ($H_A$)
-kontrasieren können:
+kontrastieren können:
 \begin{itemize}
   \item $H_0$: Der Unterschied zwischen beiden Mitteln ist \emph{nur}
   dem Zufallsfaktor zuzuschreiben.
@@ -173,8 +173,8 @@ und Kontrollgruppe hätten aussehen können. Diese Zahl können wir
 mit dem binomischen Koeffizienten berechnen:\footnote{Für grössere
 Gruppen wird diese Zahl schnell zu gross, um das Vorgehen
 nachvollziehbar darzustellen. So gibt es 137'846'528'820 Möglichkeiten,
-um eine Gruppe von 40 Teilnehmenden in zwei gleich grossen
-Gruppen zu verteilen.}
+um eine Gruppe von 40 Teilnehmenden in zwei gleich grosse
+Gruppen aufzuteilen.}
 \[
   {6\choose 3} = 20.
 \]
@@ -623,16 +623,26 @@ Konditionen zugeteilt wurden. In der Praxis ist es in der Regel jedoch
 zu schwierig, alle möglichen Zuordnungen durchzuackern. Stattdessen
 generiert man lediglich $m$ solche zufälligen Zuordnungen. Dazu
 kann man die Gruppenlabels zufällig mit \texttt{sample()} permutieren.
-Dann zählt man die
-Anzahl Zuordnungen $r$, in denen das beobachtete Muster mindestens
-so extrem ist wie in den tatsächlichen Daten. Der $p$-Wert berechnet man dann
-als
+Um den linksseitigen $p$-Wert zu berechnen, zählt man die Anzahl
+Zuordnungen $\ell$, in denen das beobachtete Muster mindestens so klein (oder so negativ)
+ist wie in den tatsächlichen Daten. Dann berechnet man
 \[
-  p = \frac{r+1}{m+1}.
+  p_{\ell} = \frac{\ell + 1}{m + 1}.
 \]
 Man fügt also sozusagen das tatsächlich beobachtete Muster noch den zufällig
 generierten hinzu, weil man dieses auch rein durch Zufall hätte beobachten können.
-Dies garantiert weiter, dass $p \neq 0$.
+Dies garantiert weiter, dass $p_{\ell} \neq 0$.
+
+Um den rechtsseitigen $p$-Wert zu berechnen, zählt man die Anzahl
+Zuordnungen $r$, in denen das beobachtete Muster mindestens so gross (oder so positiv)
+ist wie in den tatsächlichen Daten. Dann berechnet man
+\[
+  p_{r} = \frac{r + 1}{m + 1}.
+\]
+Für den zweiseitigen $p$-Wert berechnet man
+\[
+  p_z = 2\cdot \min\{p_{\ell}, p_{r}\}.
+\]
 Während dieses Vorgehen gültige $p$-Werte generiert, hängt das konkrete Ergebnis
 vom Zufall ab: Je nachdem, welche Zuordnungen man zufällig generiert, erhält
 man einen anderen Wert. Je grösser $m$, desto kleiner dieser Zufallsfaktor.
@@ -645,15 +655,17 @@ klein <- read_csv(here("data", "Klein2014_money_abington.csv"))
 mean_difference <- tapply(klein$Sysjust, klein$MoneyGroup, mean) |> diff()
 mean_difference
 
-m <- 9999
+m <- 19999
 mean_diffs_H0 <- vector(length = m)
 for (i in 1:m) {
   permuted_group <- sample(klein$MoneyGroup)
   mean_diffs_H0[i] <- tapply(klein$Sysjust, permuted_group, mean) |> diff()
 }
-r <- sum(abs(mean_diffs_H0) >= abs(mean_difference))
-p <- (r + 1) / (m + 1)
-p
+l <- sum(mean_diffs_H0 <= mean_difference)
+r <- sum(mean_diffs_H0 >= mean_difference)
+(p_l <- (l + 1) / (m + 1))
+(p_r <- (r + 1) / (m + 1))
+(p <- 2 * min(p_l, p_r))
 @
 
 \mypar[Randomisierungstest für Unterschied zwischen Varianzen]{Aufgabe}
@@ -803,7 +815,7 @@ direkt aus der Rangsumme bestimmen:
 <<>>=
 n1 <- length(x1)
 n2 <- length(x2)
-(rank_sum(x1, x2) - n1*(n1 + 1)/2)/(n1 * n2)
+(rank_sum(x1, x2) - n1*(n1 + 1)/2) / (n1 * n2)
 @
 Wir führen nun einen Randomisierungstest auf die Rangsumme durch.
 Die Logik ist hier stets identisch.
@@ -816,11 +828,13 @@ for (i in 1:m) {
   y_H0 <- d$RollsImagined[permuted_group == "two6"]
   rank_sums_H0[i] <- rank_sum(x_H0, y_H0)
 }
-r <- sum(abs(rank_sums_H0) >= abs(rank_sum(x, y)))
-p <- (r + 1) / (m + 1)
-p
+l <- sum(rank_sums_H0 <= rank_sum(x1, x2))
+r <- sum(rank_sums_H0 >= rank_sum(x1, x2))
+p_l <- (l + 1) / (m + 1)
+p_r <- (r + 1) / (m + 1)
+(p <- 2 * min(p_l, p_r))
 @
-Also $p = 0.00005$.
+Also $p = 0.002$.
 
 Dieser Randomisierungstest entspricht dem \term{Wilcoxon-Rangsummentest},
 auch \term{Mann--Whitney-Test} genannt, der in R als \texttt{wilcox.test()}
@@ -831,7 +845,7 @@ wilcox.test(x1, x2)
 @
 Den Wert $W$ im Output können wir leicht zum \texttt{cles}-Wert umrechnen:
 <<>>=
-2276.5 / (n1*n2)
+2276.5 / (n1 * n2)
 @
 \parend
 
@@ -843,27 +857,27 @@ Den Wert $W$ im Output können wir leicht zum \texttt{cles}-Wert umrechnen:
   diese zu einem \textit{common-language effect size}. Die Berechnung mit \texttt{cles()}
   würde zu viel Zeit kosten.
 \parend
-
-\mypar[\texttt{coin}-Package]{Bemerkung}
-  Mit der Funktion \texttt{independence\_test()} aus dem \texttt{coin}-Package
-  können Randomisierungstests bequem durchgeführt werden.
-  Die Gruppenvariable muss jedoch als Faktor umkodiert werden.
-  Die \textit{money priming}-Daten hätten wir beispielsweise auch so auswerten können:
-<<message = FALSE, warning = FALSE>>=
-library(coin)
-klein$f.MoneyGroup <- factor(klein$MoneyGroup)
-independence_test(Sysjust ~ f.MoneyGroup, data = klein,
-                  distribution = approximate(nresample = 9999))
-@
-  Um alle möglichen Permutationen zu berücksichtigen, kann man
-  \texttt{distribution = exact()} verwenden.
-  
-  Defaultmässig vergleicht \texttt{independence\_test()} Gruppenmittel.
-  Wenn Sie andere Grössen vergleichen möchten, müssen Sie sich jedoch
-  selber durch die Anleitungen von \texttt{coin} murksen. Ich finde es
-  sinnvoller, den Code selber zu schreiben; dann weiss ich sicher, was
-  überhaupt wie berechnet wird.
-\parend
+% 
+% \mypar[\texttt{coin}-Package]{Bemerkung}
+%   Mit der Funktion \texttt{independence\_test()} aus dem \texttt{coin}-Package
+%   können Randomisierungstests bequem durchgeführt werden.
+%   Die Gruppenvariable muss jedoch als Faktor umkodiert werden.
+%   Die \textit{money priming}-Daten hätten wir beispielsweise auch so auswerten können:
+% <<message = FALSE, warning = FALSE>>=
+% library(coin)
+% klein$f.MoneyGroup <- factor(klein$MoneyGroup)
+% independence_test(Sysjust ~ f.MoneyGroup, data = klein,
+%                   distribution = approximate(nresample = m))
+% @
+%   Um alle möglichen Permutationen zu berücksichtigen, kann man
+%   \texttt{distribution = exact()} verwenden.
+%   
+%   Defaultmässig vergleicht \texttt{independence\_test()} Gruppenmittel.
+%   Wenn Sie andere Grössen vergleichen möchten, müssen Sie sich jedoch
+%   selber durch die Anleitungen von \texttt{coin} murksen. Ich finde es
+%   sinnvoller, den Code selber zu schreiben; dann weiss ich sicher, was
+%   überhaupt wie berechnet wird.
+% \parend
 
 \section{Permutationstests für Assoziationen}\label{sec:permutationcorr}
 Um $p$-Werte für andere Muster als Gruppenunterschiede zu berechnen,
@@ -998,7 +1012,8 @@ schaut man sich an, welche Proportion der unter der $H_0$
 generierten Korrelationskoeffizienten gleich $0.46$ oder grösser sind:
 
 <<>>=
-mean(df_cor_H0$cor_H0 >= cor_poarch)
+r <- sum(df_cor_H0$cor_H0 >= cor_poarch)
+(p_r <- (r + 1) / (m + 1))
 @
 
 Also 0.24\% ($p = 0.0024$). Wenn Sie diese Berechnungen
@@ -1008,34 +1023,33 @@ bei Ihnen dann eben nicht die gleichen sind wie bei mir.
 
 Für den zweiseitigen Test ($H_A:$ Die Korrelation ist nicht gleich
 0, aber könnte sowohl positiv als auch negativ sein.) muss man
-sich zudem auch noch anschauen, welche Proportion der unter der
-$H_0$ generierten Korrelationskoeffizienten gleich $-0.46$ oder kleiner ist:\footnote{Wenn man einen gültigen linksseitigen $p$-Wert $p_{\ell}$ und einen gültigen rechtsseitigen $p$-Wert $p_r$ hat, so kann man auch einen zweiseitigen $p$-Wert $p_z$ wie folgt berechnen:
-\[
-  p_z := 2\min\{p_{\ell}, p_r\}.
-\]
-Hier berechnen wir ihn stattdessen als $p_z = p_{\ell} + p_r$, was ebenso ein gültiger $p$-Wert ist. Da die Verteilungen der bisher behandelten Statistiken unter der Nullhypothese symmetrisch waren, war der Unterschied jeweils vernachlässigbar. Das ist aber nicht zwangsläufig der Fall.}
+sich zudem auch noch anschauen, wie viele der unter
+$H_0$ generierten Korrelationskoeffizienten gleich $0.46$ oder kleiner sind.
 
 <<>>=
-mean(abs(df_cor_H0$cor_H0) >= abs(cor_poarch))
+l <- sum(df_cor_H0$cor_H0 <= cor_poarch)
+p_l <- (l + 1) / (m + 1)
+(p <- 2 * min(p_l, p_r))
 @
-
-Also 0.54\% ($p = 0.0054$). Die Wahrscheinlichkeit,
+Also 0.5\% ($p = 0.005$). Die Wahrscheinlichkeit,
 eine solche starke Korrelation oder eine noch stärkere
 anzutreffen, wenn die Nullhypothese tatsächlich stimmen
 würde, ist also recht klein.
-
-Mit der \texttt{independence\_test()}-Funktion
-wird dieses Vorgehen erleichert. Aber wichtiger
-ist eben vor allem die Logik hinter dem Vorgehen:
-<<>>=
-independence_test(Simon ~ Flanker, data = poarch,
-                  distribution = approximate(nresample = 19999))
-@
-
-Das Ergebnis fällt hier leicht
-anders aus als bei unseren manuellen Berechnungen,
-aber das liegt lediglich an der Zufallsauswahl der
-Permutationen.
+(Wir hätten hier natürlich auch auf die Berechnung von \texttt{p\_l})
+verzichten können, da dieser Wert klar grösser als \texttt{p\_r} ist.)
+% 
+% Mit der \texttt{independence\_test()}-Funktion
+% wird dieses Vorgehen erleichert. Aber wichtiger
+% ist eben vor allem die Logik hinter dem Vorgehen:
+% <<>>=
+% independence_test(Simon ~ Flanker, data = poarch,
+%                   distribution = approximate(nresample = 19999))
+% @
+% 
+% Das Ergebnis fällt hier leicht
+% anders aus als bei unseren manuellen Berechnungen,
+% aber das liegt lediglich an der Zufallsauswahl der
+% Permutationen.
 
 \mypar{Aufgabe}
   Berechnen Sie Kendalls $\tau$ für den Zusammenhang der Flanker- und Simondaten.

@@ -332,7 +332,7 @@ Auch für einen Korrelationskoeffizienten können wir einen $p$-Wert
 mittels eines $t$-Tests berechnen. Mit den Permutationstests in Abschnitt
 \vref{sec:permutationcorr} sind wir für den Korrelationskoeffizienten
 für den Zusammenhang zwischen den Flanker- und Simondaten in \citet{Poarch2018}
-bei einem $p$-Wert von 0.0069 ausgekommen. Mit \texttt{cor.test()}
+bei einem $p$-Wert von 0.005 ausgekommen. Mit \texttt{cor.test()}
 erhalten wir grundsätzlich das gleiche Resultat ($t(32) = 2.95$, $p = 0.0059$):
 <<>>=
 cor.test(poarch$Flanker, poarch$Simon)

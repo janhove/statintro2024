@@ -278,14 +278,14 @@ set.seed(123456789)
 @
 
 <<cache = TRUE>>=
-n_runs <- 19999
-var_mittel_H0 <- vector(length = n_runs)
+m <- 19999
+var_mittel_H0 <- vector(length = m)
 
 # Der Datensatz d wird hier als d_H0 kopiert,
 # sodass er nachher nicht überschrieben wird.
 d_H0 <- d
 
-for (i in 1:n_runs) {
+for (i in 1:m) {
   d_H0$gruppe <- sample(d_H0$gruppe)
   var_mittel_H0[i] <- tapply(d_H0$ergebnis, d_H0$gruppe, mean) |> var()
 }
@@ -311,7 +311,7 @@ wird in Abbildung \ref{fig:distributionvaranova} dargestellt.
 Die Proportion der Varianzen, die mindestens so gross wie die
 beobachtete Varianz sind, ist ein gültiger $p$-Wert.
 <<>>=
-(sum(var_mittel_H0 >= 1.282355) + 1) / 20000
+(sum(var_mittel_H0 >= 1.282355) + 1) / (m + 1)
 @
 
 In diesem Fall also $p = 0.062$.
@@ -470,7 +470,6 @@ wurde ein echter Datensatz mit zwei Gruppen vorgestellt.
 Testen Sie diesen Gruppenunterschied mit einem üblichen Zweistichproben-$t$-Test
 und mit einer \textsc{anova}. Quadrieren Sie den $t$-Wert und ziehen Sie einen Merksatz.
 \parend
-
 
 \section{Varianzanalyse mit mehreren Prädiktoren}
 Varianzanalyse kann man auch anwenden, wenn

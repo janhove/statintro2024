@@ -149,8 +149,8 @@ Ergebnissen führen, die nicht mit der Theorie kompatibel
 sind. Ähnliches wird auch in einer ethnografischen
 Studie von \citet{Peterson2016} aufgezeigt.
 
-\section{Mögliche Lösungen}
-
-\mypar{Aufgabe}
-(Präregistrierung und Artikel nebeneinander legen.)
-\parend
+% \section{Mögliche Lösungen}
+% 
+% \mypar{Aufgabe}
+% (Präregistrierung und Artikel nebeneinander legen.)
+% \parend
