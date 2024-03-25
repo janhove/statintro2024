@@ -3,9 +3,9 @@ In diesem und den folgenden Kapiteln behandeln wir das \term{allgemeine lineare 
 (\textit{general linear model}).\footnote{Nicht zu verwechseln
 mit dem \term{verallgemeinerten linearen Modell}
 (\textit{generalized linear model}).
-Dieses ist eine Erweiterung des allgemeinen linearen Modells, 
+Dies ist eine Erweiterung des allgemeinen linearen Modells, 
 mit der wir uns in diesem Kurs nur kurz befassen; 
-siehe Kapitel \ref{ch:logistic}.}
+\textcolor{blue}{siehe Kapitel \ref{ch:logistic}}.}
 Dies ist eine Methode,
 um zu auszudrücken, wie ein oder mehrere \term{Prädiktoren}
 mit dem \term{\textit{outcome}} zusammenhängen.
@@ -25,7 +25,7 @@ aus diesem Kapitel werden noch immer zutreffen.
 \section{Ein Modell für die GJT-Daten}
 Lasst uns kurz alles über Mittelwerte vergessen.
 Wir erhalten Daten (hier: die GJT-Werte von \citet{DeKeyser2010},
-siehe Kapitel \ref{ch:uncertainty}) und müssen
+siehe Kapitel \ref{ch:uncertainty}) und sollten
 diese sinnvoll beschreiben. Sinnvoller als einfach
 alle Datenpunkte aufzulisten, wäre, die Datenpunkte
 in zwei Teile zu zerlegen: einen systematischen Teil, der die
@@ -41,12 +41,12 @@ meistens so geschrieben:
  y_i = \beta_0 + \varepsilon_i,
 \end{equation}
 für $i = 1, \dots, n$.
-Hier ist $y_i$ die i.\ Beobachtung im Datensatz,
+Hier ist $y_i$ die $i$-te Beobachtung im Datensatz,
 $\beta_0$ stellt die Gemeinsamkeit zwischen allen
 Werten in der Population dar
 und $\varepsilon_i$ drückt aus, wie stark
-die i.\ Beobachtung von diesem Populationswert abweicht.
-$\varepsilon_i$ nennt man auch die \textbf{Residuen}
+die $i$-te Beobachtung von diesem Populationswert abweicht.
+Die $\varepsilon_i$-Werte nennt man auch die \textbf{Residuen}
 oder den \textbf{Restfehler}.
 Wir schreiben $\beta_0$ statt einfach $\beta$,
 weil wir nachher die Gemeinsamkeit
@@ -61,32 +61,33 @@ von $\beta_0$ begnügen.
 In Gleichung \ref{eq:beta0} ist $\beta_0$ ein Parameter
 mit einem bestimmten, aber in der Regel unbekannten Wert;
 für Schätzungen dieses Parameters wird die Notation
-$\widehat{\beta_0}$ verwendet.
-Da $\widehat{\beta_0}$ bloss eine Schätzung ist,
+$\widehat{\beta}_0$ verwendet.
+Da $\widehat{\beta}_0$ bloss eine Schätzung ist,
 wird der Restfehler ebenfalls bloss geschätzt:
 \[
-y_i = \widehat{\beta_0} + \widehat{\varepsilon_i},
+y_i = \widehat{\beta}_0 + \widehat{\varepsilon}_i,
 \]
 für $i = 1, \dots, n$.
 
-Wie können wir nun $\widehat{\beta_0}$ berechnen
+Wie können wir nun $\widehat{\beta}_0$ berechnen
 (bzw.\ $\beta_0$ schätzen)?
 Im Prinzip geht die Gleichung für jeden $\beta_0$-Wert
 auf, denn wir können uns die $\widehat{\varepsilon}$-Werte
 eben so aussuchen, wie es uns passt.
 Die ersten beiden GJT-Werte im Datensatz sind
-151 und 182. Wenn wir nun beispielsweise für $\beta_0$ einen beliebigen
-Wert, z.B.\ 1823, wählen,
-wählen wir $\widehat{\varepsilon_1} = -1672$ und $\widehat{\varepsilon_2} = -1641$ und die Gleichung geht auf:
+151 und 182. Falls wir nun für $\beta_0$ einen beliebigen
+Wert wählen würden, z.B.\ 1823, 
+so würden wir einfach $\widehat{\varepsilon}_1 = -1672$ und $\widehat{\varepsilon}_2 = -1641$ wählen und die Gleichung ginge auf:
 \[
 y_1 = 151 = 1823 - 1672,
 \]
 \[
 y_2 = 182 = 1823 - 1641.
 \]
-Wenn wir nun für $\beta_0$ den
-Wert 14 wählen, wählen wir $\widehat{\varepsilon_1} = 137$ und $\widehat{\varepsilon_2} = 168$
-und die Gleichung geht wiederum auf:
+Falls wir aber für $\beta_0$ den
+Wert 14 wählen würden, 
+so würden wir $\widehat{\varepsilon}_1 = 137$ und $\widehat{\varepsilon}_2 = 168$
+wählen und die Gleichung ginge ebenfalls auf:
 \[
 y_1 = 151 = 14 + 137,
 \]
@@ -98,14 +99,14 @@ $\beta_0$ zu schätzen.
 
 \section{Die Methode der kleinsten Quadrate}
 Die Frage stellt sich, was die optimale Art und Weise
-ist, um $\widehat{\beta_0}$ zu bestimmen.
+ist, um $\widehat{\beta}_0$ zu bestimmen.
 Die wenig überraschende Antwort lautet: Es hängt davon
 ab, was man unter `optimal' versteht.
 Eine sinnvolle Definition von `optimal' ist,
 dass $\beta_0$ so geschätzt werden soll, dass
 die Summe der absoluten Restfehler
-($\sum_{i = 1}^{n} |\widehat{\varepsilon_i}|$) möglichst klein ist.
-Wenn wir für $\widehat{\beta_0}$ den Wert 135 wählen,
+($\sum_{i = 1}^{n} |\widehat{\varepsilon}_i|$) möglichst klein ist.
+Wenn wir für $\widehat{\beta}_0$ den Wert 135 wählen,
 beträgt die Summe der absoluten Restfehler 1993.
 Hier gehen wir davon aus, dass der Datensatz
 \texttt{dekeyser2010.csv} den Objektnamen \texttt{d} hat.
@@ -113,7 +114,7 @@ Hier gehen wir davon aus, dass der Datensatz
 <<>>=
 sum(abs(d$GJT - 135))
 @
-(Es gilt $y_i = \widehat{\beta_0} + \widehat{\varepsilon_i}$, also $\widehat{\varepsilon_i} = y_i - \widehat{\beta_0}$.)
+(Es gilt $y_i = \widehat{\beta}_0 + \widehat{\varepsilon}_i$, also $\widehat{\varepsilon}_i = y_i - \widehat{\beta}_0$.)
 
 Wenn wir stattdessen den Wert 148 wählen, beträgt die Summe der absoluten Restfehler 1799.
 <<>>=
@@ -131,7 +132,7 @@ Nicht zufällig sind alle Werte im Intervall $[150, 151]$
 Mediane der GJT-Werte; \emph{der} Median ist entsprechend 150.5.
 Tatsächlich: Wenn man $\beta_0$
 mit der Methode der kleinsten absoluten Abweichungen schätzt, ist
-das Ergebnis der Median der Stichprobe.
+das Ergebnis ein Median der Stichprobe.
 Den Beweis schenken wir uns; siehe \citet{Schwertman1990}.
 Dass wir es hier mit einer Schätzung zu tun haben,
 wird klar, wenn man sich überlegt, dass diese Methode
@@ -180,7 +181,7 @@ gridExtra::grid.arrange(p2, p1, ncol = 2)
 Eine andere sinnvolle Definition von `optimal' ist,
 dass $\beta_0$ so geschätzt werden soll, dass
 die Summe der quadrierten Restfehler
-($\sum_{i = 1}^{n} \widehat{\varepsilon_i}^2$) möglichst klein ist.
+($\sum_{i = 1}^{n} \widehat{\varepsilon}_i^2$) möglichst klein ist.
 Dies ist die \textbf{Methode der kleinsten Quadrate}.
 Verglichen mit der Methode der kleinsten absoluten Abweichungen
 fallen grosse Residuen noch mehr ins Gewicht.
@@ -194,12 +195,12 @@ der Stichprobe!
 Während wir in Kapitel 3 die Summe der Quadrate als eine
 Funktion des Mittels betrachtet haben, kann man die Rollen
 auch umkehren: Das Mittel ist jener Wert, der die Summe
-der Quadrate minimiert. Ebenso ist der Median jener Wert,
-der die Summe der absoluten Abweichungen minimiert.
-Der Modus ist übrigens der Wert, der die Summe der binären
-Abweichungen minimiert.
-Sind $y_i$ und $\widehat{\beta_0}$ einander gleich, beträgt
-die binäre Abweichung 0, sonst 1.
+der Quadrate minimiert. Ebenso sind die Mediane jenee Werte,
+die die Summe der absoluten Abweichungen minimieren.
+Die Modi sind übrigens die Werte, 
+die die Summe der binären Abweichungen minimieren.
+Sind $y_i$ und $\widehat{\beta}_0$ einander gleich, 
+beträgt die binäre Abweichung 0, sonst 1.
 
 Rechnerisch ist die Methode der kleinsten Quadrate am einfachsten,
 und die Parameter in allgemeinen linearen Modellen werden daher
@@ -207,42 +208,43 @@ meistens mit dieser Methode geschätzt
 (\textit{ordinary least squares}, OLS).
 Aber dies ist keine Notwendigkeit.
 In bestimmten Bereichen trifft man ab und zu andere Optimierungskriterien an.
-(Eventuell werden in den Ausblickskapiteln einige dieser weiteren Kriterien
-angesprochen.)
+\textcolor{blue}{(Eventuell werden in den Ausblickskapiteln einige dieser weiteren Kriterien
+angesprochen.)}
 % in den Sprachwissenschaften ist dies aber selten der Fall.
 % Im Prinzip kann man sogar selber Optimierungskriterien
 % definieren, aber dies kommt noch weniger vor.
 
 \mypar[Mittel minimiert die Summe der Quadrate]{Bemerkung}
   Dass das Stichprobenmittel die Summe der Quadrate minimiert, sieht man so.
-  Die Summe der Quadrate ist eine Summe von quadratischen Funktionen in $\widehat{\beta_0}$
-  und daher selber eine quadratische Funktion in $\widehat{\beta_0}$:
+  Die Summe der Quadrate ist eine Summe von quadratischen Funktionen in $\widehat{\beta}_0$
+  und daher selber eine quadratische Funktion in $\widehat{\beta}_0$:
   \[
-    \sum_{i=1}^n \widehat{\varepsilon_i}^2
-    = \sum_{i=1}^n (x_i - \widehat{\beta_0})^2
-    = \sum_{i=1}^n x_i^2 - 2x_i\widehat{\beta_0} + \widehat{\beta_0}^2.
+    \sum_{i=1}^n \widehat{\varepsilon}_i^2
+    = \sum_{i=1}^n (x_i - \widehat{\beta}_0)^2
+    = \sum_{i=1}^n x_i^2 - 2x_i\widehat{\beta}_0 + \widehat{\beta}_0^2.
   \]
   Aus der Schule wissen wir, dass eine quadratische Funktion dort ihr Minimum
   oder Maximum erreicht, wo ihre Ableitung 0 beträgt. Die quadratische Funktion,
   mit der wir es zu tun haben, hat einen positiven Leitkoeffizienten, also 
   erreicht sie nur ein Minimum. Wir berechnen die Ableitung:
-  \[
-    \frac{\df}{\df \widehat{\beta_0}}  \sum_{i=1}^n x_i^2 - 2x_i\widehat{\beta_0} + \widehat{\beta_0}^2
-    =  \sum_{i=1}^n \frac{\df}{\df \widehat{\beta_0}}\left(x_i^2 - 2x_i\widehat{\beta_0} + \widehat{\beta_0}^2\right)
-    = \sum_{i=1}^n \left(-2x_i + 2\widehat{\beta_0}\right).
-  \]
+  \begin{align*}
+    \frac{\df}{\df \widehat{\beta}_0}  \sum_{i=1}^n \left(x_i^2 - 2x_i\widehat{\beta}_0 + \widehat{\beta}_0^2\right)
+    &=  \sum_{i=1}^n \frac{\df}{\df \widehat{\beta}_0}\left(x_i^2 - 2x_i\widehat{\beta}_0 + \widehat{\beta}_0^2\right) \\
+    &= \sum_{i=1}^n \left(-2x_i + 2\widehat{\beta}_0\right).
+  \end{align*}
   Dieser Ausdruck ist genau dann gleich 0, wenn 
   \[
-    \sum_{i=1}^n 2x_i = \sum_{i=1}^n 2\widehat{\beta_0},
+    \sum_{i=1}^n 2x_i = \sum_{i=1}^n 2\widehat{\beta}_0,
   \]
   also wenn
   \[
-    \sum_{i=1}^n x_i = n\widehat{\beta_0}.
+    \sum_{i=1}^n x_i = n\widehat{\beta}_0,
   \]
-  Also wenn
+  also wenn
   \[
-    \widehat{\beta_0} = \frac{1}{n}\sum_{i=1}^n x_i = \overline{x}.
+    \widehat{\beta}_0 = \frac{1}{n}\sum_{i=1}^n x_i.
   \]
+  Dabei ist der letzte Ausdruck genau die Definition des Stichprobenmittels.
 \parend
 
 \section{Lineare Modelle in R}
@@ -250,7 +252,7 @@ Mit der \texttt{lm()}-Funktion können lineare Modelle aufgebaut werden.
 Ihre Parameter werden anhand der Methode der kleinsten Quadrate geschätzt.
 Innerhalb der Funktion braucht es eine Formel mit dem outcome
 vor und den Prädiktoren nach der Tilde. In diesem Fall gibt es keinen
-Prädiktor, stattdessen wird \texttt{1} verwendet.
+Prädiktor. Stattdessen wird \texttt{1} verwendet.
 
 <<echo = FALSE>>=
 options(digits = 7)
@@ -281,21 +283,21 @@ der letzten zwei Befehle strenger bzw.\ lockerer gerundet wird.
 Mit \texttt{predict()} erhält man einen Vektor mit $n$ Werten (hier: $n = 76$),
 der die `vorhergesagten' $y$-Werte enthält.
 (Ich mag den Begriff `vorhergesagt' hier nicht.)
-Es handelt sich um die $y$-Werte abzüglich der $\hat{\varepsilon}$-Werte: $\widehat{y_i} = y_i - \widehat{\varepsilon_i}$.
+Es handelt sich um die $y$-Werte abzüglich der $\hat{\varepsilon}$-Werte: $\widehat{y_i} = y_i - \widehat{\varepsilon}_i$.
 <<>>=
 predict(mod.lm)
 @
-In unserem Fall sind dies lediglich 76 Wiederholungen von $\widehat{\beta_0}$. Der Grund ist dieser:
+In unserem Fall sind dies lediglich 76 Wiederholungen von $\widehat{\beta}_0$. Der Grund ist dieser:
  \[
- y_i = \widehat{\beta_0} + \widehat{\varepsilon_i}.
+ y_i = \widehat{\beta}_0 + \widehat{\varepsilon}_i.
  \]
 Also 
  \[
- \widehat{\varepsilon_i} = y_i - \widehat{\beta_0}, 
+ \widehat{\varepsilon}_i = y_i - \widehat{\beta}_0, 
  \]
 also 
  \[
- \widehat{y_i} = y_i - \widehat{\varepsilon_i} = y_i - (y_i - \widehat{\beta_0}) = \widehat{\beta_0}.
+ \widehat{y_i} = y_i - \widehat{\varepsilon}_i = y_i - (y_i - \widehat{\beta}_0) = \widehat{\beta}_0.
  \]
 
 Die Residuen kann man mit der \texttt{resid()}-Funktion abfragen.
@@ -310,7 +312,7 @@ resid(mod.lm)
 \subsection{Der Bootstrap}
 Genauso wie im letzten Kapitel können wir den Bootstrap
 verwenden, um die Unsicherheit in der Schätzung von $\beta_0$
-zu quantifizieren. Da in diesem Fall $\widehat{\beta_0}$ gleich dem
+zu quantifizieren. Da in diesem Fall $\widehat{\beta}_0$ gleich dem
 Stichprobenmittel ist,
 ergibt dies natürlich die gleiche Lösung wie vorher. Aber es gibt
 mir die Gelegenheit, zu zeigen, wie man auch für komplexere
@@ -319,8 +321,8 @@ lineare Modelle den Bootstrap verwenden kann.
 Die Logik ist wiederum, dass wir die Stichprobe stellvertretend
 für die Population einsetzen. Aber anstatt Bootstrap-Stichproben
 aus der Stichprobe zu ziehen, ziehen wir diesmal Bootstrap-Stichproben
-aus den Residuen ($\varepsilon$). Diese kombinieren wir dann
-mit $\widehat{\beta_0}$, um die Bootstrap-Stichproben zu generieren.
+aus den Residuen ($\widehat{\varepsilon}$). Diese kombinieren wir dann
+mit $\widehat{\beta}_0$, um die Bootstrap-Stichproben zu generieren.
 Wenn wir uns nur fürs Mittel interessieren, hat diese Methode
 überhaupt keinen Mehrwert, denn sie ist mathematisch der zuerst
 besprochenen Bootstrap-Methode gleich. Aber sie ist pädagogisch wertvoller
@@ -328,17 +330,17 @@ besprochenen Bootstrap-Methode gleich. Aber sie ist pädagogisch wertvoller
 wenn wir später mehrere $\beta$s haben werden.
 Konkret:
 \begin{enumerate}\label{bootstrapoverview}
- \item Man berechnet $\widehat{\beta_0}$ und erhält dazu auch noch
+ \item Man berechnet $\widehat{\beta}_0$ und erhält dazu auch noch
  einen Vektor $\hat{\varepsilon}$, der die Werte
- $\widehat{\varepsilon_1}$ bis $\widehat{\varepsilon_n}$ enthält.
+ $\widehat{\varepsilon}_1$ bis $\widehat{\varepsilon}_n$ enthält.
  \item Man zieht eine Bootstrap-Stichprobe aus $\hat{\varepsilon}$ (\textit{sampling with replacement}).
  Diese kann man als $\hat{\varepsilon}^{*}$ bezeichnen.
  Dieser Vektor enthält ebenso $n$ Werte,
- wobei bestimmte $\widehat{\varepsilon_i}$ eventuell
+ wobei bestimmte $\widehat{\varepsilon}_i$ eventuell
  nicht vorkommen, andere dafür mehrmals.
- \item Man kombiniert $\widehat{\beta_0}$ und $\hat{\varepsilon}^{*}$. Dies ergibt
- eine neue Reihe von $y$-Werten: $y_i^{*} = \widehat{\beta_0} + \widehat{\varepsilon_i}^{*}$.
- \item Man schätzt nun auf der Basis von $y^{*}$ erneut den Parameter von Interesse ($\widehat{\beta_0}^{*}$).
+ \item Man kombiniert $\widehat{\beta}_0$ und $\hat{\varepsilon}^{*}$. Dies ergibt
+ eine neue Reihe von $y$-Werten: $y_i^{*} = \widehat{\beta}_0 + \widehat{\varepsilon}_i^{*}$.
+ \item Man schätzt nun auf der Basis von $y^{*}$ erneut den Parameter von Interesse ($\widehat{\beta}_0^{*}$).
  \item Man führt Schritte 2--4 ein paar tausend Mal aus und erhält so die Verteilung
  der gebootstrappten $\beta_0$-Schätzungen.
 \end{enumerate}
@@ -351,16 +353,9 @@ residuals <- resid(mod.lm)
 predictions <- predict(mod.lm)
 
 for (i in 1:n_bootstrap) {
-  # Residuen bootstrappen
   bs_residual <- sample(residuals, replace = TRUE)
-
-  # neuen Outcome kreieren
   bs_outcome <- predictions + bs_residual
-
-  # Modell neu berechnen mit diesem Outcome
   bs_mod <- lm(bs_outcome ~ 1)
-
-  # Schätzung speichern
   bs_b0[i] <- coef(bs_mod)[1]
 }
 @
@@ -372,7 +367,7 @@ berechnen. Die Ergebnisse sind natürlich identisch
 mit jenen aus Kapitel \ref{ch:uncertainty}.
 
 <<eval = FALSE>>=
-# Das Histogramm wird hier nicht gezeigt.
+# Histogrammhier nicht gezeigt
 hist(bs_b0)
 @
 
@@ -421,7 +416,7 @@ sind diese Werte identisch, aber sobald Prädiktoren
 im Spiel sind, liefert \texttt{sigma()} die bessere Schätzung
 der Standardabweichung der Residuen. Sie wird so berechnet:
 \begin{equation}\label{eq:sigmap}
-\widehat{\sigma_{\varepsilon}} = \sqrt{\frac{1}{n - p} \sum_{i = 1}^{n} \widehat{\varepsilon_i^2}},
+\widehat{\sigma_{\varepsilon}} = \sqrt{\frac{1}{n - p} \sum_{i = 1}^{n} \widehat{\varepsilon}_i^2},
 \end{equation}
 wo $p$ die
 Anzahl geschätzten $\beta$s ist.
@@ -447,16 +442,9 @@ sd_residuals <- sigma(mod.lm)
 predictions <- predict(mod.lm)
 
 for (i in 1:n_bootstrap) {
-  # neue Residuen aus Normalverteilung generieren
   bs_residual <- rnorm(n = 76, mean = 0, sd = sd_residuals)
-
-  # neuen Outcome kreieren
   bs_outcome <- predictions + bs_residual
-
-  # Modell neu berechnen mit diesem Outcome
   bs_mod <- lm(bs_outcome ~ 1)
-
-  # Schätzung speichern
   bs_b0[i] <- coef(bs_mod)[1]
 }
 @
@@ -506,7 +494,7 @@ Annahme treffen, dass die Residuen grob gesagt normalverteilt sind, aber nicht,
 dass die Beobachtungen beliebig feinkörnig sein können. Mit dem unten stehenden
 Code wird erneut ein parameterischer Bootstrap durchgeführt, aber die generierten Beobachtungen werden
 auf Ganzzahlen gerundet. Ausserdem werden allfällige generierte Beobachtungen,
-die ausserhalb dem zulässigen Bereich der \texttt{GJT}-Variablen liegen,
+die ausserhalb des zulässigen Bereichs der \texttt{GJT}-Variablen liegen,
 auf 204 bzw.\ auf 0 gesetzt.
 <<cache = TRUE>>=
 n_bootstrap <- 20000
@@ -515,10 +503,7 @@ sd_residuals <- sigma(mod.lm)
 predictions <- predict(mod.lm)
 
 for (i in 1:n_bootstrap) {
-  # neue Residuen aus Normalverteilung generieren
   bs_residual <- rnorm(n = 76, mean = 0, sd = sd_residuals)
-
-  # neuen Outcome kreieren
   bs_outcome <- predictions + bs_residual
   
   # runden + einschränken
@@ -526,10 +511,7 @@ for (i in 1:n_bootstrap) {
   bs_outcome[bs_outcome > 204] <- 204
   bs_outcome[bs_outcome < 0] <- 0
 
-  # Modell neu berechnen mit diesem Outcome
   bs_mod <- lm(bs_outcome ~ 1)
-
-  # Schätzung speichern
   bs_b0[i] <- coef(bs_mod)[1]
 }
 
