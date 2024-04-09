@@ -131,9 +131,10 @@ sollte die Frage der \textbf{Relevanz} immer im Vordergrund stehen.
 
 Manchmal kann man übrigens
 Daten sinnvoll transformieren, sodass der Zusammenhang
-linear wird (Beispiele in etwa \citealp{Baayen2008} und \citealp{Gelman2007}).
-Ist dies nicht möglich, dann dürften komplexere Verfahren
-geeignet sein. Siehe hierzu \url{https://m-clark.github.io/generalized-additive-models/}, \citet{Wieling2018} und \citet{Baayen2020}.
+linear wird (Beispiele in etwa \citealp{Baayen2008}, und \citealp{Gelman2007}).
+Ist dies nicht möglich und reicht eine grafische Darstellung nicht, 
+dann dürften komplexere Verfahren geeignet sein. 
+Siehe hierzu \url{https://m-clark.github.io/generalized-additive-models/}, \citet{Wieling2018} und \citet{Baayen2020}.
 \parend
 
 \begin{framed}
@@ -595,9 +596,9 @@ oder (c) der vermutete Ausreisser
 überhaupt ein legitimer Datenpunkt ist.
 
 \mypar[`starke' und `schwache' Korrelationen]{Bemerkung}
-Korrelationskoeffizienten werden oft---ohne
+Korrelationskoeffizienten werden oft -- ohne
 Berücksichtigung der Forschungsfrage oder des
-Kontextes---als klein bzw.\ schwach, mittelgross oder gross bzw.\ stark
+Kontextes -- als klein bzw.\ schwach, mittelgross oder gross bzw.\ stark
 eingestuft. Ich halte dies für wenig sinnvoll,
 weshalb ich diese Einstufungen hier nicht
 reproduziere.
@@ -666,8 +667,8 @@ konstruiert, werde ich hier nicht reproduzieren, da sie
 erstens abschreckt und zweitens keinen konzeptuellen
 Mehrwert bietet. Sie basiert auf der Annahme, dass
 die Population, aus der die beiden Variablen gezogen wurden,
-`bivariat normal' ist. Grundsätzlich heisst dies, dass---insofern
-es einen Zusammenhang zwischen den Variablen gibt---dieser Zusammenhang
+`bivariat normal' ist. Grundsätzlich heisst dies, dass -- insofern
+es einen Zusammenhang zwischen den Variablen gibt -- dieser Zusammenhang
 linear ist und beide Variablen normalverteilt sind.
 Wenn diese Annahmen plausibel sind,
 kann das Konfidenzinterval (hier wiederum ein 90\%-Konfidenzintervall)
@@ -1074,7 +1075,10 @@ aufs lineare Modell mit einem Prädiktor angewandt:
  \item Man zieht eine Bootstrap-Stichprobe aus $\widehat{\varepsilon}$.
  Nenne diese $\widehat{\varepsilon}^{*}$.
  \item Man kombiniert $\widehat{\beta_0}$, $\widehat{\beta_1}x_i$  und $\widehat{\varepsilon}^{*}$. Dies ergibt
- eine neue Reihe von $y$-Werten: $y_i^{*} = \widehat{\beta_0} + \widehat{\beta_1}x_i + \widehat{\varepsilon_i}^{*}$, $i = 1, \dots, n$.
+ eine neue Reihe von $y$-Werten: 
+ \[
+ y_i^{*} = \widehat{\beta_0} + \widehat{\beta_1}x_i + \widehat{\varepsilon_i}^{*}, i = 1, \dots, n.
+ \]
  \item Auf der Basis von $y_i^{*}$ wird $\widehat{\beta}$ erneut geschätzt.
  \item Schritte 2--4 werden ein paar tausend Mal ausgeführt, sodass man die Verteilung der gebootstrappten $\beta$-Schätzungen erhält.
 \end{enumerate}
@@ -1262,7 +1266,7 @@ bs_y_hat <- matrix(nrow = runs,
                    ncol = length(neue_aoa))
 
 for (i in 1:runs) {
-  bs_y_hat[i, ] <- bs_beta[i, 1] + bs_beta[i, 2]*neue_aoa
+  bs_y_hat[i, ] <- bs_beta[i, 1] + bs_beta[i, 2] * neue_aoa
 }
 @
 
@@ -1404,7 +1408,7 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
  Damit ist Folgendes gemeint: Wenn Regressionsparameter mit
  der Methode der kleinsten Quadrate geschätzt werden, dann
  sind diese Schätzungen weder tendenziell Überschätzungen
- noch tendenziell Unterschätzungen---die Schätzungen
+ noch tendenziell Unterschätzungen -- die Schätzungen
  sind also unverzerrt. Es gibt aber auch andere Methoden,
  um diese Parameter unverzerrt zu schätzen.
  Wenn die `i.i.d.'-Bedingung erfüllt, ist es ausserdem so,
@@ -1427,7 +1431,7 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
 
  Typische Verletzungen der Unabhängigkeitsannahme können
  mit sog.\ \term{gemischten Modellen} behoben werden; siehe
- Kapitel \ref{ch:weiterbildung} für Literaturvorschläge.
+ \textcolor{blue}{Ausblickskapitel} für Literaturvorschläge.
  Für Verletzungen der Homoskedastizitätsannahme bietet sich
  eine andere Schätzungsmethode als \textit{ordinary least squares},
  die sog.\ \textit{generalised least squares}
@@ -1475,8 +1479,7 @@ dass wir annehmen, dass die Restfehler aus einer Normalverteilung
 mit Mittel 0 und Varianz $\sigma_{\varepsilon}^2$ stammen.
 $\sigma_{\varepsilon}^2$ ist ein einziger (obgleich unbekannter) Wert, sodass klar ist,
 dass wir davon ausgehen, dass die Streuung der Residuen nicht von $x$
-(und somit $\widehat{y}$ abhängt). Sowohl die Unabhängigkeits- als
-auch die Homoskedastizitätsannahme werden von dieser Annahme umfasst.
+(und somit $\widehat{y}$ abhängt).
 
 $\sigma_{\varepsilon}$ ist zwar unbekannt, aber wird anhand der Stichprobe geschätzt;
 siehe Gleichung \vref{eq:sigmap}. Der folgende Code zeigt, wie die Bootstrapschätzungen

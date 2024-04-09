@@ -1184,7 +1184,7 @@ Allgemeiner gilt für eine Zufallsvariable $X$ mit einer diskreten Gleichverteil
 \]
 dass
 \[
-  \E(X) = \frac{a + b}{2}, \Var(X) = \frac{b^2 - 1}{12}.
+  \E(X) = \frac{a + b}{2}, \Var(X) = \frac{(b - a + 1)^2 - 1}{12}.
 \]
 
 \mypar{Aufgabe}
