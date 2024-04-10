@@ -1718,7 +1718,7 @@ Sie das Stichprobenmittel des Prädiktors von den Prädiktorwerten
 abziehen und mit diesen neuen Werten arbeiten.
 Diese Technik heisst \term{zentrieren} (\textit{centring}).
 Ein Vorteil des Zentrierens ist, dass der geschätzte Schnittpunkt
-einem jetzt sofort auch sagt, was das Stichprobenmittel der $y$-Variable ist.
+einem jetzt sofort auch sagt, was das Stichprobenmittel der $y$-Variablen ist.
 
 <<>>=
 # AOA zentrieren
@@ -1732,7 +1732,7 @@ summary(aoa.lm)$coefficients
 @
 
 Achten Sie aber darauf, dass eine Versuchsperson mit einem AOA
-von 35 jetzt für das Modell eine Versuchsperson mit einem \texttt{c.AOA}
+von 35 für das Modell eine Versuchsperson mit einem \texttt{c.AOA}
 von $35 - \bar{x}_{AOA} = 2.46$ ist:
 <<>>=
 predict(aoa.lm, newdata = tibble(c.AOA = 35 - mean(d$AOA)),
@@ -1781,7 +1781,7 @@ nicht erwarten, wenn man sich das Streudiagramm am Anfang dieses
 Kapitels angeschaut hat. In meiner Erfahrung stösst man selten
 auf Überraschungen, wenn man die Daten bereits ausführlich
 grafisch dargestellt hat.
-<<fig.cap = "Grafische Modelldiagnose des \\texttt{aoa.lm}-Modells mithilfe der \\texttt{plot()}-Funktion. \\textit{Links oben:} Zusammenhang zwischen Residuen und $\\widehat{y}$. Die rote Trendlinie sollte ungefähr flach sein. Sonstige auffällige Muster wären auch unerwünscht. \\textit{Rechts oben:} Normalität der Residuen. Wenn die Residuen normalverteilt sind, liegen sie grundsätzlich auf der gestrichelten Diagonale. \\textit{Links unten:} Streuung in den Residuen. Eine flache rote Trendlinie deutet auf Homoskedastizität hin. \\textit{Rechts unten:} Manchmal gibt es in dieser Grafik ein paar gestrichelte rote Linien. Datenpunkte, die jenseits dieser Linien liegen, dürften viel einflussreicher als andere Datenpunkte sein. Bei allen Grafiken ist jedoch zu bemerken, dass die Muster aufgrund des Stichprobenfehlers unerwünscht aussehen können, auch wenn die Annahmen tatsächlich berechntigt sind.\\label{fig:modeldiagnostics}", fig.width = 4*1.5, fig.height = 4*1.5, out.width=".66\\textwidth", echo = FALSE>>=
+<<fig.cap = "Grafische Modelldiagnose des \\texttt{aoa.lm}-Modells mithilfe der \\texttt{plot()}-Funktion. \\textit{Links oben:} Zusammenhang zwischen Residuen und $\\widehat{y}$. Die rote Trendlinie sollte ungefähr flach sein. Sonstige auffällige Muster wären auch unerwünscht. \\textit{Rechts oben:} Normalität der Residuen. Wenn die Residuen normalverteilt sind, liegen sie grundsätzlich auf der gestrichelten Diagonale. \\textit{Links unten:} Streuung in den Residuen. Eine flache rote Trendlinie deutet auf Homoskedastizität hin. \\textit{Rechts unten:} Manchmal gibt es in dieser Grafik ein paar gestrichelte rote Linien. Datenpunkte, die jenseits dieser Linien liegen, dürften viel einflussreicher als andere Datenpunkte sein. Bei allen Grafiken ist jedoch zu bemerken, dass die Muster aufgrund des Stichprobenfehlers unerwünscht aussehen können, auch wenn die Annahmen tatsächlich berechtigt sind.\\label{fig:modeldiagnostics}", fig.width = 4*1.5, fig.height = 4*1.5, out.width=".66\\textwidth", echo = FALSE>>=
 # 4 Grafiken in 2*2-Raster zeichnen.
 # (Dies funktioniert nicht für ggplot!)
 par(mfrow = c(2, 2), cex = 0.6, mar = c(4, 4, 2, 2))
