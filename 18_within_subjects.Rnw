@@ -1,4 +1,4 @@
-\chapter{Within-subjects-Experimente}
+\chapter{Within-subjects-Experimente}\label{ch:withinsubjects}
 In den Experimenten, die wir bisher betrachtet haben, wurden die Versuchspersonen
 nach dem Zufallsprinzip den Konditionen des Experiments zugeordnet.
 Der Wert der Variablen \textit{Kondition} variiert in solchen Experimenten

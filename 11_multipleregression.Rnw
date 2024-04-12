@@ -91,7 +91,7 @@ Aber das ist eigentlich nicht so wichtig:
 \begin{align}
 z_i &\sim \mathcal{N}(0, 1^2), \nonumber
 \end{align}
-für $i = 1, \dots, n$.
+i.i.d.\ für $i = 1, \dots, n$.
 Dann nehmen wir an, dass eine Zunahme von einer Einheit in der $z$-Variablen
 eine Zunahme von 1.2 Einheiten in der $x$-Variablen bewirkt.
 Es gibt aber noch Streuung in der $x$-Variablen, die nicht $z$ zugeschrieben
@@ -140,7 +140,7 @@ d <- tibble(y, x, z)
 
 Um den Zusammenhang zwischen mehreren kontinuierlichen Variablen
 aufs Mal grafisch darzustellen, bietet sich eine Streudiagrammmatrix
-an. Ich zeichne soclhe Streu\-diagramm\-matrizen mit der Funktion
+an. Ich zeichne solche Streu\-diagramm\-matrizen mit der Funktion
 \texttt{scatterplot\_matrix()}. 
 Diese basiert auf der \texttt{pairs()}-Funktion, die bereits in R
 vorhanden ist.
@@ -225,7 +225,7 @@ ohne die nicht im Modell vorhandene $z$-Variable zu berücksichtigen!
 Wenn man die geschätzten Parameter des zweiten Modells mit Gleichung \vref{eq:dag1}
 vergleicht, sieht man, dass das zweite Modell die Parameter aus dieser
 Gleichung in etwa richtig schätzt. Tatsächlich sind die Unterschiede zwischen
-den Parameterschätzungen des Modells und den Parameter aus der Gleichung
+den Parameterschätzungen des Modells und den Parametern aus der Gleichung
 rein zufallsbedingt und ausserdem schätzt das Modell diese Parameter im Schnitt
 ohne Verzerrung. Wenn man dies genauer überprüfen möchte, kann man eine Simulation
 programmieren, in der man anhand von Gleichungen \ref{eq:dag1_x} und \ref{eq:dag1}
@@ -253,8 +253,8 @@ generate_dag1 <- function(
     y <- 5.2 + x_y*x + z_y*z + rnorm(n)
     mod.lm1 <- lm(y ~ x)
     mod.lm2 <- lm(y ~ x + z)
-    est_lm1[[i]] <- coef(mod.lm1)[[2]]
-    est_lm2[[i]] <- coef(mod.lm2)[[2]]
+    est_lm1[i] <- coef(mod.lm1)[2]
+    est_lm2[i] <- coef(mod.lm2)[2]
   }
 
   return(tibble(`Modell 1` = est_lm1,
@@ -300,7 +300,7 @@ Und drittens ist es möglich, dass die Störfaktoren
 einen nichtlinearen Effekt ausüben, während wir
 oben nur lineare Effekte berücksichtigt haben.
 Die Konsequenzen der ersten beiden Umstände können Sie
-in den folgenden fakultativen Aufgaben genauer unter
+in den folgenden Aufgaben genauer unter
 die Lupe nehmen. Das Fazit verrate ich Ihnen schon:
 
 \begin{framed}
@@ -597,7 +597,7 @@ Der Grund ist nicht, dass man eine verzerrte Schätzung vorbeugen will --
 auch ohne Kontrollvariablen würde das Modell eine unverzerrte Schätzung liefern.
 Vielmehr ist der Grund, dass man die Genauigkeit der Schätzung dadurch erhöhen kann.
 Dieser Vorteil trifft übrigens auch dann zu, und sogar \emph{besonders} dann, wenn
-die Kontrollvariablen ($z$) nicht mit der unabhängigen Variablen ($x$) korreliert ist.
+die Kontrollvariable ($z$) nicht mit der unabhängigen Variablen ($x$) korreliert ist.
 
 Übertreiben Sie aber nicht mit der Anzahl Kontrollvariablen. Eine oder zwei Kontrollvariablen,
 von denen man im Vorfeld weiss, dass sie stark mit dem outcome, aber kaum miteinander,
@@ -736,7 +736,7 @@ ggplot(d_per_class,
        aes(x = mean_T1, y = mean_T3,
            colour = Group)) +
   geom_point(shape = 1) +
-  geom_smooth(method = "lm", se = TRUE) +
+  geom_smooth(method = "lm", se = FALSE) +
   xlab("Klassendurchschnitt\nPrätest") +
   ylab("Klassendurchschnitt\nPosttest")
 @
@@ -958,7 +958,7 @@ Modell 29\% der Varianz im outcome:
 
 Es gibt noch andere Methoden, um $R^2$ zu berechnen,
 aber diese ergeben beim allgemeinen linearen Modell
-alle die gleiche Lösung---nicht jedoch beim verallgemeinerten
+alle die gleiche Lösung -- nicht jedoch beim verallgemeinerten
 linearen Modell, das wir noch nicht besprochen haben.
 Siehe hierzu \citet{Kvalseth1985}.
 

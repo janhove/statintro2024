@@ -169,7 +169,7 @@ Die grafische Darstellung zeigt, dass der Median der `mit Banknote'-Kondition
 zwar höher ist als jener der `ohne Banknote'-Kondition, aber das die
 Überlappung zwischen beiden Konditionen erheblich ist.
 Die numerische Zusammenfassung zeigt ausserdem, dass sich die Mittel kaum unterscheiden.
-Trotzdem können wir diese Daten---ähnlich wie im letzten Kapitel---in ein Modell giessen.
+Trotzdem können wir diese Daten -- ähnlich wie im letzten Kapitel -- in ein Modell giessen.
 Dieses Modell wird ebenfalls von Gleichung \vref{eq:simpleregression} beschrieben, die hier wiederholt wird:
 \begin{equation}
 y_i = \beta_0 + \beta_1 x_i + \varepsilon_i,
@@ -467,11 +467,12 @@ Die wichtigsten Annahmen dieses Modells sind die folgenden.
   werden. \textit{Within-subject}-Experimente bieten in der Regel
   mehr statistische Genauigkeit, sind aber schwieriger zu analysieren.
   Eine Option ist die Verwendung gemischter Modelle;
-  siehe Kapitel \ref{ch:weiterbildung} für Literaturempfehlungen.
+  siehe \textcolor{blue}{Ausblickskapitel} für Literaturempfehlungen.
   Wenn alle Versuchspersonen in zwei Konditionen getestet
   werden und es nur zwei Konditionen gibt, ist eine einfache Option,
   den Wert jeder Versuchsperson in der einen Kondition von ihren Wert
   in der anderen abzuziehen und diese Unterschiede zu analysieren.
+  Siehe hierzu Kapitel \ref{ch:withinsubjects}.
 
   Die Unabhängigkeitsannahme lässt sich meistens schwer überprüfen:
   Sogar kaum merkbare Abhängigkeiten können sich verheerend auf die 
@@ -819,12 +820,12 @@ ist dies nicht der Fall.
   Unterschied zwischen Kindern aus der Deutschschweiz und Kindern aus der Romandie zeigt,
   und der dritte Parameter den durchschnittlichen Unterschied zwischen Kindern aus der Romandie
   und Kindern aus Portugal zeigt. Rechnen Sie anhand des Modelloutputs kurz nach, ob die erhaltenen
-  Schätzungen auch stimmen. (Tipp: Siehe Abschnitt \ref{sec:kodierungssysteme}.)
+  Schätzungen auch stimmen. (Tipp: Siehe meinen Blogeintrag oder \citet{Schad2020}.)
 
   \item Fakultativ (schwierig): Kodieren Sie die Dummy-Variablen so, dass das Intercept das Mittel
   der Scores der Kinder aus Portugal zeigt, der nächste Parameter den durchschnittlichen Unterschied zwischen Kindern aus Portugal und Kindern aus der Schweiz (sowohl Romandie als auch Deutschschweiz)
   und der letzte Parameter den durchschnittlichen Unterschied zwischen der Romandie und der Deutschschweiz. Rechnen Sie anhand des Modelloutputs nach, ob die erhaltenen
-  Schätzungen auch stimmen. (Tipp: Siehe Abschnitt \ref{sec:kodierungssysteme}, insbesondere den Blogeintrag oder \citet{Schad2020}.)\\
+  Schätzungen auch stimmen. (Tipp: Siehe meinen Blogeintrag oder \citet{Schad2020}.)\\
   (Eine solche Kodierung wäre geeignet, wenn Sie sich für diese zwei Forschungsfragen interessieren: (1) Wie stark unterscheidet sich die Leistung von Kindern in Portugal und portugiesischstämmigen Kindern in der Schweiz? (2) Wie stark unterscheidet sich die Leistung von portugiesischstämmigen Kindern in der Schweiz je nach Sprachregion?) \parend
   \end{enumerate}
 

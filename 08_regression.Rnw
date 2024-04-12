@@ -991,7 +991,7 @@ summary(gjt.lm)
 \parend
 \end{enumerate}
 
-\mypar{Aufgabe}
+\mypar{Aufgabe}\label{ex:vanhove2014}
 Die Datei \texttt{vanhove2014\_cognates.csv} enthält eine Zusammenfassung der Daten meiner Dissertation
  \citep{Vanhove2014}.
  163 Deutschschweizer Versuchspersonen wurden gebeten, 45 geschriebene und 45 (andere) gesprochene
