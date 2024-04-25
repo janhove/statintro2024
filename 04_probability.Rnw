@@ -765,7 +765,7 @@ beispielsweise das Ereignis, dass $X \geq 10$ ist ($\Prob(X \geq 10) = 2/9$).
 Wir widmen uns nun den wichtigsten Darstellungen und Eigenschaften von
 Zufallsvariablen.
 
-\subsection{Die Verteilungs- und Quantilfunktion}
+\subsection{Die Verteilungs- und Quantilfunktion}\label{sec:verteilungsfunktion}
 Zufallsvariablen werden vollständig von ihrer \term{Verteilungsfunktion}
 charakteristiert (vgl.\ Abschnitt \ref{sec:descriptive_cumprop}). 
 Die Verteilungsfunktion $F_X$ einer Zufallsvariablen $X$
@@ -1249,7 +1249,7 @@ Daher
   und das Nicht-Ziehen eines Asses als 0.
 \parend
 
-\subsection{Die Binomialverteilung}
+\subsection{Die Binomialverteilung}\label{sec:binomial}
 Seien $X_1, \dots, X_n$ unabhängige Zufallsvariablen, die alle
 Bernoulli($p$)-verteilt sind. Dann folgt $X := X_1 + \dots + X_n$
 einer \term{Binomialverteilung} mit Parametern $n$ und $p$.

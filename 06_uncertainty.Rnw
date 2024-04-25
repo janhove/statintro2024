@@ -1171,7 +1171,7 @@ bei Stichprobe 1 schmaler sein als bei Stichprobe 2, wenn Sie
 diese Intervalle mit $t$-Verteilungen konstruieren?
 \parend
 
-\mypar[Approximative Vertrauensschranken fürs Mittel]{Beispiel}
+\mypar[approximative Vertrauensschranken fürs Mittel]{Bemerkung}
   Wenn die Zufallsstichprobe nicht aus einer Normalverteilung stammt,
   so kann man die Vertrauensschranken und Konfidenzintervalle aus Beispiel \ref{bsp:ci_exact_t}
   immer noch als Annäherungen einsetzen. Eine bereits besprochene Alternative ist,

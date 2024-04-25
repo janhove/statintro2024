@@ -108,7 +108,7 @@ Sicher hätten wir dieses Design verfeinern können, etwa indem wir
 die Herkunft der Versuchspersonen in den beiden Gruppen fixiert
 hätten (z.B.\ eine Bünderin, ein Zürcher und eine Bernerin in jeder
 Gruppe; wer sich für solche raffiniertere Designs interessiert,
-kann sich ausgewählte Kapitel aus \citealp{Oehlert2010}, anschauen)
+kann sich ausgewählte Kapitel in \citealp{Oehlert2010}, anschauen)
 oder indem wir die Sprachgeschwindigkeit der Versuchspersonen auch
 vor dem Experiment gemessen hätten (`Prätest'), sodass wir diese
 in der Analyse hätten mitberücksichtigen können. Aber auch ohne solche
@@ -123,9 +123,8 @@ daraus sogar schliessen, dass dieser Unterschied z.T.\ von
 unserer experimentellen Manipulation \emph{verursacht} wurde:
 Der Konsum von 5 Deziliter alkoholhaltigem Bier senkt die
 Sprechgeschwindigkeit.
-
 Bevor wir eine solche kausale Aussage machen, müssen wir
-uns mit einer trivialeren Erklärung beschäftigen: Vielleicht
+uns jedoch mit einer trivialeren Erklärung beschäftigen: Vielleicht
 beruht der Unterschied auf reinem Zufall. Dies ist unsere
 \term{Nullhypothese} ($H_0$),
 die wir mit einer ziemlich vagen \term{Alternativhypothese} ($H_A$)
@@ -134,8 +133,8 @@ kontrastieren können:
   \item $H_0$: Der Unterschied zwischen beiden Mitteln ist \emph{nur}
   dem Zufallsfaktor zuzuschreiben.
 
-  \item $H_A$: Der Unterschied ist \emph{auch teilweise} der
-  experimentellen Manipulation zuzuschreiben.
+  \item $H_A$: Der Unterschied ist \emph{nicht nur} dem Zufallsfaktor
+  zuzuschreiben.
 \end{itemize}
 
 In der sog.\ `frequentistischen' Tradition des Nullhypothesen Testens
@@ -150,7 +149,7 @@ daraus in der Regel die Schlussfolgerung, dass die Annahme, dass die
 Nullhypothese stimmt, wohl nicht berechtigt ist,
 und dass auch ein systematischer Effekt im Spiel ist.
 In der Regel hantiert man dabei eine arbiträre Schwelle $\alpha$ (oft $\alpha = 0.05$),
-unter der der $p$-Wert als zu klein gilt.
+unter welcher der $p$-Wert als zu klein gilt.
 
 Bevor wir uns einigen konzeptuellen Problemen mit
 diesem Vorgehen widmen und einige Komplikationen besprechen,
@@ -170,7 +169,8 @@ in der Experimentalgruppe festgestellt.
 
 Insgesamt gibt es 20 Möglichkeiten, wie die Experimental-
 und Kontrollgruppe hätten aussehen können. Diese Zahl können wir
-mit dem binomischen Koeffizienten berechnen:\footnote{Für grössere
+mit dem binomischen Koeffizienten (vgl.\ Abschnitt \ref{sec:binomial}) 
+berechnen:\footnote{Für grössere
 Gruppen wird diese Zahl schnell zu gross, um das Vorgehen
 nachvollziehbar darzustellen. So gibt es 137'846'528'820 Möglichkeiten,
 um eine Gruppe von 40 Teilnehmenden in zwei gleich grosse
@@ -187,7 +187,7 @@ Jede dieser Möglichkeiten ist in Abbildung \ref{fig:20moeglichkeiten}
 dargestellt. Für jede können wir berechnen, wie gross der
 Gruppenunterschied ist. Der R-Code ist dabei nicht wichtig,
 weshalb ich ihn nicht zeige; nur die Logik ist wichtig.
-<<echo = FALSE, fig.width = 10, fig.height = 13, out.width=".8\\textwidth", fig.cap = "Die 20 möglichen Ergebnisse laut der Annahme, dass die Unterschiede in der Stichprobe nur der Randomisierung zuzuschreiben sind.\\label{fig:20moeglichkeiten}">>=
+<<echo = FALSE, fig.width = 10, fig.height = 13, out.width=".8\\textwidth", fig.cap = "Die 20 möglichen Ergebnisse laut der Annahme, dass der Unterschied zwischen den Konditionen nur der Randomisierung zuzuschreiben ist.\\label{fig:20moeglichkeiten}">>=
 possible_control_groups <- combn(c("Sandra", "Daniel", "Maria",
                                    "Nicole", "Michael", "Thomas"), 3)
 
@@ -287,29 +287,78 @@ ggplot(df_diffs, aes(diffs, y = sample)) +
     \Prob(P \leq \alpha) = 0 \leq \alpha
   \]
   für alle $\alpha \in (0,1)$. Sie ist jedoch überhaupt nicht nützlich als
-  $p$-Wert, da sie die gleiche Verteilung hat -- egal, ob die Nullhypothese
+  $p$-Wert, da sie immer die gleiche Verteilung hat -- egal, ob die Nullhypothese
   stimmt. Auch eine Zufallsvariable $P \sim \textrm{Unif}((0,1))$ stellt
   ein gültiger $p$-Wert dar, denn
   \[
-    \Prob(P \leq \alpha) = \alpha \leq \alpha.
+    \Prob(P \leq \alpha) = \alpha \leq \alpha,
   \]
-  Dieser $p$-Wert hat auch die gleiche Verteilung, egal ob die Nullhypothese
+  für alle $\alpha \in (0,1)$.
+  Dieser $p$-Wert hat auch immer die gleiche Verteilung, egal ob die Nullhypothese
   stimmt oder nicht.
-  Was wir uns wünschen, sind also $p$-Werte, die nur selten `klein' sind,
+  Was wir uns eigentlich wünschen, sind also $p$-Werte, die nur selten `klein' sind,
   wenn die Nullhypothese stimmt, aber viel öfters klein sind, wenn 
   sie nicht stimmt.
 \parend
+
+Das folgende Lemma erklärt, wieso der $p$-Wert, den wir im Beispiel oben berechnet haben,
+überhaupt ein gültiger $p$-Wert im Sinne von Definition \ref{def:pvalue} ist.
+Ein Beweis des Lemmas findet sich in \citet[][S.\ 5]{Duembgen2016}.
+
+\mypar{Lemma}\label{lemma:pvalue}
+  Sei $X$ eine Zufallsvariable mit Verteilungsfunktion $F_0$. 
+  Dann gelten
+  \begin{align*}
+    \Prob(F_0(X) \leq \alpha) &\leq \alpha,                             \tag{$p_{\ell}$}\\
+    \Prob(1 - F_0(X-) \leq \alpha) &\leq \alpha,                        \tag{$p_{r}$}\\
+    \Prob(2 \cdot \min\{F_0(X), 1 - F_0(X-)\} \leq \alpha) &\leq \alpha,\tag{$p_z$}
+  \end{align*}
+  für alle $\alpha \in (0,1)$.
+  (Zur Bedeutung von $F_0(X -)$, siehe Abschnitt \ref{sec:verteilungsfunktion}.)
+\parend
+
+Dieses Lemma impliziert nämlich, dass wir uns beim Berechnen von $p$-Werten
+der folgenden Schablone bedienen dürfen. 
+\begin{itemize}
+\item Zunächst überlegen wir uns,
+für welche Grösse $X$ wir uns überhaupt interessieren.
+Im obigen Beispiel interessierten wir uns für
+den Unterschied zwischen den Stichprobenmitteln, aber wir werden uns bald
+mit anderen Grössen beschäftigten.
+\item Wir überlegen uns nun, wie denn diese Grösse $X$ verteilt wäre,
+wenn die Nullhypothese stimmen würde. So erhalten wir die Verteilungsfunktion
+$F_0$ von $X$. Im obigen Beispiel ermittelten wir $F_0$, indem wir
+alle möglichen Zuordnungen durchgeackerten. Der Wert $F_0(r)$ entspräche dann
+der Proportion der Zuordnungen, die zu einem Gruppenunterschied im Mittel
+von höchstens $r$ Einheiten für die Alkohol-Gruppe führten.
+\item Laut dem Lemma können wir nun drei Arten von $p$-Werten berechnen
+($p_{\ell}, p_r, p_z$).
+Auf den Unterschied zwischen diesen drei Berechnungsarten kommen wir in 
+Bemerkung \ref{bem:einzweiseitig} zurück, aber im obigen Beispiel 
+haben wir den $p$-Wert berechnet als die Proportion von 
+Zuordnungen, für die der Gruppenunterschied kleiner als $-0.73$ oder
+grösser als $0.73$ war. Da beide Proportionen in diesem Beispiel gleich waren,
+gilt
+\[
+  F_0(-0.73) + (1 - F_0(-0.73 -)) = 2 \cdot F_0(-0.73) = 2 \cdot \min\{F_0(-0.73), 1 - F_0(-0.73 -)\}.
+\]
+Somit entspricht diese Gesamtproportion dem $p$-Wert $p_z$.
+Als Zufallsvariable $P$ in Definition \ref{def:pvalue} verwendeten wir also
+\[
+  P := 2 \cdot \min\{F_0(X), 1 - F_0(X -)\}.
+\]
+\end{itemize}
 
 \mypar[Verknüpfung zum Forschungsdesign]{Bemerkung}
 Der Hypothesentest, den wir soeben durchgeführt haben,
 ist ein \term{Randomisierungstest}. 
 Sein Gebrauch wird
 durch das Forschungsdesign, genauer gesagt: durch
-die uneingeschränkte Randomisierung und der Blindierung,
+die uneingeschränkte Randomisierung und die Blindierung,
 legitimiert:
 \begin{itemize}
 \item Wenn es zum Beispiel so gewesen wäre,
-dass wir Sandra etwa aus medizinischen Gründen nie der
+dass wir Sandra aus medizinischen Gründen nie der
 `mit Alkohol'-Gruppe zugewiesen hätten, dann hätte es nicht
 20 mögliche Ergebnisse unter der Nullhypothese gegeben, sondern
 nur 10: Alle Permutationen mit Sandra in der `mit Alkohol'-Gruppe
@@ -409,8 +458,8 @@ besagt nicht einmal, ob diese Änderung eine Beschleunigung
 oder eine Verlangsamung wäre.
 \parend
 
-\mypar[ein- und zweiseitige Tests]{Bemerkung}
-Im obigen Beispiel wurde ein \term{zweiseitiger Signifikanztest} verwendet:
+\mypar[ein- und zweiseitige Tests]{Bemerkung}\label{bem:einzweiseitig}
+Im obigen Beispiel wurde ein \term{zweiseitiger Signifikanztest} verwendet ($p_z$ in Lemma \ref{lemma:pvalue}):
 Es wurde nicht nur berechnet, wie wahrscheinlich es unter Annahme der Nullhypothese
 wäre, einen Unterschied von mindestens 0.73 Silben pro Sekunde zugunsten der Kontrollgruppe
 (dem beobachteten Ergebnis) anzutreffen, sondern auch, wie wahrscheinlich es unter
@@ -419,9 +468,10 @@ zugunsten der Experimentalgruppe anzutreffen. Der Grund hierfür ist, dass die A
 vage war und wir lediglich die Vermutung aufgestellt haben, dass Alkoholkonsum \emph{irgendeine}
 Änderung der Sprechgeschwindigkeit herbeiführen dürfte.
 
-In der Literatur trifft man ab und zu auch \term{einseitige Tests} an. Bei solchen Tests schaut man
-sich nur eine der beiden Wahrscheinlichkeiten (`grösser' oder `kleiner') an. Die $p$-Werte
-von einseitigen Tests sind kleiner als jene von zweiseitigen Tests. Einseitige Tests
+In der Literatur trifft man ab und zu auch \term{einseitige Tests} an. 
+Bei solchen Tests schaut man
+sich nur eine der beiden Wahrscheinlichkeiten (`kleiner' ($p_\ell$, $\ell$ für links) oder `grösser' ($p_r$; $r$ für rechts)) an. 
+Die $p$-Werte von einseitigen Tests sind kleiner als jene von zweiseitigen Tests. Einseitige Tests
 können sinnvoll sein, wenn man \emph{im Vorhinein} klar spezifiziert hat, dass nur ein Unterschied
 in einer bestimmten Richtung mit der wissenschaftlichen Hypothese, die hinter
 der Arbeit steckt, kompatibel ist. Für eine kurze Übersicht, siehe \href{https://daniellakens.blogspot.com/2016/03/one-sided-tests-efficient-and-underused.html}{\textit{One-sided tests: Efficient and underused}} unter \url{https://daniellakens.blogspot.com}.
