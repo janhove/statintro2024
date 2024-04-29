@@ -1,5 +1,5 @@
 \chapter{Der $t$-Test}\label{ch:ttest}
-Obwohl Permutationstests gültige Signifikanztests
+Obwohl Randomisierungs- und Permutationstests gültige Signifikanztests
 sind, deren Annahmen sich in kontrollierten Experimenten
 durch das Forschungsdesign rechtfertigen lassen,
 trifft man sie in der Praxis selten an.
@@ -26,7 +26,7 @@ arrived at by this elementary method.''
 \end{quote}
 Im Folgenden stellen wir zunächst den $t$-Test vor, gefolgt
 von Varianzanalyse und dem $F$-Test. Gerade in einfacheren kontrollierten
-Experiment wie im letzten Kapitel würde ich jedoch nicht automatisch
+Experimenten wie im letzten Kapitel würde ich jedoch nicht automatisch
 auf diese Annäherungen aus der Prä-Computerära zurückgreifen, sondern
 einen Randomisierungs- oder Permutationstest in Erwägung ziehen.
 
@@ -69,10 +69,12 @@ ist.
   \]
   Für einen zweiseitigen $t$-Test schlagen wir nach, wie häufig wir
   bei einer $t(6)$-Verteilung Werte von $-1.80$ oder kleiner
-  und von $1.80$ oder grösser antreffen; siehe auch Abbildung \ref{fig:t6}:
+  und von $-1.80$ oder grösser antreffen; siehe auch Abbildung \ref{fig:t6}:
 <<>>=
 t0 <- (-2.4 - 1)/(5/sqrt(7))
-pt(-abs(t0), df = 7 - 1) + pt(abs(t0), df = 7 - 1, lower.tail = FALSE)
+p_l <- pt(t0, df = 7 - 1)
+p_r <- pt(t0, df = 7 - 1, lower.tail = FALSE)
+(p_z <- 2 * min(p_l, p_r))
 @
   Das heisst, wir erhalten einen $p$-Wert von etwa $0.12$.
 \parend
@@ -102,7 +104,7 @@ dass es für den Vergleich von zwei Gruppenmitteln geeignet ist.
 Dies resultiert im \term{Zweistichproben-$t$-Test}.
 Dieser geht von der Nullhypothese aus, dass zwei unabhängige Stichproben
 gezogen wurden:
-die erste zählt $n_1$ Beobachtungen 
+Die erste zählt $n_1$ Beobachtungen 
 aus einer Normalverteilung mit unbekanntem Mittel $\mu_1$ und
 unbekannter Varianz $\sigma^2$;
 die zweite zählt $n_2$ Beobachtungen aus einer Normalverteilung 
@@ -135,7 +137,7 @@ kann man also testen, ob die Daten mit diesem Unterschied kompatibel sind.
   Also gilt $\mu_1 - \mu_2 = 0$.
   Wir berechnen jeweils den $t$-Wert mit der \texttt{t.test()}-Funktion;
   die Einstellung \texttt{var.equal = TRUE} gibt an, dass wir davon ausgehen,
-  dass die Stichproben aus Normalverteilung mit gleicher Varianz stammen.
+  dass die Stichproben aus Normalverteilungen mit gleicher Varianz stammen.
 <<>>=
 n_runs <- 20000
 ttest_one_run <- function(n1, n2, sd1, sd2) {
@@ -151,8 +153,9 @@ t_values <- replicate(n_runs, ttest_one_run(n1, n2, 3, 3))
  dass ihre Verteilung einer $t$-Verteilung mit $3 + 5 - 2 = 6$ Freiheitsgraden
  entspricht (Abbildung \ref{fig:tvalues}).
 <<fig.width = 2*2, fig.height = 2*1.3, fig.cap = "Simulierte und theoretische Verteilungsfunktion. Die blaue Kurve stellt die empirische Verteilungsfunktion der 20'000 simulierten $t$-Werte dar; die rote Strichellinie ist die Verteilungsfunktion der $t_6$-Verteilung.\\label{fig:tvalues}", out.width = ".4\\textwidth">>=
-df_t <- tibble(t_values)
-ggplot(df_t, aes(t_values)) +
+t_values |> 
+  tibble() |> 
+  ggplot(aes(t_values)) +
   stat_ecdf(colour = "darkblue") +
   stat_function(fun = pt, args = list(df = n1 + n2 - 2),
                 colour = "red", linetype = "dashed") +
@@ -179,14 +182,16 @@ ausserhalb des Intervalls $[-7, 7]$ liegen.
   und
   \[
     T
-    = \frac{3.4 - 9 -(-2)}{\sqrt{4.6}\sqrt{\frac{1}{7} + \frac{1}{10}}}
+    = \frac{3.4 - 9 -(-2)}{\sqrt{S^2}\sqrt{\frac{1}{7} + \frac{1}{10}}}
     \approx -3.41.
   \]
   Wir gleichen diesen Wert mit einer $t_{15}$-Verteilung ab:
 <<>>=
 pooled_var <- ((7 - 1)*4 + (10 - 1)*5) / (7 + 10 - 2)
 t0 <- (3.4 - 9 - (-2)) / (sqrt(pooled_var) * sqrt(1/7 + 1/10))
-pt(-abs(t0), df = 7 + 10 - 2) + pt(abs(t0), df = 7 + 10 - 2, lower.tail = FALSE)
+p_l <- pt(t0, df = 7 + 10 - 2)
+p_r <- pt(t0, df = 7 + 10 - 2, lower.tail = FALSE)
+(p_z <- 2 * min(p_l, p_r))
 @
 Also $p = 0.004$. Falls wir eine $\alpha$-Schwelle von $0.05$ hantieren,
 würden wir hier die Nullhypothese verwerfen, dass die Stichproben aus Normalverteilungen
@@ -274,8 +279,7 @@ t.test(x1, x2, mu = 0.5, var.equal = FALSE) # nach Welch
 \mypar[Nutzen für nicht-normalverteilte Beobachtungen]{Bemerkung}\label{bm:ttestapprox}
   Die Nullhypothese, die beim $t$-Test überprüft wird, ist recht unrealistisch,
   besagt er doch, die Daten stammen aus einer Normalverteilung.
-  Normalverteilungen sind idealisierte mathematische Konstrukte -- sie sind
-  asymptotische Grenzverteilungen von Stichprobeneigenschaften.
+  Normalverteilungen sind idealisierte mathematische Konstrukte.
   In Tat und Wahrheit sind echte Daten nie normalverteilt.
   Beispielsweise können sie nur Werte in einem beschränkten Bereich annehmen, oder
   sie können nur eine auflistbare (abzählbare) Anzahl von Werten annehmen.

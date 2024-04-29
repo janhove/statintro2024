@@ -384,33 +384,43 @@ hätte man ebenfalls berücksichtigen müssen. \parend
 \end{itemize}
 
 \mypar[züfallige Auswahl vs.\ zufällige Zuordnung]{Bemerkung}
-Dieses Experiment und seine Auswertung illustrieren
-weiter den Unterschied zwischen \term{zufälliger Zuordnung}
-und \term{zufälliger Auswahl}: Wir haben unsere Versuchspersonen
-zufällig den experimentellen Konditionen zugeordnet,
+Dieses Experiment und seine Auswertung illustrieren den Unterschied zwischen
+\term{zufälliger Zuordnung} und \term{zufälliger Auswahl}:
+Wir haben unsere Versuchspersonen zufällig den Konditionen zugeordnet,
 aber wir haben sie nicht zufällig aus irgendeiner Population gewählt.
+In vielen Einführungen in die Inferenzstatistik werden $p$-Werte dahingegen
+eingeführt, indem man sich vorstellt, dass man zwei Zufallsstichproben aus
+zwei Populationen zieht und dass man sich für die Frage interessiert,
+ob beide Populationen das gleiche Mittel haben.
+Wie jedoch bereits besprochen in Abschnitt \ref{sec:nonrandom} bestehen die
+Daten in echten Projekten nur selten aus Zufallsstichproben;
+Experimente mit zufälliger Zuordnung sind aber durchaus gängig.
+
+Eine gewisse Vorsicht ist aber geboten.
 Wenn wir überzeugendere Evidenz für eine Wirkung der experimentellen
 Manipulation gefunden hätten,
-dann hätten wir folglich daraus immer noch nicht ohne Weiteres
+dann hätten wir daraus immer noch nicht ohne Weiteres
 schliessen können, dass die experimentelle Manipulation einen Effekt in
 einer bestimmten \emph{Population} hätte.
-Dazu hätten wir sowohl die Versuchsperson zufällig aus dieser
-Population wählen müssen (\textit{random sampling})
-und diese dann zufällig den Kondition zuweisen müssen
+Eine solche Schlussfolgerung wäre zumindest verteidigbarer gewesen,
+wenn wir sowohl die Versuchspersonen zufällig aus dieser Population 
+gewählt hätten (\textit{random sampling})
+und diese dann zufällig den Kondition zugewiesen hätten
 (\textit{random assignment}). Ohne eine zufällige Auswahl beruht
-eine solche Schlussfolgerung auf einer (oft impliziten) sachlogischen
-Argumentation---nicht auf einer statistischen Gegebenheit. Das muss
-nicht heissen, dass eine solche Schlussfolgerung dann falsch ist. Aber
-es ist wichtig zu erkennen, dass es sich hierbei nicht um eine statistische Frage handelt.
+die Generalisierung auf eine gewisse Population auf einer (oft impliziten) sachlogischen
+Argumentation -- nicht auf einer statistischen Gegebenheit. 
+Das muss nicht heissen, dass eine solche Schlussfolgerung dann falsch ist. 
+Aber es ist wichtig zu erkennen, 
+dass es sich hierbei nicht um eine statistische Frage handelt.
+
 Diese Nuance entspricht dem Unterschied zwischen
 \term{interner Validität} (Ist der Unterschied oder der Effekt,
 der wir in dieser Stichprobe beobachtet haben, der experimentellen
 Manipulation zuzuschreiben?) und \term{externer Validität}
 (Lässt sich dieser Befund über die Stichprobe hinaus generalisieren?)
-
 Wer sich für
-die Effizienz didaktischer Methoden interessiert ist, muss wohl die externe Validität der Untersuchung
-berücksichtigen.
+die Effizienz didaktischer Methoden interessiert ist,
+muss wohl die externe Validität der Untersuchung berücksichtigen.
 Aber für etwa experimentelle Psychologen ist externe Validität nicht
 unbedingt so wichtig \citep{Mook1983}: Für sie kann es wichtiger sein, zu
 zeigen, dass eine Manipulation überhaupt einen Effekt erzeugen \emph{kann},
@@ -426,7 +436,7 @@ basieren; die Alternativhypothese, dass sie nicht rein auf
 Zufall basieren. Worauf die Muster dann -- neben Zufall -- schon
 zurückzuführen wären, darüber macht die Alternativhypothese
 keine Aussage. In unserem Beispiel wären ein paar mögliche Auslöser
-die folgenden:
+eines allfälligen Unterschieds zwischen den Gruppen die folgenden:
 \begin{itemize}
  \item Alkohol senkt die Hemmungen beim Sprechen,
  was dann wiederum die Sprechgeschwindigkeit erhöht.
@@ -435,6 +445,8 @@ die folgenden:
  Bier intus drücken sich eher in einfachen Strukturen
  und Floskeln aus, die sie schneller aussprechen
  als schwierigere Strukturen und neue Phrasen.
+ 
+ \item Alkohol beeinträchtigt die Artikulationsmotorik.
 
  \item Die auswertenden Mitarbeitenden haben doch
  irgendwie mitbekommen, wer welcher Gruppe zugeordnet
@@ -525,13 +537,14 @@ zählt.
 
 \mypar[Schreibtipp]{Bemerkung}
 In der Statistik ist `Signifikanz' ein technischer Begriff,
-der nicht mit dem alltäglicheren Begriff von praktischer oder theoretischer Signifikanz oder Bedeutung verwechselt werden soll. Versuchen Sie in Ihren eigenen Arbeiten, diese Zweideutigkeit zu vermeiden.
+der nicht mit dem alltäglicheren Begriff von praktischer oder theoretischer Signifikanz oder Bedeutung verwechselt werden sollte. 
+Versuchen Sie in Ihren eigenen Arbeiten, diese Zweideutigkeit zu vermeiden.
 \parend
 
 \section{Fehlentscheide}
 Auch wenn man es sich wohl gerne anders wünschte, bieten
 Signifikanztests keine Sicherheit. Traditionellerweise
-spricht man beim Signifikanztesten (engl.: \textit{null hypothesis
+spricht man beim Nullhypothesen testn (engl.: \textit{null hypothesis
 significance testing} oder \textit{NHST}) von zwei Arten
 von Fehlentscheiden, die man treffen kann.
 
@@ -556,8 +569,8 @@ hier jedoch einige Komplikationen auf, denen wir
 uns zu einem späteren Zeitpunkt widmen;
 siehe Kapitel \ref{ch:anova} und \ref{ch:QRP}.
 
-Wenn nun $H_0$ nicht zutrifft (d.h., das Muster lässt sich
-nicht nur durch Zufall erklären), dann besteht trotzdem
+Wenn nun $H_0$ nicht zutrifft (d.h., das Muster kam
+nicht nur durch Zufall zu Stande), dann besteht trotzdem
 die Gefahr, dass man einen $p$-Wert über der $\alpha$-Schwelle
 findet. In solchen Fällen würde man die Nullhypothese nicht ablehnen,
 obwohl dies eigentlich schon erwünscht wäre. Diese Art
@@ -566,9 +579,9 @@ von Fehlentscheid nennt man einen \term{Fehler der zweiten Art}
 auch: falsch negativ, also etwas nicht finden, was schon da ist).
 Die Wahrscheinlichkeit eines Fehlers der zweiten Art wird als
 $\beta$ bezeichnet (nicht zu verwirren mit den $\beta$s aus
-den Regressionsmodellen); das Komplement von $\beta$, $1-\beta$,
+den Regressionsmodellen); das Komplement von $\beta$, also $1-\beta$,
 nennt man die statistische \textbf{power} eines Tests.
-$\beta$ (und somit die power) können nicht ohne Weiteres
+Die Wahrscheinlickeit $\beta$ kann nicht ohne Weiteres
 festgelegt werden, denn diese Wahrscheinlichkeit hängt von
 vier Faktoren ab:
 
@@ -627,6 +640,7 @@ aber fälschlicherweise schlussfolgern, dass der Unterschied
 positiv ist, während er eigentlich negativ ist (oder umgekehrt).
 \parend
 
+\mypar[Typ-M- und Typ-S-Fehler]{Bemerkung}
 Viele Methodiker:innen und Statistiker:innen
 (aber längst nicht alle!) halten das Paradigma des
 Signifikanztests und insbesondere der Fehler der
@@ -650,6 +664,7 @@ Die Fehler, die er dann aber sehr wohl gemacht hat, bezeichnet Gelman
 als \textit{Type-S}- und \textit{Type-M}-Fehler \citep{Gelman2014}.
 Das S steht für \textit{sign} (Vorzeichen); Typ-S-Fehler macht man, wenn man behauptet, ein Zusammenhang sei positiv, während er eigentlich negativ ist (oder umgekehrt.) Das M steht dann wieder für \textit{magnitude} (Grössenordnung);
 Typ-M-Fehler macht man, wenn man behauptet, ein Zusammenhang sei klein, während er eigentlich gross ist (oder umgekehrt).
+\parend
 
 \mypar{Aufgabe}
   In einem Forschungsgebiet wird eine grosse Anzahl von Experimenten durchgeführt.
@@ -699,7 +714,9 @@ man einen anderen Wert. Je grösser $m$, desto kleiner dieser Zufallsfaktor.
 
 Hier folgt ein Beispiel
 mit den Daten von \citet{Klein2014}, die wir bereits in
-Kapitel \ref{ch:gruppenunterschiede} analysiert haben:\label{page:kleinrandom}
+Kapitel \ref{ch:gruppenunterschiede} analysiert haben.\label{page:kleinrandom}
+Statt einer \textit{for}-Schleife könnte man auch die \texttt{replicate()}-Funktion
+verwenden.
 <<cache = TRUE, echo = TRUE, message = FALSE>>=
 klein <- read_csv(here("data", "Klein2014_money_abington.csv"))
 mean_difference <- tapply(klein$Sysjust, klein$MoneyGroup, mean) |> diff()
@@ -799,7 +816,7 @@ r <- sum(mean_diffs_H0 >= mean_difference)
     der Experimentalkondition zugeordnet.
   \end{enumerate}
   Berechnen Sie für jede der drei Möglichkeiten, wie viel mögliche Zuordnungen
-  es gibt. Beschreiben Sie für jede der drei Möglichkeiten einen geeigneten
+  es gibt. Beschreiben Sie ausserdem für jede der drei Möglichkeiten einen geeigneten
   Randomisierungstest für den Vergleich der Konditionsmittel.
 \parend
   
@@ -819,8 +836,9 @@ r <- sum(mean_diffs_H0 >= mean_difference)
   Die konkrete Berechnung dieser Wahrscheinlichkeit ist konzeptuell einfach:
   Gibt es $n_1$ Beobachtungen in der ersten Gruppe und $n_2$ Beobachtungen
   in der zweiten Gruppe, so führen wir alle $n_1n_2$ paarweisen Vergleiche
-  durch und berechnen wir die Proportion der Vergleiche, in denen der erste
-  Wert höher als der zweite ist; bei Gleichstand zählen wir den Vergleich als
+  durch. Wir berechnen dann die Proportion der Vergleiche, in denen der erste
+  Wert höher als der zweite ist; bei einer Bindung (also bei Gleichstand) 
+  zählen wir den Vergleich als
   halben Erfolg. Die selbst gestrickte Funktion \texttt{cles()}
   führt diese Berechnung aus; ihr Name verweist nach der Bezeichnung 
   \textit{common-language effect size} \citep{McGraw1992}:
@@ -861,7 +879,9 @@ rank_sum <- function(x, y) {
 rank_sum(x1, x2)
 @
 Für feste Gruppengrössen $n_1, n_2$ kann man den \texttt{cles}-Wert
-direkt aus der Rangsumme bestimmen:
+direkt aus der Rangsumme bestimmen. Dies ist aus komputationeller Sicht nützlich,
+denn es geht schneller, die Rangsumme zu berechnen, als die nötigen
+$n_1 \cdot n_2$ Vergleiche durchzuführen.
 <<>>=
 n1 <- length(x1)
 n2 <- length(x2)
@@ -886,16 +906,21 @@ p_r <- (r + 1) / (m + 1)
 @
 Also $p = 0.002$.
 
-Dieser Randomisierungstest entspricht dem \term{Wilcoxon-Rangsummentest},
-auch \term{Mann--Whitney-Test} genannt, der in R als \texttt{wilcox.test()}
+Dieser Randomisierungstest entspricht dem \term{Wilcoxon-Rangsummentest}, 
+der in R als \texttt{wilcox.test()}
 implementiert ist. In der Regel verlässt dieser sich jedoch auf
 eine Annäherung (siehe \texttt{Details} unter \texttt{?wilcox.test}):
 <<>>=
 wilcox.test(x1, x2)
 @
-Den Wert $W$ im Output können wir leicht zum \texttt{cles}-Wert umrechnen:
+Im Output erscheint eine Statistik $W$ (wie Wilcoxon), die jedoch \emph{nicht}
+die Rangsumme darstellt. Stattdessen handelt es sich tatsächlich um die Testgrösse
+des äquivalenten \term{Mann--Whitney-Test}, die in der Literatur in der Regel als
+$U$ bezeichnet wird. Diese steht in einem einfacheren Bezug zum 
+\texttt{cles}-Wert umrechnen:
 <<>>=
-2276.5 / (n1 * n2)
+cles(x1, x2) * (n1 * n2) # CLES zu U
+wilcox.test(x1, x2)$statistic / (n1 * n2) # U zu CLES
 @
 \parend
 
@@ -903,31 +928,11 @@ Den Wert $W$ im Output können wir leicht zum \texttt{cles}-Wert umrechnen:
   Verwenden Sie einen nicht-parametrischen Bootstrap, um ein 95\%-Konfidenzintervall
   um den \textit{common-language effect size} aus Bemerkung \ref{bm:wilcoxon} zu konstruieren.
   
-  Hinweis: Berechnen Sie in jedem Bootstrap-Durchgang die Rangsumme und konvertieren
+  Hinweis: Berechnen Sie in jedem Bootstrap-Durchgang die Rangsumme 
+  oder die $U$-Statistik und konvertieren
   diese zu einem \textit{common-language effect size}. Die Berechnung mit \texttt{cles()}
   würde zu viel Zeit kosten.
 \parend
-% 
-% \mypar[\texttt{coin}-Package]{Bemerkung}
-%   Mit der Funktion \texttt{independence\_test()} aus dem \texttt{coin}-Package
-%   können Randomisierungstests bequem durchgeführt werden.
-%   Die Gruppenvariable muss jedoch als Faktor umkodiert werden.
-%   Die \textit{money priming}-Daten hätten wir beispielsweise auch so auswerten können:
-% <<message = FALSE, warning = FALSE>>=
-% library(coin)
-% klein$f.MoneyGroup <- factor(klein$MoneyGroup)
-% independence_test(Sysjust ~ f.MoneyGroup, data = klein,
-%                   distribution = approximate(nresample = m))
-% @
-%   Um alle möglichen Permutationen zu berücksichtigen, kann man
-%   \texttt{distribution = exact()} verwenden.
-%   
-%   Defaultmässig vergleicht \texttt{independence\_test()} Gruppenmittel.
-%   Wenn Sie andere Grössen vergleichen möchten, müssen Sie sich jedoch
-%   selber durch die Anleitungen von \texttt{coin} murksen. Ich finde es
-%   sinnvoller, den Code selber zu schreiben; dann weiss ich sicher, was
-%   überhaupt wie berechnet wird.
-% \parend
 
 \section{Permutationstests für Assoziationen}\label{sec:permutationcorr}
 Um $p$-Werte für andere Muster als Gruppenunterschiede zu berechnen,
@@ -945,9 +950,9 @@ cor_poarch <- cor(poarch$Flanker, poarch$Simon)
 cor_poarch
 @
 
-Das Vorgehen beim Berechnen von $p$-Werten ist
+Das Vorgehen beim Berechnen von $p$-Werten ist eigentlich
 immer gleich. Der $p$-Wert drückt aus, wie
-wahrscheinlich es denn wäre ein Muster zu
+wahrscheinlich es denn wäre, ein Muster zu
 beobachten, dass mindestens so extrem wäre
 wie das tatsächlich beobachtete Muster,
 \emph{wenn die Nullhypothese stimmen würde}.
@@ -976,7 +981,7 @@ und zwei Zusammenhänge, die man antreffen könnte, wenn man
 die Simon-Variable zufällig durcheinander schmeisst.
 Der R-Code unten zeigt Ihnen, wie Sie diese Abbildung selber zeichnen können.
 
-<<cache = TRUE, out.width = "\\textwidth", fig.width = 10, fig.height = 2.8, fig.cap = "\\textit{Links}: Der festgestellte Zusammenhang zwischen den Variablen Flanker und Simon in der Studie von Poarch et al. (2018). \\textit{Mitte und rechts}: Indem die eine Variable (hier: Simon) unabhängig von der anderen permutiert wird, wird der systematische Zusammenhang zwischen beiden Variablen gebrochen. Dies entspricht der Nullhypothese. Um zu wissen, wie die Korrelationskoeffizienten laut der Nullhypothese verteilt sind, kann man diese Permutierung ein paar tausend Mal vornehmen und jeweils die Korrelation zwischen den Variablen berechnen.\\label{fig:permutationenkorrelation}">>=
+<<warning = FALSE, cache = TRUE, out.width = "\\textwidth", fig.width = 10, fig.height = 2.8, fig.cap = "\\textit{Links}: Der festgestellte Zusammenhang zwischen den Variablen Flanker und Simon in der Studie von Poarch et al. (2018). \\textit{Mitte und rechts}: Indem die eine Variable (hier: Simon) unabhängig von der anderen permutiert wird, wird der systematische Zusammenhang zwischen beiden Variablen gebrochen. Dies entspricht der Nullhypothese. Um zu wissen, wie die Korrelationskoeffizienten laut der Nullhypothese verteilt sind, kann man diese Permutierung ein paar tausend Mal vornehmen und jeweils die Korrelation zwischen den Variablen berechnen.\\label{fig:permutationenkorrelation}">>=
 p1 <- ggplot(poarch,
              aes(x = Flanker,
                  y = Simon)) +
@@ -997,9 +1002,8 @@ p3 <- ggplot(poarch,
   geom_point(shape = 1) +
   ggtitle("Eine andere mögliche Permutation")
 
-# Mit grid.arrange() aus dem Package gridExtra
-# können Sie mehrere Grafiken in einer Abbildung zeichnen.
-gridExtra::grid.arrange(p1, p2, p3, ncol = 3)
+library(patchwork) # Grafiken nebeneinander stellen
+p1 + p2 + p3
 @
 
 Bei 34 Beobachtungen gibt es fast 300 Sextillionen
@@ -1123,7 +1127,7 @@ verzichten können, da dieser Wert klar grösser als \texttt{p\_r} ist.)
   Anschliessend spielen wir ihm die zweite Aufnahme eines der beiden Wörter vor. 
   Seine Aufgabe besteht darin, zu entscheiden, ob die letzte Aufnahme (`X') zur 
   gleichen Kategorie der ersten (`A') oder der zweiten (`B') Aufnahme gehört.
-  Der Lerner kategorisiert 20 der 30 Aufnahmen richtig ($X = 21$).
+  Der Lerner kategorisiert 21 der 30 Aufnahmen richtig ($X = 21$).
   Dies könnte zwar darauf hindeuten, dass er gewissermassen den Unterschied
   zwischen /\textipa{E}/ und /\textipa{\ae}/ heraushört, 
   aber wir sollten uns auch mit der Möglichkeit befassen, 
@@ -1149,7 +1153,7 @@ verzichten können, da dieser Wert klar grösser als \texttt{p\_r} ist.)
   Unter der Nullhypothese gilt $X \sim \textrm{Binomial}(30, 0.5)$.
   Abbildung \ref{fig:binomialtest} zeigt die $\textrm{Binomial}(30, 0.5)$-Verteilung.
   Wir können nun ablesen bzw.\ recht einfach berechnen, wie wahrscheinlich
-  es wäre, mindestens $X = 20$ zu beobachten:
+  es wäre, mindestens $X = 21$ zu beobachten:
   \[
     \Prob(X \geq 21) = 1 - \Prob(X \leq 20),
   \]
@@ -1205,7 +1209,10 @@ Für eine beobachtete Anzahl von Erfolgen $x$ berechnen wir den zweiseitigen $p$
 nun als die Summe aller $p_k$s, für welche $p_k \leq p_x$.
 
 \mypar[zweiseitiger Binomialtest]{Beispiel}
-  Angenommen, die Nullhypothese lautet $X \sim \textrm{Binomial}(17, 1/3)$
+  Angenommen, die Nullhypothese lautet 
+  \[
+  X \sim \textrm{Binomial}(17, 1/3)
+  \]
   und wir beobachten 4 Erfolge. Wir berechnen $p_k$ für $k = 0, \dots, 17$:
 <<>>=
 p_k <- dbinom(0:17, 17, 1/3)

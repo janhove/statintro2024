@@ -485,7 +485,7 @@ ergeben beide Berechnungsmethoden ohnehin nahezu das gleiche Resultat.
   mindestens 3.5 beträgt. Dazu können Sie wie in Bemerkung \ref{bem:chisq} vorgehen.
 \parend
 
-\section{Nicht-zufällige Stichproben}
+\section{Nicht-zufällige Stichproben}\label{sec:nonrandom}
 Zwei grosse Vorteile von Zufallsstichproben sind,
 dass sie unverzerrte Schätzungen des Populationsmittels und der
 Populationsvarianz liefern und dass der zentrale Grenzwertsatz
