@@ -23,7 +23,7 @@ set.seed(123456789)
 Generieren wir zuerst Daten,
 für die wir wissen, dass die Nullhypothese buchstäblich
 stimmt. Wir gehen hier zwar von \textit{random sampling} aus,
-aber wenn wir von \textit{random assignment} ausgingen,
+aber auch wenn wir von \textit{random assignment} ausgingen,
 würde sich am Problem und an der Lösung nichts ändern.
 Mit dem folgenden Befehl wird ein Datensatz (tibble)
 namens \texttt{d} kreiert. Dieser enthält
@@ -94,16 +94,16 @@ der kleiner als $\alpha = 0.05$ ist ($p = 0.017$).
 Dies obwohl die Nullhypothese in dieser Simulation
 buchstäblich stimmt.
 Dass man Nullhypothesen, die tatsächlich stimmen,
-ab und zu zu Unrecht ablehnt, ist klar---und das
+ab und zu zu Unrecht ablehnt, ist klar -- und das
 ist hier auch nicht das Problem. Vielmehr ist das Problem,
 dass diese Fehlerquote (Fehler der ersten Art) angeblich
-bei $\alpha = 0.05$ festgelegt wurde, aber eigentlich
+höchstens $\alpha = 0.05$ beträgt, aber eigentlich
 wesentlich höher ist.
 
 Diese Tatsache können wir mit einer Simulation illustrieren.
 Mit den folgenden Befehlen wird das gleiche Szenario wie oben
 (3 Gruppen mit je 20 Beobachtungen; Nullhypothese stimmt;
-3 $t$-Tests) 20'000 durchlaufen. Jedes Mal wird der $p$-Wert
+3 $t$-Tests) 5'000 durchlaufen. Jedes Mal wird der $p$-Wert
 der einzelnen $t$-Tests gespeichert. Am Ende wird der 
 jeweils kleinste der drei $p$-Werte berechnet.
 <<cache = TRUE>>=
@@ -128,7 +128,7 @@ for (i in 1:n_runs) {
                          subset(gruppe %in% c("B", "C")))$p.value
 }
 
-# kleinsten der 3 p-Werte speichern
+# kleinsten der 3 p-Werte auslesen
 min_pval <- pmin(pval_ab, pval_ac, pval_bc)
 @
 
@@ -148,7 +148,7 @@ gleichverteilt sind; siehe Abbildung
 Wenn wir uns bei unseren Inferenzen darüber, ob sich die drei Gruppen voneinander
 unterscheiden, nach dem kleinsten der drei $p$-Werte richten, würden wir nicht
 in bloss höchstens $\alpha =$ 5\% der Fälle die Nullhypothese zu Unrecht ablehnen,
-sondern in mehr als 10\% der Fälle, wenn drei Gruppen verglichen werden:
+sondern in mehr als 13\% der Fälle, wenn drei Gruppen verglichen werden:
 <<>>=
 mean(min_pval <= 0.05)
 @
@@ -170,7 +170,7 @@ mean(min_pval <= 0.05)
  zum Beispiel, weil im Forschungsbericht nur eine Auswahl der ausgeführten Signifikanztests
  beschrieben wird. Siehe hierzu Kapitel \ref{ch:QRP}.
 
-<<echo = FALSE, warning = FALSE, message = FALSE, out.width="\\textwidth", fig.width = 6*1.4, fig.height = 1.5*1.4, fig.pos = "tp", fig.cap = "Wenn die Nullhypothese stimmt, sollte der $p$-Wert aus einer Gleichverteilung stammen. Für die $p$-Werte aus den einzelnen $t$-Tests ist dies auch der Fall: Die Wahrscheinlichkeit, dass man einen $p$-Wert kleiner als 0.05 beobachtet, liegt tatsächlich bei 5\\%, wenn die Nullhypothese stimmt. Wenn man aber auf der Basis des jeweils kleinsten der drei $p$-Werte schliesst, ob sich die Gruppen unterscheiden, dann sind die relevanten $p$-Werte nicht gleich- sondern rechtsschief verteilt: Die Wahrscheinlichkeit, dass man \\emph{irgendeinen} $p$-Wert kleiner als 0.05 beobachtet, ist erheblich höher als 5\\%, auch wenn die Nullhypothese stimmt.\\label{fig:anova_pvalues}">>=
+<<echo = FALSE, warning = FALSE, message = FALSE, out.width="\\textwidth", fig.width = 6*1.4, fig.height = 1.5*1.4, fig.pos = "tp", fig.cap = "Wenn die Nullhypothese stimmt, sollte der $p$-Wert aus einer Gleichverteilung stammen. Für die $p$-Werte aus den einzelnen $t$-Tests ist dies auch der Fall: Die Wahrscheinlichkeit, dass man einen $p$-Wert kleiner als $\\alpha = 0.05$ beobachtet, liegt tatsächlich bei 5\\%, wenn die Nullhypothese stimmt. Wenn man aber auf der Basis des jeweils kleinsten der drei $p$-Werte schliesst, ob sich die Gruppen unterscheiden, dann sind die relevanten $p$-Werte nicht gleich- sondern rechtsschief verteilt: Die Wahrscheinlichkeit, dass man \\emph{irgendeinen} $p$-Wert kleiner als 0.05 beobachtet, ist erheblich höher als 5\\%, auch wenn die Nullhypothese stimmt.\\label{fig:anova_pvalues}">>=
 cols <- RColorBrewer::brewer.pal(3, "Set1")
 par(mfrow = c(1, 4), las = 2, mar = c(4, 4, 3, 1) + 0.1)
 hist(pval_ab, main = "Vergleich AB", xlab = "p",
@@ -203,7 +203,7 @@ ggplot(df_error_rate,
   geom_hline(yintercept = 0.05, linetype = 2) +
   annotate(geom = "text",
            x = 15, y = 0.10,
-           label = "angeblicher Fehler der 1. Art (5%)") +
+           label = "angeblicher Fehler der 1. Art (α = 0.05)") +
   annotate(geom = "text",
            x = 15, y = 0.60, angle = 18,
            label = "tatsächlicher Fehler der 1. Art")
@@ -211,18 +211,19 @@ ggplot(df_error_rate,
 
 \mypar{Aufgabe}
   \begin{enumerate}
-    \item Es seien $P_1, P_2, P_n$ unabhängige Zufallsvariablen mit
+    \item Es seien $P_1, P_2, P_3$ unabhängige Zufallsvariablen mit
     einer Gleichverteilung auf $[0,1]$. Berechnen Sie die Wahrscheinlichkeit,
     dass mindestens eine dieser Zufallsvariablen einen Wert von höchstens $0.05$
     annimmt.
     
-    Hinweis: Siehe Abbildung \ref{fig:familywise}.
+    Hinweis: Siehe Abbildung \ref{fig:familywise}. Gefragt ist übrigens eine
+    Berechnung, keine Simulation oder Ähnliches.
     
     \item Der Wert, den Sie berechnet haben, ist grösser als $0.1364$.
     Dies liegt nicht daran, dass wir diese Zahl anhand einer Simulation geschätzt
-    haben. Wieso unterscheiden sich diese Zahlen dann schon?
+    haben. Wieso unterscheiden sich diese Zahlen dann schon? \parend
   \end{enumerate}
-\parend
+
 
 \section{Erste Lösung: Randomisierungstest}
 Die einfachste Art und Weise, das \textit{multiple comparisons}-Problem
@@ -308,8 +309,12 @@ ggplot(df_var_H0,
 
 Die Verteilung dieser Varianzen (\texttt{var\_mittel\_H0})
 wird in Abbildung \ref{fig:distributionvaranova} dargestellt.
-Die Proportion der Varianzen, die mindestens so gross wie die
-beobachtete Varianz sind, ist ein gültiger $p$-Wert.
+Wir berechnen den entsprechenden $p_r$-Wert, also einen rechtsseitigen $p$-Wert.\footnote{Der linksseitigen $p$-Wert wird
+in dieser Situation recht selten berechnet, denn sie passt zur Alternativhypothese, 
+dass sich die Gruppenmittel \emph{weniger} voneinander 
+abweichen als unter der Nullhypothese zu erwarten wäre. Eine Anwendung
+des linksseitigen $p$-Wertes ist, Geschummel aufzudecken \citep{Simonsohn2013}.}
+
 <<>>=
 (sum(var_mittel_H0 >= 1.282355) + 1) / (m + 1)
 @
@@ -568,11 +573,11 @@ sich jedoch nichts.
  aber zuerst noch ein paar andere
  Variablen berücksichtigt.
 
- Eine alternative Berechnungsart wird auf typische kreative
+ Eine alternative Berechnungsart wird auf typierend kreative
  Weise \textit{Type-II sum of squares}
  genannt. Hierzu werden die Effekte in allen möglichen Reihenfolgen ins Modell eingetragen
- (aber Interaktionen kommen immer nach Haupteffekten) und gilt als der $F$- und $p$-Wert eines
- Effektes jene $F$- und $p$-Werte, die man antrifft, wenn der Effekt als letzter eingetragen wurde.
+ (aber Interaktionen kommen immer nach Haupteffekten) und gilt als der $F$- bzw.\ $p$-Wert eines
+ Effektes jener $F$- bzw.\ $p$-Wert, den man antrifft, wenn der Effekt als letzter eingetragen wurde.
  In unserem Beispiel sähe das Ergebnis wie folgt aus:
 
  \begin{itemize}
@@ -701,7 +706,7 @@ Zusätzliche Tests sind jedoch nicht immer nötig
 oder erwünscht. Entscheidend sind meines Erachtens
 die Theorie und die Hypothesen, die der Studie zu
 Grunde lagen, und welche Datenmuster man als
-Belege für dese Theorie und Hypothesen betrachten
+Belege für diese Theorie und Hypothesen betrachten
 würde:
 
 \begin{itemize}
@@ -709,7 +714,7 @@ würde:
 Gruppenunterschiede (egal welche) geben wird, dann reicht eine
 Varianzanalyse aus. Man kann zusätzlich eventuell interessante
 Gruppenunterschiede deskriptiv berichten, etwa indem man
-das lineare Modell, für das man die Varianzanalyse ausgeführt hat,
+das lineare Modell, auf das man die Varianzanalyse durchgeführt hat,
 grafisch darstellt. Diese möglichen Unterschiede überlässt
 man dann einer neuen, konfirmatorischen Studie (siehe \citealp{Bender2001}, S. 344).
 Falls die Varianzanalyse keine Signifikanz ergibt,
@@ -850,7 +855,7 @@ Sie können ihn also ohne Weiteres ignorieren.
  werden. Oft dienen sie als Annäherungen zu Randomisierungs- bzw.\ Permutationstests.
  
  \item Es gibt nicht für jede Situation \emph{den} richtigen Signifikanztest.
- Wenn es mehrere vertretbare Tests gibt, so brauche ihre Ergebnisse
+ Wenn es mehrere vertretbare Tests gibt, so brauchen ihre Ergebnisse
  nicht miteinander übereinzustimmen.
 
  \item Es gibt Signifikanztests, denen wir noch nicht begegnet sind.

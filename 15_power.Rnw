@@ -181,9 +181,10 @@ Beispiel, wenn wir statt 32 Beobachtungen in jeder Stichprobe,
   \item Wie viel power hätte man, wenn
 der Unterschied zwischen den zwei Populationen infinitesimal wäre?
 Versuchen Sie, diese Frage zunächst ohne Simulation zu beantworten.
-Überprüfen Sie dann Ihre Antwort mit einer Simulation.
+Überprüfen Sie dann Ihre Antwort mit einer Simulation 
+(mit z.B. $\mu_B - \mu_A = 0.000001$). \parend
 \end{enumerate}
-\parend
+
 
 
 \section{Analytische Powerberechnung}

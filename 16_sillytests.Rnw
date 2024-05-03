@@ -182,8 +182,16 @@ Nur weil man einen Signifikanztest durchführen könnte
 oder weil die Software einen ausspuckt, heisst das noch
 nicht, dass man ihn auch berichten sollte. Fragen Sie sich
 immer, wie relevant jeder Signifikanztest wäre, und zwar für
-die Fragen, die Sie beantworten wollen. Im Idealfall
+die Fragen, die Sie beantworten wollen.
+Im Idealfall
 sollte es m.E.\ höchstens einen Signifikanztest pro Forschungsfrage geben.
+Allgemeiner bin ich der Ansicht, 
+dass man keine Analysen berichten soll,
+von denen man selber die Relevanz nicht sieht --
+auch wenn man befürchtet, dass die Gutachter:innen
+dann möglicherweise meckern werden.
+Siehe 
+\href{https://janhove.github.io/posts/2022-02-18-dont-do-things-you-dont-see-the-point-of/}{\textit{In research, don’t do things you don’t see the point of}} (18.02.2022).
 
 Missverstehen Sie den letzten Absatz bitte nicht:
 Ich schlage \emph{nicht} vor, dass man nur jene Signifikanztests

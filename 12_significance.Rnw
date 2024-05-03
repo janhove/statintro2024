@@ -752,22 +752,27 @@ r <- sum(mean_diffs_H0 >= mean_difference)
   Sie die drei Konditionsmitteln. Statt den Unterschied zwischen diesen
   Mitteln zu berechnen, sollten Sie diesmal die Varianz der drei Mittel berechnen.
   (Es macht nicht aus, 
-  ob Sie dabei die Stichprobenvarianz oder die Populationsvarianz berechnen. Auch die Summe der Quadrate oder die Standardabweichung könnte man berechnen.)
+  ob Sie dabei die Stichprobenvarianz oder die Populationsvarianz berechnen. 
+  Auch die Summe der Quadrate oder die Standardabweichung könnte man berechnen.)
   Passen Sie nun den Codeabschnitt oben an, um diese Nullhypothese zu testen
   und berechnen Sie einen passenden $p$-Wert.
   
-  (Übrigens könnte man für den Vergleich von bloss zwei Gruppen
+  Übrigens könnte man für den Vergleich von bloss zwei Gruppen
   auch die Varianz (oder Standardabweichung) der zu vergleichenden Statistiken
-  statt des Unterschieds zwischen diesen berechnen. Wenn ein zweiseitiger Test verwendet, ergibt dies das gleiche Resultat, da die Varianz (Standardabweichung) eine streng monoton wachsende Funktion des absoluten Unterschieds ist.)
+  statt des Unterschieds zwischen diesen berechnen. 
+  Wenn ein zweiseitiger Test verwendet wird, 
+  ergibt dies das gleiche Resultat, 
+  da die Varianz (Standardabweichung) eine streng monoton wachsende 
+  Funktion des absoluten Unterschieds ist.
 \parend
 
 \mypar[Experiment mit \textit{blocking}]{Aufgabe}
   Wir führen ein Prätest/Posttest-Experiment mit zufälliger Zuordnung durch.
-  Statt die Versuchspersonen jedoch komplett nach dem Zufallsprinzip 
+  Statt die $2n$ Versuchspersonen jedoch komplett nach dem Zufallsprinzip 
   den Gruppen zuzuordnen, ordnen wir die Versuchspersonen ihrem
   Prätestergebnis nach und bilden wir wie folgt Paare von Versuchspersonen:
   \[
-    (12)(34)(56)(78)\dots.
+    (1,2)(3,4)(5,6)(7,8)\dots(2n-1,2n).
   \]
   Innerhalb von jedem Paar weisen wir dann nach dem Zufallsprinzip eine
   Versuchsperson der Kontrollgruppe und eine Versuchsperson der Experimentalgruppe
