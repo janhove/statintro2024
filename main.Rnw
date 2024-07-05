@@ -78,7 +78,7 @@
 
 \title{Einführung in die quantitative Datenanalyse}
 \date{Universität Freiburg \\ Frühlingssemester 2024}
-\author{Jan Vanhove}
+\author{Jan Vanhove \\ \url{jan.vanhove@unifr.ch}, \url{https://janhove.github.io}}
 
 % KNITR options -----------------------------------
 <<setup, include=FALSE, cache=FALSE>>=
@@ -128,9 +128,9 @@ op <- par(no.readonly = TRUE)
 \frontmatter
 \maketitle
 
-% \chapter{Vorwort}
-% \setcounter{tocdepth}{1}
-% \tableofcontents
+\chapter{Vorwort}
+\setcounter{tocdepth}{1}
+\tableofcontents
 
 \mainmatter
 

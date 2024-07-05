@@ -72,7 +72,7 @@ Auch der Output dieser Befehle erscheint hier.
 \end{figure}
 
 \mypar[RStudio konfigurieren]{Aufgabe}
-Klicken Sie dazu in RStudio auf \texttt{Tools} und wählen Sie
+Klicken Sie in RStudio auf \texttt{Tools} und wählen Sie
 \texttt{Global options\dots} aus.
 Stellen Sie sicher, dass unter \texttt{General, Basic} die Option
 `Restore .RData into workspace at startup' \emph{nicht} angekreuzt ist
@@ -114,6 +114,9 @@ wird von R ignoriert. So können wir Befehle mit Kommentaren versehen:
 4^0        # x^0 = 1; für R auch 0^0 = 1.
 sqrt(16)   # Quadratwurzel
 log(16, 2) # 2er-Logarithmus von 16, d.h., 2^4 = 16
+log(16)    # natürlichen Logarithmus von 16 (mit Basis e =~ 2.72)
+log2(16)   # Kürzel für 2er-Logarithmus
+log10(16)  # Kürzel für 10er-Logarithmus
 
 ceiling(2.3) # aufrunden
 floor(11.7)  # abrunden
@@ -130,8 +133,7 @@ sign(0)
 
 R respektiert die übliche Reihenfolge, in der Rechenoperationen durchgeführt
 werden. Um eine andere Reihenfolge festzulegen, werden runde oder 
-geschweifte Klammern verwendet,
-wie auch in einigen der Beispiele oben:
+geschweifte Klammern verwendet:
 <<>>=
 4 + 8 * 2
 (4 + 8) * 2
@@ -160,7 +162,7 @@ Fürs Ziehen von beliebigen Wurzeln von negativen Zahlen
 wieder einen Umweg über die komplexen Zahlen machen, worauf wir hier verzichten. \parend
 
 \mypar[Wissenschaftliche Notation]{Bemerkung}
-Manchmal wird das Ergebnis einer Berechnung in einem anderen Format dargestellt.
+Öfters wird das Ergebnis einer Berechnung in einem anderen Format dargestellt.
 Berechnen wir beispielsweise $3328^{27}$, so erhalten wir als Ergebnis
 \texttt{1.26e+95}. (Die Zahlen im Fliesstext stimmen übrigens nicht immer mit den
 Zahlen im R-Output überein, da ich sie stärker runde.)
@@ -199,7 +201,7 @@ man auf den meisten Hilfeseiten:
   
   \item Arguments: Kurze Angaben zu den erwarteten Parameterwerten.
   
-  \item Details: Eben detailliertere Angaben zur Funktion. Bei \texttt{round()}
+  \item Details: Detailliertere Angaben zur Funktion. Bei \texttt{round()}
   wird beispielsweise erklärt, wie und wieso 1.5 gerundet wird und wie und wieso
   der Befehl \texttt{round(0.15, 1)} zu unerwarteteten Ergebnissen führen kann.
   
@@ -235,7 +237,22 @@ curve(2^(-x^2/2) * x/(1 + x^2),
       xlab = "x", ylab = "f(x)")
 @
 
-Jeder mit \texttt{curve()} gezeichnete Funktionsgraph sieht 
+Mit \texttt{curve()} gezeichneten Graphen können es aussehen lassen,
+als ob die gezeichnete Funktion überall definiert ist, auch wenn dies nicht so ist.
+So ist die Funktion $x \mapsto \frac{\sin(x)}{x}$ bei $x = 0$ nicht definiert,
+denn durch 0 kann man nicht teilen. Zeichnet man jedoch den Graphen dieser
+Funktion, so könnte man denken, dass $0 \mapsto 1$. Man könnte daher im 
+Graphen ein Kreischen bei den Koordinaten $(0, 1)$ zeichnen, um deutlich
+zu machen, dass die Funktion bei $x = 0$ nicht definiert ist:
+<<eval = FALSE>>=
+curve(sin(x)/x, 
+      from = -12, to = 12,
+      xlab = "x", ylab = "f(x)")
+# Mit 'cex' (character expansion) kann die Grösse geregelt werden.
+points(0, 1, cex = 2) 
+@
+
+Weiter sieht jeder mit \texttt{curve()} gezeichnete Funktionsgraph 
 stetig, also lückenlos, aus. 
 Aber beispielsweise die Vorzeichen- (oder Signum-)Funktion,
 \[
@@ -244,32 +261,58 @@ Aber beispielsweise die Vorzeichen- (oder Signum-)Funktion,
                                   1,    & \textrm{falls $x > 0$,}
                     \end{cases}
 \]
-hat eine Unstetigkeitsstelle bei $x = 0$. Wenn Sie den Graphen
+hat eine Unstetigkeitsstelle, also einen Sprung, bei $x = 0$. 
+Wenn Sie den Graphen
 dieser Funktion zeichnen würden, so würde es aussehen, als wäre dieser zwar 
 stark wachsend um den Nullpunkt herum, 
-aber schon ununterbrochen. Um den richtigen Graphen dieser Funktion zu berechnen,
-müsste man sich etwas mehr Mühe machen. Darauf verzichten wir hier aber
-erst mal.
-
-Auch kann ein mit \texttt{curve()} gezeichneter Graph es aussehen lassen,
-als ob die gezeichnete Funktion überall definiert ist, während dies nicht so ist.
-So ist die Funktion $x \mapsto \frac{\sin(x)}{x}$ bei $x = 0$ nicht definiert,
-denn durch 0 kann man nicht teilen. Zeichnet man jedoch den Graphen dieser
-Funktion, so könnte man denken, dass $0 \mapsto 1$. Man könnte daher im 
-Graphen ein Kreischen bei den Koordinaten $(0, 1)$ zeichnen, um deutlich
-zu machen, dass die Funktion bei $x = 0$ nicht definiert ist:
+aber schon ununterbrochen. 
+Um den richtigen Graphen dieser Funktion zu zeichnen,
+reicht den \texttt{curve()}-Befehl nicht aus.
+Stattdessen müssen wir uns den Graphen mit etwas mehr Mühe zusammenbasteln:
 <<eval = FALSE>>=
-curve(sin(x)/x, 
-      from = -8, to = 8,
-      xlab = "x", ylab = "f(x)")
-# Mit 'cex' (character expansion) kann die Grösse geregelt werden.
-points(0, 1, cex = 2) 
+# leere Leinwand zeichnen
+plot(0, 0, 
+     type = "n", # nur Leinwand zeichnen
+     xlim = c(-3, 3), 
+     ylim = c(-1.2, 1.2),
+     xlab = "x", ylab = "f(x)")
+# Funktionswerte für negative Zahlen
+segments(x0 = -4, x1 = 0, y0 = -1) # siehe ?segments
+# für positive Zahlen
+segments(x0 = 0, x1 = 4, y0 = 1)
+# für 0
+points(0, 0, pch = 16) # siehe ?points
+points(0, -1, pch = 1)
+points(0, 1, pch = 1)
 @
+
+
+\mypar[Grafische Parameter einstellen]{Bemerkung}
+  Wenn Sie den Graphen in Abbildung \ref{fig:curve} selber zeichnen,
+  so werden Sie feststellen, dass das Resultat bei Ihnen etwas anders aussieht.
+  Unter anderem werden die Werte auf der $y$-Achse bei Ihnen vertikal statt
+  horizontal orientiert sein.
+  Wie mit \texttt{curve()} oder \texttt{plot()} gezeichnete Graphen aussehen sollten,
+  können Sie mit \texttt{par()} einstellen.
+  Wenn Sie meine Einstellungen übernehmen möchten, können Sie zunächst
+  den folgenden Befehl ausführen und dann den Graphen nochmals zeichnen.
+  
+<<eval = FALSE>>=
+par(las = 1,
+    bty = "l",
+    mar = c(3, 3.5, 2, 1),
+    mgp = c(2, 0.3, 0),
+    tck = -0.01,
+    cex = 0.8)
+@
+
+Siehe \texttt{?par} für weitere Infos.
+\parend
 
 \subsection{Vektorisierte Rechenoperationen}
 In R ist ein \term{Vektor} eine bestimmte Anzahl von Zahlen (oder anderen 
 Objekten), die zusammen gruppiert werden. Mit der Funktion \texttt{c()}
-(für \textit{concatenate}) kann man (unter anderem) 
+(für \textit{combine}) kann man (unter anderem) 
 Zahlen zu einem Vektor zusammenfügen. 
 Mit dem  \textit{assignment operator} \texttt{<-} kann man diesem 
 Vektor einen Namen geben (hier \texttt{a}):
@@ -327,8 +370,8 @@ angewandt werden. In diesem Fall werden sie komponentenweise ausgeführt:
 <<>>=
 2 * a
 a - 7
-sqrt(a) # Warnung wg. Wurzel von negativer Zahl
-log(a, 2)
+sqrt(a) # Warnung wegen Wurzel von negativer Zahl
+log(a, 2) # Warnung wegen Logarithmus von nicht-positiver Zahl
 @
 
 Wenn wir noch einen zweiten Vektor der gleichen Länge definieren,
@@ -340,7 +383,7 @@ a - b
 a + b
 a / b
 a * b
-a ^ b
+a^b
 @
 
 Um das komponentenweise Maximum bzw.\ Minimum von zwei oder mehr
@@ -428,10 +471,11 @@ Mit dem unten stehenden Code erzeugen wir eine neue Funktion namens
 \texttt{kum\_summe()}, der einen einzigen Parameter \texttt{x} hat.
 Dieses \texttt{x} spielt die Rolle des Eingabevektors.
 Die Funktion kreiert zunächst einen neuen Vektor mit der gleichen Länge
-des Eingabevektors. Den ersten Wert dieses neuen Vektors wird auf den
-ersten Wert des Eingabevektors gestellt. Danach wird eine \term{for-Schleife}
-verwendet, um die weiteren kumulativen Summen zu bestimmen. Am Ende
-verlassen wir die Funktion und geben den neuen Vektor aus:
+des Eingabevektors. 
+Der erste Wert dieses neuen Vektors wird auf den ersten Wert des Eingabevektors gestellt. 
+Danach wird eine \term{for-Schleife} verwendet, 
+um die weiteren kumulativen Summen zu bestimmen. 
+Am Ende verlassen wir die Funktion und geben den neuen Vektor aus:
 <<>>=
 kum_summe <- function(x) {
   resultat <- vector(length = length(x))
@@ -677,7 +721,7 @@ Auch für diesen Kurs sollten Sie ein solches Projekt einrichten.
 Klicken Sie in RStudio auf \texttt{File, New Project..., New directory, New Project} und geben Sie dem
 Projekt einen sinnvollen Namen (z.B.\ Statistikkurs).
 Für diesen Kurs brauchen Sie
-die Option\texttt{Use renv with this project} nicht einzuschalten.
+die Option \texttt{Use renv with this project} nicht einzuschalten.
 Es wird jetzt ein Ordner kreiert, der eine Datei
 mit der Endung \texttt{.Rproj} enthält.
 Um das R-Projekt zu öffnen, können Sie diese Datei
@@ -710,7 +754,7 @@ statt mitten im Semesterstress.
 Aber Achtung: Es kommt nicht selten vor, dass alter R-Code
 nach einem Update nicht mehr oder etwas anders funktioniert.
 Für grössere Forschungsprojekte empfiehlt es sich daher,
-die Option \texttt{Use renv with this project} anzukreuzen.
+die Option \texttt{Use renv with this project} schon anzukreuzen.
 Diese sorgt dafür, dass die Versionen der Packages, die Sie
 im Projekt verwenden, als Teil des Projekts gespeichert werden.
 Die verwendeten Packages müssen jedoch im Projekt neu installiert werden.
@@ -720,8 +764,8 @@ noch mit der alten Version ausgeführt. Dies verringert die
 Gefahr, dass Ihr alter Code ein paar Jahre später nicht mehr funktioniert.
 Für mehr Informationen, siehe \url{https://rstudio.github.io/renv/articles/renv.html}.
 
-Für dieses Skript wurde R-Version 4.3.1 verwendet.
-Eine Übersicht über die Packageversionen finden Sie im Anhang.
+Eine Übersicht über die für dieses Skript verwendeten 
+Softwareversionen finden Sie im Anhang.
 
 \section{Software zitieren}
 R und R-Pakete sind gratis und werden mehrheitlich
