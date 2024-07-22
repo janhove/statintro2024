@@ -508,7 +508,7 @@ Berechnung ausführt.
 
 \mypar[Fakultät]{Beispiel}\label{bsp:factorial}
 Seit 2023 spielen zwölf Teams in der Schweizer Super League.
-Wie viele möglichen Tabellenstände gibt es, wenn wir die Möglichkeit
+Wie viele mögliche Tabellenstände gibt es, wenn wir die Möglichkeit
 gleich plazierter Teams ausser Acht lassen?
 
 Es gibt 12 Möglichkeiten, den ersten Rang zu belegen.
@@ -520,7 +520,7 @@ Team haben. Insgesamt gibt es also
 \[
 12 \cdot 11 \cdot 10 \cdot \dots \cdot 2 \cdot 1 = 479'001'600
 \]
-möglichen Tabellenstände in der Super League.
+mögliche Tabellenstände in der Super League.
 
 Diese Erkenntnis kann verallgemeinert werden:
 Bei $n$ unterschiedlichen Objekten gibt es $n \cdot (n-1) \cdot \dots \cdot 1$

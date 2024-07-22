@@ -724,7 +724,7 @@ Kürzel in RStudio: \textsc{ctrl} + \textsc{shift} + \textsc{m}. \parend
 
 Im Folgenden werden die Ergebnisse der Befehle nicht mehr angezeigt.
 Probieren Sie die Befehle aber dennoch aus.
-Bemerken Sie die Verwendung von \texttt{c()} (für `concatenate')
+Bemerken Sie die Verwendung von \texttt{c()} (für `combine')
 sowie von \texttt{:}. Auch können mehrere Befehle verkettet werden.
 <<eval = FALSE>>=
 # Zeilen 5 und 7 auswählen.
@@ -816,6 +816,22 @@ für die eine falsche Antwort gegeben wurde, so verwenden wir diesen Befehl:
 # Output nicht im Skript
 all_data |>
   filter(Position == 1 | Richtig == 0)
+@
+Hier ist zu bemerken, dass das logische \textit{oder}, 
+das mit \texttt{|} dargestellt wird,
+ein inklusives \textit{oder} ist, d.h., 
+es bedeutet `$A$ oder $B$ oder auch beide'.
+Ein exklusives \textit{oder} (also `$A$ oder $B$, aber nicht beide')
+kann man wie folgt darstellen:
+<<eval = FALSE>>=
+# Output nicht im Skript
+all_data |> 
+  filter(Position == 1 | Richtig == 0) |> 
+  filter(!(Position == 1 & Richtig == 0))
+
+# oder:
+all_data |> 
+  filter(xor(Position == 1, Richtig == 0))
 @
 
 
