@@ -162,7 +162,7 @@ Für eine schnelle Grafik können Sie natürlich auch das \texttt{Export}-Menü
 in der Registerkarte \texttt{Plots} im Fenster rechts unten in RStudio verwenden.
 Aber ich empfehle Ihnen, den Gebrauch von \texttt{pdf()} zu umarmen, da Sie so
 in Ihrem Code dokumentieren, mit welchen Einstellungen die Grafik gespeichert wurde.
-Das ist nämlich sehr praktisch, wenn Sie später alle Grafiken mit leicht anderen
+Das ist nämlich sehr praktisch, wenn Sie später eine Grafik mit leicht anderen
 Einstellungen neu zeichnen müssen.
 \parend
 
@@ -172,7 +172,7 @@ nämlich keine Datenpunkte, oder Grüppchen von Datenpunkten, zu geben,
 die ziemlich weit von den anderen entfernt liegen. Solche Datenpunkte,
 die man \term{Ausreisser} nennt, können das Ergebnis einer Analyse
 stark beeinflussen, sodass es wichtig ist, zu wissen, dass es sie gibt.
-Ausreisser können (nicht müssen) auch auf technische
+Ausreisser können (nicht `müssen') auch auf technische
 Fehler hinweisen und sollten also nochmals kontrolliert werden.
 Abbildung \ref{fig:outlier} zeigt ein fiktives Beispiel, in dem
 die Anzahl morphologischer Fehler pro Textseite pro Lerner aufgeführt wird.
@@ -320,7 +320,7 @@ einnimmt, 1 beträgt. Anders gesagt: Man nimmt die Höhe jedes \textit{bins},
 also die Wahrscheinlichkeitsdichte, und multipliziert diese mit seiner Breite,
 um die Oberfläche der Bälkchen zu berechnen. Die Höhe wird so festgelegt,
 dass wenn man alle Oberflächen addiert, die Summe 1 beträgt. Die Form
-des Histogramms ist aber gleich, egal ob man mit den Anzahlen oder den
+des Histogramms ist aber gleich, egal ob man mit Anzahlen oder
 Wahrscheinlichkeitsdichten arbeitet.
 
 Abbildung \ref{fig:histogramdensity} zeigt ein Beispiel.
@@ -488,8 +488,10 @@ $m_X \leq x$, und wenn für mindestens der Hälfte der Werte in $X$ gilt,
 dass $m_X \geq x$.
 Ein Vektor mit einer geraden Anzahl Einträgen kann mehrere
 (sogar unendlich viele) Mediane haben.
-In diesem Fall bezeichnet man als \emph{den} Median das Mittel des
-grössten und des kleinsten solchen Wertes.
+Beobachten wir beispielsweise die Zahlen $(0, 3, 4, 7)$,
+so sind alle Zahlen im Intervall $[3, 4]$ Mediane dieser Beobachtungen.
+In solchen Fällen bezeichnet man als \emph{den} Median das Mittel des
+grössten und des kleinsten solchen Wertes, hier also $3.5$.
 
 Zum Berechnen des Medians ordnet man die Daten
 von klein nach gross und nimmt man den mittleren Wert.
@@ -668,7 +670,7 @@ Wenn wir alle Beobachtungen ins Streuungsmass einfliessen lassen wollen,
 scheint es auf den ersten Blick sinnvoll, die Unterschiede zwischen den beobachteten
 Werten und dem Mittel zu berechnen und diese Unterschiede beieinander aufzuzählen:
 $(x_1 - \mu) + (x_2 - \mu) + \dots$. Diese Summe ist aber immer 0.
-Um das zu sehen, überlege man sich Folgendes:
+Um dies zu sehen, überlege man sich Folgendes:
 \[
   (x_1 - \mu) + (x_2 - \mu) + \dots + (x_N - \mu) = (x_1 + x_2 + \dots + x_N) - N\mu.
 \]
@@ -1026,7 +1028,7 @@ das $p$-te Quantil einer endlichen Population $x$ berechnet:
 pop_quantile <- function(x, p) {
   x <- x[!is.na(x)]
   cum_prop <- cumsum(table(x)) / length(x)
-  return(which(cum_prop > p)[1] |> names() |> as.numeric())
+  return(which(cum_prop >= p)[1] |> names() |> as.numeric())
 }
 pop_quantile(d$Norwegian, 0.43)
 pop_quantile(d$Norwegian, 0.72)
