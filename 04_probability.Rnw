@@ -241,9 +241,8 @@ Dazu muss die Abbildung $\Prob$ folgende Bedingungen (Axiome) genügen:
         gerade die Summe der Wahrscheinlichkeiten der einzelnen Ereignisse. In Symbolen:
         Wenn für jedes $i \neq j$ gilt, dass $A_i \cap A_j = \emptyset$, so gilt
         \[
-          \Prob\left(\bigcup_{i = 1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} \Prob(A_i).
+          \Prob\left(\bigcup_{i = 1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} \Prob(A_i).         \parendeq
         \]
-         \parend
 \end{enumerate}
 
 \mypar[Rechenregeln für Wahrscheinlichkeiten]{Lemma}
@@ -355,9 +354,8 @@ weil $\sum_{k=1}^{\infty}\frac{1}{k}$ gegen unendlich divergiert.
   handelt es sich hier um einen gültigen diskreten Wahrscheinlichkeitsraum.
   Die Wahrscheinlichkeit, dass man eine gerade Zahl generiert, beträgt
   \[
-    \sum_{k=1}^{\infty} \Prob(\{2k\}) = \sum_{k=1}^{\infty} \frac{1}{2^{2k}} = \sum_{k=1}^{\infty} \frac{1}{4^k} = \frac{1}{4} + \frac{1}{16} + \frac{1}{64} + \dots = \frac{1}{3}.
+    \sum_{k=1}^{\infty} \Prob(\{2k\}) = \sum_{k=1}^{\infty} \frac{1}{2^{2k}} = \sum_{k=1}^{\infty} \frac{1}{4^k} = \frac{1}{4} + \frac{1}{16} + \frac{1}{64} + \dots = \frac{1}{3}.\parendeq
   \]
-\parend
 
 Diskrete Wahrscheinlichkeitsräume lassen sich relativ einfach beschreiben,
 denn sie werden komplett charakterisiert von den Elementarereignissen
@@ -421,9 +419,8 @@ Eine Konsequenz von der Tatsache, dass in diesem Beispiel
 individuelle Punkte Wahrscheinlichkeit 0 haben, ist, dass man ohne Bedenken
 die Randpunkte den Intervallen hinzufügen darf oder sie weglassen kann:
 \[
-  \Prob([a, b]) = \Prob((a, b)) = \Prob([a, b)) = \Prob((a, b]).
+  \Prob([a, b]) = \Prob((a, b)) = \Prob([a, b)) = \Prob((a, b]).\parendeq
 \]
-\parend
 
 \begin{figure}[tp]
 \begin{center}
@@ -435,7 +432,7 @@ die Randpunkte den Intervallen hinzufügen darf oder sie weglassen kann:
 
 \subsection{Unabhängigkeit}
 
-\mypar[Unabhängigkeit (1)]{Definition}
+\mypar[Unabhängigkeit (1)]{Definition}\label{def:unab1}
 Wir sagen, dass zwei Ereignisse $A$ und $B$ \term{unabhängig} sind, falls
 \[
   \Prob(A \cap B) = \Prob(A)\Prob(B)
@@ -451,11 +448,10 @@ denn für jedes Ereignis $B$ gilt $\emptyset \cap B = \emptyset$. Somit
   \Prob(\emptyset \cap B) = \Prob(\emptyset) = 0 = 0\cdot \Prob(B) = \Prob(\emptyset)\Prob(B).
 \]
 Ebenso ist das Ereignis $\Omega$ unabhängig von jedem anderen Ereignis,
-denn für jedes Ereignis $B$ gilt $\Omega \cap B = \Omega$. Somit
+denn für jedes Ereignis $B$ gilt $\Omega \cap B = B$. Somit
 \[
-  \Prob(\Omega \cap B) = \Prob(B) = 1\cdot \Prob(B) = \Prob(\Omega)\Prob(B).
+  \Prob(\Omega \cap B) = \Prob(B) = 1\cdot \Prob(B) = \Prob(\Omega)\Prob(B).\parendeq
 \]
-\parend
 
 \mypar{Beispiel}
 Die Ereignisse $A$ (`Auf der Karte steht eine gerade Zahl')
@@ -469,20 +465,20 @@ Die Ereignisse $A \cup B$ und $A \cap B$ sind jedoch nicht unabhängig, denn
   \Prob((A \cup B) \cap (A \cap B))
   = \Prob(A \cap B)
   = \frac{1}{6} \neq \frac{2}{3} \cdot \frac{1}{6}
-  = \Prob(A \cup B)\Prob(A \cap B).
+  = \Prob(A \cup B)\Prob(A \cap B).\parendeq
 \]
-\parend
 
 \mypar{Aufgabe}
 Betrachten wir das zweite Zufallsexperiment. Sind die Ereignisse
 `Die erste Karte ist ein Ass' und `Die zweite Karte ist ein Ass' unabhängig?
+Begründen Sie Ihre Antwort anhand von Definition \ref{def:unab1}.
 \parend
 
 \mypar{Aufgabe}
   Es seien $F$ und $G$ irgendwelche Ereignisse mit $\Prob(F) = 0.6$,
   $\Prob(G) = 0.2$ und $\Prob(F \cup G) = 0.72$. 
   Sind $F$ und $G$ unabhängig?
-  Begründen Sie Ihre Antwort.
+  Begründen Sie Ihre Antwort anhand von Definition \ref{def:unab1}.
 \parend
 
 \mypar[Unabhängigkeit (2)]{Definition} Wir sagen, dass $n$ Ereignisse $A_1, \dots, A_n$
@@ -583,9 +579,8 @@ Dies sieht man so:
   &= \Prob(A \cap \bigcup_{k=1}^\infty E_k) \\
   &= \Prob\left(\bigcup_{k=1}^{\infty} (A \cap E_k)\right) \\
   &= \sum_{k=1}^{\infty} \Prob(A \cap E_k) \\
-  &= \sum_{k=1}^{\infty} \Prob(A | E_k)\Prob(E_k).
+  &= \sum_{k=1}^{\infty} \Prob(A | E_k)\Prob(E_k).\parendeq
 \end{align*}
-\parend
 
 \mypar{Beispiel}
 Betrachten wir wieder das zweite Zufallsexperiment.
@@ -673,7 +668,7 @@ wie man $\Prob(A | B)$ und $\Prob(B | A)$ richtig miteinander in Bezug zu setzt.
 \mypar[medizinische Tests]{Beispiel}\label{bsp:medtest}
   Man stelle sich vor, dass bei allen Neugeborenen einen medizinischen Test
   durchgeführt wird, um eine seltene genetische Krankheit aufzuspüren, von
-  der schätzungsweise 0.01\% der Neugeborenen betroffen ist.
+  der schätzungsweise 0.01\% der Neugeborenen betroffen sind.
   Der Test stuft tatsächlich Betroffene zu einer Wahrscheinlichkeit von
   97\% als krank ein. Jedoch werden auch 1\% der Neugeborenen, die
   nicht von der Krankheit betroffen sind, trotzdem als krank eingestuft.
@@ -703,9 +698,8 @@ Seien $A, B$ Ereignisse mit $\Prob(A), \Prob(B) > 0$. Dann gilt
   \Prob(B | A)
   &= \frac{\Prob(B \cap A)}{\Prob(A)}     & [\textrm{Definition bedingte Wsk.}] \\
   &= \frac{\Prob(A|B)\Prob(B)}{\Prob(A)}  & [\Prob(A|B)=\Prob(A \cap B)/\Prob(B)] \\
-  &= \frac{\Prob(A|B)\Prob(B)}{\Prob(A|B)\Prob(B) + \Prob(A|B^c)(1 - \Prob(B))}. & [\textrm{totale Wahrscheinlichkeit}]
+  &= \frac{\Prob(A|B)\Prob(B)}{\Prob(A|B)\Prob(B) + \Prob(A|B^c)(1 - \Prob(B))}. & [\textrm{totale Wahrscheinlichkeit}]\parendeq
 \end{align*}
-\parend
 
 Angewandt auf Beispiel \ref{bsp:medtest} hiesse $B$ `Kind ist betroffen'
 und $A$ `Kind wird als krank eingestuft'. Dann
@@ -791,7 +785,7 @@ kumulative Wahrscheinlichkeit     & 0.333 & 0.444 & 0.555 & 0.666 & 0.777 & 0.88
 Folglich gelten etwa $F_X(-1) = 0, F_X(2.5) = 0.444$ und $F_X(1.2) = 1$.
 Abbildung \ref{fig:fx} stellt die Verteilungsfunktion von $X$ dar.
 
-<<echo = FALSE, fig.cap = "Verteilungsfunktion der Punktzahl einer Jasskarte beim \\textit{Obenabe}.\\label{fig:fx}", fig.width = 4, fig.height = 3, out.width=".4\\textwidth">>=
+<<echo = FALSE, fig.cap = "Verteilungsfunktion der Punktzahl einer Jasskarte beim \\textit{Obenabe}.\\label{fig:fx}", fig.width = 0.7*4, fig.height = 0.7*3, out.width=".4\\textwidth">>=
 plot(1, 1, type = "n", xlim = c(-2, 13), ylim = c(0, 1),
      xlab = "r", ylab = bquote(F[x](r)))
 segments(-3, 0, 0)
@@ -854,7 +848,7 @@ stehen bleibt. Die Verteilungsfunktion von $X$ (Abbildung \ref{fig:contuniform})
 ist diesmal \term{stetig} (ohne Lücken). 
 Das 0.3-Quantil dieser Verteilung liegt bei 108.
 \parend
-<<echo = FALSE, fig.cap = "Verteilungsfunktion der kontinuierlichen Gleichverteilung auf $[0, 360)$.\\label{fig:contuniform}",  fig.width = 4, fig.height = 3, out.width=".4\\textwidth">>=
+<<echo = FALSE, fig.cap = "Verteilungsfunktion der kontinuierlichen Gleichverteilung auf $[0, 360)$.\\label{fig:contuniform}",  fig.width = 0.8*4, fig.height = 0.8*3, out.width=".4\\textwidth">>=
 curve(punif(x, 0, 360), from = -50, to = 410, xlab = "r", ylab = bquote(F[X](r)))
 segments(-100, 0.3, qunif(0.3, 0, 360), col = "blue", lty = "dashed")
 segments( qunif(0.3, 0, 360), 0.3, y1=0, col = "blue", lty = "dashed")
@@ -874,7 +868,7 @@ Die Kerndichteschätzungen aus Kapitel \ref{ch:descriptives} sind eine Methode,
 um anhand von Beobachtungen einer Zufallsvariablen die Wahrscheinlichkeitsdichte
 ihrer Verteilung zu schätzen.
 
-<<fig.cap = "Wahrscheinlichkeitsdichte einer kontinuierlichen Gleichverteilung mit Bereich 0 bis 360. Die Wahrscheinlichkeit, dass wir einen Wert zwischen 45 und 93 beobachten, entspricht der Fläche unter der Wahrscheinlichkeitsdichte in diesem Intervall.\\label{fig:kreisdichte}", echo = FALSE, fig.height = 2.8, fig.width = 4, message = FALSE, warning = FALSE, out.width="0.4\\textwidth">>=
+<<fig.cap = "Wahrscheinlichkeitsdichte einer kontinuierlichen Gleichverteilung mit Bereich 0 bis 360. Die Wahrscheinlichkeit, dass wir einen Wert zwischen 45 und 93 beobachten, entspricht der Fläche unter der Wahrscheinlichkeitsdichte in diesem Intervall.\\label{fig:kreisdichte}", echo = FALSE, fig.height = 0.8*2.8, fig.width = 0.8*4, message = FALSE, warning = FALSE, out.width="0.4\\textwidth">>=
 op <- par(no.readonly = TRUE)
 par(mar = c(3,4.1,2,1))
 plot(0, 0, type = "n", xlab = "r", ylab = "", ylim = c(0, 1/360 + 1/900),
@@ -902,6 +896,8 @@ Tatsächlich gilt
 \[
   \Prob(X \in [45, 93]) = \int_{45}^{93} f_X(x) \df x = \int_{45}^{93} \frac{1}{360} \df x = \frac{93 - 45}{360}.
 \]
+Andere Wahrscheinlichkeitsdichten derselben Verteilung würden das gleiche
+Ergebnis liefern.
 
 Zufallsvariablen, deren Verteilung eine Wahrscheinlichkeitsdichte besitzt,
 nennen wir \term{kontinuierlich}. Wir können auch sagen, dass ihre Verteilung
@@ -909,7 +905,7 @@ nennen wir \term{kontinuierlich}. Wir können auch sagen, dass ihre Verteilung
 
 \mypar{Bemerkung}
   Eine kontinuierliche Zufallsvariable kann nicht diskret sein und umgekehrt:
-  Falls $X$ eine Wahrscheinlichkeitsdichte hat, so gilt
+  Falls $X$ eine Wahrscheinlichkeitsdichte $f_X$ hat, so gilt
   \[
     \Prob(X = r) = \int_r^r f_X(x) \df x = 0
   \]
@@ -987,9 +983,6 @@ Auch hier gilt allgemeiner, dass
 \]
 für (grundsätzlich) jede Abbildung $g$, insofern dieses Integral existiert.\footnote{Diese
 Formel bezeichnet man übrigens manchmal als \textit{law of the unconscious statistician}.}
-(Nicht alle Verteilungen
-haben eine Varianz. Mit solchen pathologischen Verteilungen werden
-wir uns aber nicht auseinandersetzen.)
 
 Für Wahrscheinlichkeitsverteilungen, die weder kontinuierlich noch diskret sind,
 kann man allenfalls den Erwartungswert separat für ihren kontinuierlichen und ihren
@@ -1066,7 +1059,7 @@ Die Standardabweichung beträgt also etwa $4.13$.
 
 Für den Zufallsgenerator aus Beispiel \ref{bsp:2k} gilt
 \[
-  \E(G^2) = \sum_{k=1}^n \frac{k^2}{2^k} = 6.
+  \E(G^2) = \sum_{k=1}^{\infty} \frac{k^2}{2^k} = 6.
 \]
 Also beträgt die Varianz von $G$
 \[
@@ -1104,9 +1097,9 @@ Die Standardabweichung beträgt etwa 103.9.
   \]
   und
   \[
-    \Var(\widetilde{G}) = \Var(3G + 4) = 3^2\Var(G) = 18.
+    \Var(\widetilde{G}) = \Var(3G + 4) = 3^2\Var(G) = 18.\parendeq
   \]
-\parend
+
 
 \mypar[Varianz einer Summe $\neq$ Summe der Varianzen]{Beispiel}
   Auf der Basis des Zufallsgenerators $G$ aus Beispiel \ref{bsp:2k}
@@ -1116,7 +1109,9 @@ Die Standardabweichung beträgt etwa 103.9.
   \[
     \Var(G + \overline{G}) = 0 \neq 4 = \Var(G) + \Var(\overline{G}).
   \]
-  Die Zufallsvariablen $G$ und $\overline{G}$ sind klar nicht unabhängig.
+  Intuitiv ist klar, dass die 
+  Zufallsvariablen $G$ und $\overline{G}$ nicht unabhängig sind.
+  Diese Intuition wird in der nächsten Definition formalisiert.
 \parend
 
 \subsection{Unabhängigkeit}
@@ -1272,7 +1267,7 @@ Bernoulliexperimenten Erfolge sind, beträgt
   \Prob(X_1 = 1)\Prob(X_2 = 1) \dots \Prob(X_k = 1)\Prob(X_{k+1} = 0)\dots\Prob(X_n = 0) = p^k(1-p)^{n-k}.
 \]
 Es gibt $n!$ Möglichkeiten, die Bernoulliexperimente umzuordnen; siehe Beispiel \ref{bsp:factorial}.
-Da die Ausgänge von $k$ bzw.\ $n-k$ Bernoulliexperimente nicht voneinander unterschieden werden
+Da die Ausgänge der ersten $k$ bzw.\ der letzten $n-k$ Bernoulliexperimenten nicht voneinander unterschieden werden
 können, gibt es 
 \[
   \frac{n!}{k!(n-k)!} =: \binom{n}{k}
@@ -1418,7 +1413,7 @@ runif(10, -pi, pi)
 Von grosser praktischer Bedeutung sind \term{Normalverteilungen}, wie wir im nächsten
 Abschnitt sehen werden.
 Normalverteilungen werden durch zwei Parameter
-definiert: ihr Erwartungswert $\mu$ und ihre Varianz $\sigma^2$.
+definiert: ihren Erwartungswert $\mu$ und ihre Varianz $\sigma^2$.
 Hat eine Zufallsvariable $X$ eine Normalverteilung mit Parametern $\mu, \sigma^2$,
 so schreibt man $X \sim \textrm{Normal}(\mu, \sigma^2)$ oder $X \sim \mathcal{N}(\mu, \sigma^2)$.
 Abbildung \ref{fig:dnorm} zeigt die Wahrscheinlichkeitsdichten von vier 
@@ -1494,7 +1489,8 @@ diese Aufgaben auch `zu Fuss' lösen.
 unter dem Mittel liegt?
 \item Wie wahrscheinlich ist es, dass eine zufällig ausgewählte Person einen IQ hat, der mindestens eine Standardabweichung (also 15 IQ-Punkte)
 vom Mittel entfernt liegt?
-\item Für welchen IQ-Wert gilt, dass 25\% der Bevölkerung einen niedrigeren IQ-Wert hat?
+\item Für welchen IQ-Wert gilt, dass 25\% der Bevölkerung einen niedrigeren IQ-Wert und 
+                                     75\% einen höheren haben?
 \item Durchschnittliche Intelligenz ist definiert als der IQ der mittleren 45\% der Bevölkerung. 
 Zwischen welchen zwei Werten liegt er?
 

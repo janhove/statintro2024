@@ -161,7 +161,7 @@ Fürs Ziehen von beliebigen Wurzeln von negativen Zahlen
 (z.B. $\sqrt[3]{-8}$) müssten wir aber
 wieder einen Umweg über die komplexen Zahlen machen, worauf wir hier verzichten. \parend
 
-\mypar[Wissenschaftliche Notation]{Bemerkung}
+\mypar[wissenschaftliche Notation]{Bemerkung}
 Öfters wird das Ergebnis einer Berechnung in einem anderen Format dargestellt.
 Berechnen wir beispielsweise $3328^{27}$, so erhalten wir als Ergebnis
 \texttt{1.26e+95}. (Die Zahlen im Fliesstext stimmen übrigens nicht immer mit den
@@ -287,7 +287,7 @@ points(0, 1, pch = 1)
 @
 
 
-\mypar[Grafische Parameter einstellen]{Bemerkung}
+\mypar[grafische Parameter einstellen]{Bemerkung}
   Wenn Sie den Graphen in Abbildung \ref{fig:curve} selber zeichnen,
   so werden Sie feststellen, dass das Resultat bei Ihnen etwas anders aussieht.
   Unter anderem werden die Werte auf der $y$-Achse bei Ihnen vertikal statt
@@ -461,7 +461,7 @@ Die Funktionalität von R kann um eigens geschriebene Funktionen ergänzt werden
 Wir wollen anhand von zwei Beispielen zeigen, wie dies funktioniert.
 Weitere Beispiele folgen in späteren Kapiteln.
 
-\mypar[Kumulative Summe]{Beispiel}
+\mypar[kumulative Summe]{Beispiel}
 Wir erhalten einen Vektor mit numerischen Werten und wollen einen neuen Vektor
 kreieren, der die kumulativen Summen der Werte dieses Vektors enthält.
 Wenn wir zum Beispiel die kumulativen Summen für den Vektor $(1, 4, 9)$
