@@ -10,7 +10,7 @@ die Wahlpräferenz aller Amerikaner:innen, die vorhaben,
 zur Urne zu gehen.
 Öfters sollte man die Population von Interesse
 aber eher als einen abstrakteren datengenerierenden Mechanismus
-verstehen. Ein simples Beispiel hierfür ist die Kreisscheibe aus Abbildung
+verstehen. Ein Beispiel hierfür ist die Kreisscheibe aus Abbildung
 \ref{fig:kreis}, die Daten aus einer kontinuierlichen Gleichverteilung generiert.
 
 In der Regel stellen die Daten,
@@ -71,7 +71,7 @@ am Computer Stichproben simulieren.
 
 \mypar[Daten aus Normalverteilung]{Aufgabe}
 Mit dem R-Code unten können Sie einschätzen,
-wie Stichproben aus einer normalverteilten
+wie Histogramme von Stichproben aus einer normalverteilten
 Population mit Mittel 3 und Standardabweichung 7
 aussehen. Zunächst habe ich hier
 die Stichprobengrösse auf 20 festgelegt,
@@ -133,7 +133,7 @@ für die entsprechenden Merkmale von $P$ verwenden.
 Hierbei stellt sich die Frage, wie gut solche sogenannten \textit{plug-in}-Schätzer sind.
 
 \mypar[Estimand, Schätzung und Schätzer]{Definition}
-  Ein \term{Estimand} $\mu$ ist eine numerische Eigenschaft einer Population,
+  Ein \term{Estimand} ist eine numerische Eigenschaft einer Population,
   die wir anhand von Daten schätzen wollen.
   
   Eine \term{Schätzung} ist eine in der Regel auf Daten und Vorwissen
@@ -193,7 +193,7 @@ mathematische Konzepte einzuführen. Daher soll eine konzeptuelle Definition hie
 \parend
 
 Im Idealfall sind Schätzer unverzerrt und konsistent; zudem sollte ihre Varianz
-niedrig sein. Wie wir (spätestens im Ausblick) sehen werden, kann man jedoch
+niedrig sein. Wie wir in Aufgabe \ref{ex:estimators} sehen werden, kann man jedoch
 oft die Varianz eines Schätzers senken, indem man bei der Verzerrung Abstriche 
 macht (\term{bias--variance tradeoff}).
 
@@ -262,7 +262,7 @@ Varianz zu konstruieren, wenn die Stichprobe keine einfache Stichprobe ist.
   Eine erste Möglichkeit ist, $\mu$ durch das Mittel von $X_1$ und $X_2$ zu
   schätzen. Dieser Schätzer ist unverzerrt, denn
   \[
-    \E\left(\frac{X_1 + X_2}{2}\right) = \frac{1}{2}(\E(X_1) + \E(X_2)) = \mu.
+    \E\left(\frac{X_1 + X_2}{2}\right) = \frac{1}{2}(\E(X_1) + \E(X_2)) = \frac{1}{2}(\mu + \mu) = \mu.
   \]
   Dank der Unabhängigkeit von $X_1, X_2$ lässt sich seine Varianz leicht
   berechnen:
@@ -304,7 +304,7 @@ Varianz zu konstruieren, wenn die Stichprobe keine einfache Stichprobe ist.
   Das Mittel der Population schätzt man dan am besten durch dieses gewichtete Mittel.
 \parend
 
-\mypar[Vergleich von Schätzern von $\mu$]{Aufgabe}
+\mypar[Vergleich von Schätzern von $\mu$]{Aufgabe}\label{ex:estimators}
   Sei $X_1, \dots, X_n$ eine einfache Zufallsstichprobe aus der Verteilung
   $P$ und sei $\mu$ das Mittel (Erwartungswert) von $P$.
   Entscheiden Sie für die folgenden Schätzer, ob sie $\mu$ unverzerrt schätzen,
@@ -341,19 +341,30 @@ beträgt
 Wie in Abschnitt \ref{sec:clt} definieren wir zunächst eine R-Funktion,
 die eine Stichprobe der Grösse \texttt{n} aus der \textrm{Unif}($[-5, 5]$)-Verteilung
 generiert und die selbst geschriebene \texttt{pop\_var()}-Funktion (siehe Aufgabe
-\ref{ex:popvar}) auf sie anwendet. Dann führen wir diese Funktion 10'000 Mal
-aus, zunächst mit $n = 25$, und ermitteln den Schnitt der berechneten Varianzschätzungen:
+\ref{ex:popvar}) auf sie anwendet (\texttt{var\_one\_run()}).
+Dann schreiben wir eine zweite Funktion, die \texttt{var\_one\_run()} mehrmals
+(z.B.\ 10'000 Mal) ausführt und das durchschnittliche Ergebnis ausspuckt (\texttt{sim\_var()}).
 <<>>=
 var_one_run <- function(n, min = -5, max = 5) {
   x <- runif(n, min = min, max = max)
   pop_var(x)
 }
-simulation <- replicate(10000, var_one_run(n = 25))
-mean(simulation)
+sim_var <- function(n_sample, min = -5, max = 5, n_runs = 10000) {
+  sample_vars <- replicate(n_runs, var_one_run(n = n_sample, min = min, max = max))
+  mean(sample_vars)
+}
+@
+
+Zunächst ermitteln wir das Mittel von 10'000 Varianzschätzungen, die auf 
+Stichproben der Grösse $n = 25$ basieren:
+<<>>=
+sim_var(n_sample = 25)
 @
 
 \mypar[unterschiedliche $n$]{Aufgabe}\label{ex:estimate_var}
   Führen Sie die gleiche Simulation für $n = 16, 9, 4, 1$ durch.
+  (Die Funktionen \texttt{var\_one\_run()} und \texttt{sim\_var()} brauchen
+  Sie nicht umzuschreiben!)
   Vergleichen Sie jeweils die durchschnittliche Varianzschätzung
   mit dem Populationswert $\sigma^2 \approx 8.33$.
 \parend
@@ -436,9 +447,9 @@ ggplot(data.frame(x = c(0, 40)),
   dass
   \begin{align*}
     \Prob\left(S^2 \leq 14\right)
-    &= \Prob\left(\frac{10-1}{12} S^2 \leq \frac{(10-1)14}{12}\right) \\
-    &= \Prob\left(\frac{n-1}{\sigma^2} S^2 \leq 10.5\right) \\
-    &= \Prob(H^2 \leq 10.5),
+    &= \Prob\left(\frac{10-1}{12} S^2 \leq \frac{(10-1)14}{12}\right) & [\textrm{beide Seiten multiplizieren}]\\
+    &= \Prob\left(\frac{n-1}{\sigma^2} S^2 \leq 10.5\right) & [n = 10, \sigma^2 = 12]\\
+    &= \Prob(H^2 \leq 10.5) &,
   \end{align*}
   wo $H^2 \sim \chi_{9}^2$. Mit R berechnen wir den genauen Wert:
 <<>>=
@@ -468,9 +479,7 @@ Estimanden $\theta$ unverzerrt schätzt, heisst das noch nicht, dass $h(g(X_1, \
 den Estimanden $h(\theta)$ unverzerrt schätzt. Beispielsweise
 schätzt das Stichprobenmittel $\overline{X}$ das Populationsmittel $\mu$ unverzerrt,
 aber die Grösse $(\overline{X})^2$ überschätzt $\mu^2$. Hiervon kann man sich
-überzeugen, indem man eine Population mit $\mu = 0$ betrachtet. Im Allgemeinen
-handelt es sich um eine Überschätzung, wenn $h$ streng konvex ist, und um eine 
-Unterschätzung, wenn $h$ streng konkav ist.}
+überzeugen, indem man eine Population mit $\mu = 0$ betrachtet.}
 
 Es kommt eigentlich quasi nie vor, dass man für einen Datensatz
 die Populationsvarianz und -standardabweichung berechnet.
@@ -479,7 +488,7 @@ und Standardabweichung, meint man also die Stichprobenvarianz und die
 Stichprobenstandardabweichung. Bei grossen Populationen oder Stichproben
 ergeben beide Berechnungsmethoden ohnehin nahezu das gleiche Resultat.
 
-\mypar[Verteilung der Stichprobenstandardabweichung normalverteilter Daten]{Aufgabe}
+\mypar[Verteilung der Stichprobenstandardabweichung im Falle normalverteilter Daten]{Aufgabe}
   Sei $X_1, \dots, X_{10}$ eine Zufallsstichprobe aus einer $\mathcal{N}(-4, 8)$-Verteilung.
   Berechnen Sie die Wahrscheinlichkeit, dass die Stichprobenstandardabweichung $S$
   mindestens 3.5 beträgt. Dazu können Sie wie in Bemerkung \ref{bem:chisq} vorgehen.
@@ -494,7 +503,7 @@ In der Praxis ist es jedoch schwierig, eine Zufallsstichprobe
 aus einer einigermassen interessanten Population zu ziehen.
 Wenn wir etwa anhand einer Zufallsstichprobe die Englischkenntnisse
 bei Erwachsenen kosovarischer Herkunft im Kanton Sankt-Gallen
-charakterisieren möchten, brauchen wir zuerst eine vollständige
+charakterisieren möchten, bräuchten wir zuerst eine vollständige
 Liste aller Erwachsenen kosovarischer Herkunft in SG.
 Dann müssten wir zufällig eine Stichprobe von ihnen auswählen
 und die Ausgewählten alle von einer Teilnahme an der Studie überzeugen:

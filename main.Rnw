@@ -1,8 +1,9 @@
 \documentclass[oneside]{book}
 
 % Allgemeines Lay-Out
-\usepackage[a4paper]{geometry}
-\usepackage{lmodern}
+\usepackage[top=1.25in, bottom=1.25in]{geometry}
+\usepackage[all]{nowidow}
+% \usepackage{lmodern}
 
 % Deutsch
 \usepackage[ngerman]{babel, varioref}
@@ -75,6 +76,7 @@
 \leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill
     \quad\hbox{#1}%
 }
+\newcommand{\parendeq}{\tag*{$\diamondsuit$}}
 
 \title{Einführung in die quantitative Datenanalyse}
 \date{Universität Freiburg \\ Frühlingssemester 2024}

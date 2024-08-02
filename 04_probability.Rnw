@@ -1512,6 +1512,14 @@ unterschiedlichen Mitteln und Standardabweichungen
 und ziehen Sie eine allgemeine Schlussfolgerung.
 \parend
 
+\mypar{Bemerkung}
+  Hat die Zufallsvariable $X$ eine kontinuierliche Verteilung,
+  so gilt für das $p$-te Quantil $q := F_X^{-1}(p)$ ($p \in (0,1)$,
+  siehe Abschnitt \ref{sec:descriptive_cumprop}), $F_X(q) = p$.
+  Hat $X$ keine kontinuierliche Verteilung, so ist es möglich, dass
+  $F_X(q) > p$.
+\parend
+
 \section{Der zentrale Grenzwertsatz}\label{sec:clt}
 Wir greifen das Glücksradbeispiel wieder auf.
 Nehmen wir an, dass $n$ Leute unabhängig voneinander je ein Mal mit diesem
