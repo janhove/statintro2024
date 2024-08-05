@@ -481,7 +481,7 @@ Begründen Sie Ihre Antwort anhand von Definition \ref{def:unab1}.
   Begründen Sie Ihre Antwort anhand von Definition \ref{def:unab1}.
 \parend
 
-\mypar[Unabhängigkeit (2)]{Definition} Wir sagen, dass $n$ Ereignisse $A_1, \dots, A_n$
+\mypar[Unabhängigkeit (2)]{Definition}\label{def:unab2} Wir sagen, dass $n$ Ereignisse $A_1, \dots, A_n$
 \term{paarweise unabhängig} sind, falls jedes Paar von Ereignissen aus diesen $n$ Ereignissen unabhängig
 ist.
 

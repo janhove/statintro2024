@@ -35,6 +35,8 @@
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\im}{\textrm{i}}
 \newcommand{\df}{\,\textrm{d}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
 
 % Abbildungen und Tabellen
 \usepackage{tikz}
@@ -192,14 +194,19 @@ op <- par(no.readonly = TRUE)
 @
 
 \part{Weitere Themen}
+\chapter{Prädiktive Modellierung}
+
 <<WithinSubjects, child = '18_within_subjects.Rnw'>>=
 @
-% \chapter{Within-subjects-Designs}
-% \chapter{Kontingenztafeln}
-% \chapter{Logistische Regression}
-% \chapter{Prädiktive Modellierung}
-% \chapter{Gemischte Modelle}
-% \chapter{Abschliessende Tipps}
+
+\chapter{Gemischte Modelle}
+
+\chapter{Logistische Regression}
+\label{ch:logistic}
+
+\chapter{Kontingenztafeln}
+
+\chapter{Abschliessende Tipps}
 % \begin{itemize}
 %   \item PRIORITÄTEN: FORSCHUNGSFRAGE UND HYPOTHESE, DESIGN, DARSTELLUNG, 
 %   MODELL/TEST

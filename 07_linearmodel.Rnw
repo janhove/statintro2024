@@ -5,7 +5,7 @@ mit dem \term{verallgemeinerten linearen Modell}
 (\textit{generalized linear model}).
 Dies ist eine Erweiterung des allgemeinen linearen Modells, 
 mit der wir uns in diesem Kurs nur kurz befassen; 
-\textcolor{blue}{siehe Kapitel \ref{ch:logistic}}.}
+siehe Kapitel \ref{ch:logistic}.}
 Dies ist eine Methode,
 um zu auszudrücken, wie ein oder mehrere \term{Prädiktoren}
 mit dem \term{\textit{outcome}} zusammenhängen.
@@ -65,9 +65,14 @@ $\widehat{\beta}_0$ verwendet.
 Da $\widehat{\beta}_0$ bloss eine Schätzung ist,
 wird der Restfehler ebenfalls bloss geschätzt:
 \[
-y_i = \widehat{\beta}_0 + \widehat{\varepsilon}_i,
+  y_i = \widehat{\beta}_0 + \widehat{\varepsilon}_i,
 \]
-für $i = 1, \dots, n$.
+
+Äquivalent dazu kann man auch
+\[
+  \widehat{\varepsilon}_i = y_i - \widehat{\beta}_0,
+\]
+für $i = 1, \dots, n$, schreiben.
 
 Wie können wir nun $\widehat{\beta}_0$ berechnen
 (bzw.\ $\beta_0$ schätzen)?
@@ -114,7 +119,6 @@ Hier gehen wir davon aus, dass der Datensatz
 <<>>=
 sum(abs(d$GJT - 135))
 @
-(Es gilt $y_i = \widehat{\beta}_0 + \widehat{\varepsilon}_i$, also $\widehat{\varepsilon}_i = y_i - \widehat{\beta}_0$.)
 
 Wenn wir stattdessen den Wert 148 wählen, beträgt die Summe der absoluten Restfehler 1799.
 <<>>=
@@ -195,7 +199,7 @@ der Stichprobe!
 Während wir in Kapitel 3 die Summe der Quadrate als eine
 Funktion des Mittels betrachtet haben, kann man die Rollen
 auch umkehren: Das Mittel ist jener Wert, der die Summe
-der Quadrate minimiert. Ebenso sind die Mediane jenee Werte,
+der Quadrate minimiert. Ebenso sind die Mediane jene Werte,
 die die Summe der absoluten Abweichungen minimieren.
 Die Modi sind übrigens die Werte, 
 die die Summe der binären Abweichungen minimieren.
@@ -207,45 +211,46 @@ und die Parameter in allgemeinen linearen Modellen werden daher
 meistens mit dieser Methode geschätzt
 (\textit{ordinary least squares}, OLS).
 Aber dies ist keine Notwendigkeit.
-In bestimmten Bereichen trifft man ab und zu andere Optimierungskriterien an.
-\textcolor{blue}{(Eventuell werden in den Ausblickskapiteln einige dieser weiteren Kriterien
-angesprochen.)}
-% in den Sprachwissenschaften ist dies aber selten der Fall.
-% Im Prinzip kann man sogar selber Optimierungskriterien
-% definieren, aber dies kommt noch weniger vor.
+In bestimmten Bereichen trifft man ab und zu Modellierungsverfahren an,
+die andere Optimierungskriterien hantieren, beispielsweise das \term{Lasso},
+\term{Ridge-Regression} und das \term{elastische Netz}; 
+siehe hierzu \citet[][Abschnitt 6.4]{Kuhn2013}.
 
 \mypar[Mittel minimiert die Summe der Quadrate]{Bemerkung}
-  Dass das Stichprobenmittel die Summe der Quadrate minimiert, sieht man so.
+  Dass das Stichprobenmittel die Summe der Quadrate minimiert, lässt sich 
+  relativ einfach beweisen.
+  
+  \begin{proof}
   Die Summe der Quadrate ist eine Summe von quadratischen Funktionen in $\widehat{\beta}_0$
   und daher selber eine quadratische Funktion in $\widehat{\beta}_0$:
   \[
     \sum_{i=1}^n \widehat{\varepsilon}_i^2
-    = \sum_{i=1}^n (x_i - \widehat{\beta}_0)^2
-    = \sum_{i=1}^n x_i^2 - 2x_i\widehat{\beta}_0 + \widehat{\beta}_0^2.
+    = \sum_{i=1}^n (y_i - \widehat{\beta}_0)^2
+    = \sum_{i=1}^n y_i^2 - 2y_i\widehat{\beta}_0 + \widehat{\beta}_0^2.
   \]
   Aus der Schule wissen wir, dass eine quadratische Funktion dort ihr Minimum
   oder Maximum erreicht, wo ihre Ableitung 0 beträgt. Die quadratische Funktion,
   mit der wir es zu tun haben, hat einen positiven Leitkoeffizienten, also 
   erreicht sie nur ein Minimum. Wir berechnen die Ableitung:
   \begin{align*}
-    \frac{\df}{\df \widehat{\beta}_0}  \sum_{i=1}^n \left(x_i^2 - 2x_i\widehat{\beta}_0 + \widehat{\beta}_0^2\right)
-    &=  \sum_{i=1}^n \frac{\df}{\df \widehat{\beta}_0}\left(x_i^2 - 2x_i\widehat{\beta}_0 + \widehat{\beta}_0^2\right) \\
-    &= \sum_{i=1}^n \left(-2x_i + 2\widehat{\beta}_0\right).
+    \frac{\df}{\df \widehat{\beta}_0}  \sum_{i=1}^n \left(y_i^2 - 2y_i\widehat{\beta}_0 + \widehat{\beta}_0^2\right)
+    &=  \sum_{i=1}^n \frac{\df}{\df \widehat{\beta}_0}\left(y_i^2 - 2y_i\widehat{\beta}_0 + \widehat{\beta}_0^2\right) \\
+    &= \sum_{i=1}^n \left(-2y_i + 2\widehat{\beta}_0\right).
   \end{align*}
   Dieser Ausdruck ist genau dann gleich 0, wenn 
   \[
-    \sum_{i=1}^n 2x_i = \sum_{i=1}^n 2\widehat{\beta}_0,
+    \sum_{i=1}^n 2y_i = \sum_{i=1}^n 2\widehat{\beta}_0,
   \]
   also wenn
   \[
-    \sum_{i=1}^n x_i = n\widehat{\beta}_0,
+    \sum_{i=1}^n y_i = n\widehat{\beta}_0,
   \]
   also wenn
   \[
-    \widehat{\beta}_0 = \frac{1}{n}\sum_{i=1}^n x_i.
+    \widehat{\beta}_0 = \frac{1}{n}\sum_{i=1}^n y_i.
   \]
   Dabei ist der letzte Ausdruck genau die Definition des Stichprobenmittels.
-\parend
+  \end{proof}
 
 \section{Lineare Modelle in R}
 Mit der \texttt{lm()}-Funktion können lineare Modelle aufgebaut werden.
@@ -367,7 +372,7 @@ berechnen. Die Ergebnisse sind natürlich identisch
 mit jenen aus Kapitel \ref{ch:uncertainty}.
 
 <<eval = FALSE>>=
-# Histogrammhier nicht gezeigt
+# Histogramm (nicht gezeigt)
 hist(bs_b0)
 @
 
@@ -395,7 +400,7 @@ keine Versuchspersonen mit einem GJT-Ergebnis von 137.
 Dies ist natürlich eine etwas komische Annahme;
 in der Regel hat sie aber kaum einen Einfluss auf die
 Inferenzen. Aber eine Alternative wäre,
-dass wir davon ausgingen, dass die Residuen in
+davon auszugehen, dass die Residuen in
 der Population normalverteilt sind. Normalverteilungen
 sind unendlich feinkörnig, sodass diese Annahme sozusagen
 den Gegenpol der ersten Annahme darstellt.
@@ -416,7 +421,7 @@ sind diese Werte identisch, aber sobald Prädiktoren
 im Spiel sind, liefert \texttt{sigma()} die bessere Schätzung
 der Standardabweichung der Residuen. Sie wird so berechnet:
 \begin{equation}\label{eq:sigmap}
-\widehat{\sigma_{\varepsilon}} = \sqrt{\frac{1}{n - p} \sum_{i = 1}^{n} \widehat{\varepsilon}_i^2},
+\widehat{\sigma}_{\varepsilon} = \sqrt{\frac{1}{n - p} \sum_{i = 1}^{n} \widehat{\varepsilon}_i^2},
 \end{equation}
 wo $p$ die
 Anzahl geschätzten $\beta$s ist.
@@ -433,7 +438,7 @@ Unterschätzung zum grössten Teil entgegenzuwirken.
 Anstatt für jede Bootstrapstichprobe die Residuen
 durch \textit{sampling with replacement} zu generieren,
 werden sie hier zufällig aus einer Normalverteilung
-mit $\mu = 0$ und $\sigma = \widehat{\sigma_{\varepsilon}}$ generiert:
+mit $\mu = 0$ und $\sigma = \widehat{\sigma}_{\varepsilon}$ generiert:
 
 <<cache = TRUE>>=
 n_bootstrap <- 20000
@@ -442,7 +447,7 @@ sd_residuals <- sigma(mod.lm)
 predictions <- predict(mod.lm)
 
 for (i in 1:n_bootstrap) {
-  bs_residual <- rnorm(n = 76, mean = 0, sd = sd_residuals)
+  bs_residual <- rnorm(n = length(predictions), mean = 0, sd = sd_residuals)
   bs_outcome <- predictions + bs_residual
   bs_mod <- lm(bs_outcome ~ 1)
   bs_b0[i] <- coef(bs_mod)[1]
@@ -503,7 +508,7 @@ sd_residuals <- sigma(mod.lm)
 predictions <- predict(mod.lm)
 
 for (i in 1:n_bootstrap) {
-  bs_residual <- rnorm(n = 76, mean = 0, sd = sd_residuals)
+  bs_residual <- rnorm(n = length(predictions), mean = 0, sd = sd_residuals)
   bs_outcome <- predictions + bs_residual
   
   # runden + einschränken
@@ -554,15 +559,123 @@ z.B.\ 80\%-Konfidenzintervalle:
 confint(mod.lm, level = 0.80)
 @
 
-
 \mypar{Aufgabe}
 Warum wird bei der \texttt{summary()}-Funktion
 schon der Median aber nicht das Mittel der Residuen gezeigt?
 \parend
 
+\section{Exkurs: Maximum-Likelihood-Schätzung}
+Bei der Methode der kleinsten Quadrate (und Varianten darauf) erhält man die
+Parameterschätzungen,
+indem man die resultierenden geschätzten Restfehler minimiert.
+Bei gewissen komplexeren Modellen
+(zum Beispiel dem verallgemeinerten linearen Modell)
+kann diese Schätzmethode nicht eingesetzt werden und verwendet man
+stattdessen die sog.\ \term{Maximum-Likelihood-Methode} (oder eine Variante darauf).
+Das Prinzip der Maximum-Likelihood-Schätzung soll hier nun anhand der GJT-Daten
+erläutert werden.
+Diesen Abschnitt können Sie vorübergehend ruhig überspringen,
+bis Sie auf Ihrer Reise durch die Statistik einmal über die Maximum-Likelihood-Methode
+stolpern.
+
+Nehmen wir an, dass die Beobachtungen
+$y_1, \dots, y_n$ i.i.d.\ normalverteilt sind mit Mittel $\mu$ und Varianz $\sigma^2$.
+Die Wahrscheinlichkeitsdichte $p(y_i)$ einer solchen Beobachtung ist nun gegeben
+durch
+\[
+  p(y_i) = \frac{1}{\sqrt{2\pi} \sigma}\exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right).
+\]
+Wegen der Unabhängigkeit der Beobachtungen ist die Wahrscheinlichkeitsdichte
+$p(y_1, \dots, y_n)$
+des Zufallsvektors $(y_1, \dots, y_n)$ gleich dem Produkt der einzelnen
+Wahrscheinlichkeitsdichten.
+(Dies wurde in diesem Skript zwar nicht gezeigt, aber es ergibt sich aus
+Definition \vref{def:unab2}.)
+Also
+\begin{equation}\label{eq:mle}
+  p(y_1, \dots, y_n) = \prod_{i = 1}^n \frac{1}{\sqrt{2\pi} \sigma}\exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right).
+\end{equation}
+Wenn wir diesen Ausdruck als eine Funktion von $\mu$ auffassen, so nennen
+wir sie die \term{Likelihood-Funktion}.
+Eine sinnvolle Art und Weise, $\mu$ anhand der Daten zu schätzen,
+ist, jenen Wert $\widehat{\mu}$ zu wählen, der die Likelihood-Funktion maximiert.
+Das Produkt macht dies etwas mühsam, aber wir können den Logarithmus nehmen
+und das Produkt als Summe umschreiben, denn $\log ab = \log a + \log b$.
+Dies ergibt die \term{log-Likelihood-Funktion}.
+Da der Logarithmus streng monoton wächst, maximiert jener Wert,
+der die log-Likelihood-Funktion maximiert, auch die Likelihood-Funktion.
+Folglich bestimmen wir $\widehat{\mu}$ wie folgt:
+\begin{align*}
+  \widehat{\mu}
+  &= \argmax_{\mu} \left(\prod_{i = 1}^n \frac{1}{\sqrt{2\pi} \sigma}\exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right)\right)
+  & [\textrm{maximiere Likelihood-Funktion}]\\
+  &= \argmax_{\mu} \left(\prod_{i = 1}^n \exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right)\right)
+  & [\textrm{Konstanten spielen keine Rolle}]\\
+  &= \argmax_{\mu} \log\left(\prod_{i = 1}^n \exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right)\right)
+  & [\textrm{Logarithmus}]\\
+  &= \argmax_{\mu} \sum_{i = 1}^n \log\left(\exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right)\right)
+  & [\textrm{Produkt als Summe umschreiben}]\\
+  &= \argmax_{\mu} - \sum_{i = 1}^n \frac{(y_i - \mu)^2}{2\sigma^2}
+  & [\log(\exp x) = x]\\
+  &= \argmax_{\mu} -\sum_{i = 1}^n (y_i - \mu)^2
+  & [\textrm{Konstanten spielen keine Rolle}]\\
+  &= \argmin_{\mu} \sum_{i = 1}^n (y_i - \mu)^2.
+  & [\textrm{$-x$ maximieren = $x$ minimieren}]
+\end{align*}
+
+Wir erhalten also das genau gleiche Optimierungsproblem wie bei der Methode
+der kleinsten Quadrate!
+Die Lösung ist folglich auch dieselbe:
+\[
+  \widehat{\mu} = \frac{1}{n} \sum_{i = 1}^n y_i.
+\]
+
+Allgemeiner gilt beim allgemeinen linearen Modell,
+dass wir die gleichen $\beta$-Schätzungen erhalten,
+egal ob wir die Methode der kleinsten Quadrate verwenden (ohne Annahmen
+über die Verteilung der Daten zu machen)
+oder die Maximum-Likelihood-Methode verwenden (unter der Annahme
+von i.i.d.\ normalverteilten Daten).
+Bei gewissen komplexeren Modellen kann man die Methode der kleinsten
+Quadrate nicht heranziehen, aber die Maximum-Likelihood-Methode schon.
+
+% \mypar[Maximum-Likelihood-Schätzer der Varianz]{Bemerkung}
+%   Die Maximum-Likelihood-Methode kann man auch einsetzen, um
+%   die Varianz $\sigma^2$ (oder die Standardabweichung $\sigma$) der Restfehler zu schätzen.
+%   Zu diesem Zweck fassen wir den Ausdruck in \ref{eq:mle} als Funktion
+%   von $\sigma^2$ (statt von $\mu$) auf und gehen ähnlich vor:
+%   \begin{align*}
+%   \widehat{\sigma}^2
+%   &= \argmax_{\sigma^2} \left(\prod_{i = 1}^n \frac{1}{\sqrt{2\pi} \sigma}\exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right)\right) \\
+%   &= \argmax_{\sigma^2} \log\left(\prod_{i = 1}^n \frac{1}{\sqrt{2\pi} \sigma}\exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right)\right) \\
+%   &= \argmax_{\sigma^2} \sum_{i=1}^n \left(\log\left(\frac{1}{\sqrt{2\pi}\sigma}\right) \exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right) \right) \\
+%   &= \argmax_{\sigma^2} \sum_{i=1}^n \left(\log\left(\frac{1}{\sqrt{2\pi}}\right) - \log\left((\sigma^2)^{1/2}\right) + \log\left(\exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right)\right)\right) \\
+%   &=  \argmax_{\sigma^2} \sum_{i=1}^n \left(-\frac{1}{2}\log(\sigma^2)  -\frac{(y_i - \mu)^2}{2\sigma^2}\right).
+% \end{align*}
+%   Wir berechnen die Ableitung dieses Ausdrucks (in $\widehat{\sigma}^2$):
+% \begin{align*}
+%   \frac{\df}{\df \widehat{\sigma}^2}  \sum_{i=1}^n \left(-\frac{1}{2}\log(\widehat{\sigma}^2)  -\frac{(y_i - \mu)^2}{2\widehat{\sigma}^2}\right)
+%   &= \sum_{i=1}^n \left(-\frac{1}{2\widehat{\sigma}^2} + \frac{(y_i - \mu)^2}{2\widehat{\sigma}^4}\right) \\
+%   &= -\frac{n}{2\widehat{\sigma}^2} + \frac{1}{2\widehat{\sigma}^4}\sum_{i=1}^n(y_i - \mu)^2.
+% \end{align*}
+%   Diese Ableitung beträgt $0$ genau dann, wenn
+%   \[
+%     \frac{n}{2\widehat{\sigma}^2} = \frac{1}{2\widehat{\sigma}^4}\sum_{i=1}^n(y_i - \mu)^2,
+%   \]
+%   also wenn
+%   \[
+%     \widehat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n(y_i - \mu)^2.
+%   \]
+%   Der Maximum-Likelihood-Schätzer der Varianz ist somit
+%   \[
+%     \widehat{\sigma}^2_{ML} = \frac{1}{n}\sum_{i=1}^n(y_i - \mu)^2.
+%   \]
+% \parend
+
+  % 
+  % & [\textrm{Produkt als Summe umschreiben}]
 
 \section{Fazit}
-
 \begin{itemize}
 \item Datenpunkte kann man als eine Kombination einer
 Gemeinsamkeit aller Datenpunkte in der Population und einer
@@ -574,10 +687,11 @@ Optimierungskriteriums geschätzt.
 ist die Methode der kleinsten Quadrate, die im `univariaten' Fall
 (= wenn man nur mit einer Variablen arbeitet) das Mittel ergibt,
 aber es existieren auch andere Methoden.
+Die Maximum-Likelihood-Methode unter Annahme von i.i.d.\ normalverteilten Daten
+ergibt die gleiche Lösung wie die Methode der kleinsten Quadrate.
 \item Die Unsicherheit in der Parameterschätzung kann
 mithilfe des Bootstraps oder anhand weiterer Annahmen geschätzt werden.
 \end{itemize}
-% Es gibt keine weiteren Aufgaben zu diesem Kapitel.
 % 
 % % \section{Aufgaben}
 % % Diese Aufgaben haben zum Ziel 
