@@ -194,20 +194,21 @@ op <- par(no.readonly = TRUE)
 @
 
 \part{Weitere Themen}
-\chapter{Prädiktive Modellierung}
 
 <<WithinSubjects, child = '18_within_subjects.Rnw'>>=
 @
 
-\chapter{Gemischte Modelle}
-\label{ch:lmer}
-
 <<Logistic, child = '18_logistic.Rnw'>>=
 @
 
-\chapter{Kontingenztafeln}
+% \chapter{Gemischte Modelle}
+% \label{ch:lmer}
 
-\chapter{Abschliessende Tipps}
+
+% 
+% \chapter{Kontingenztafeln}
+
+% \chapter{Abschliessende Tipps}
 % \begin{itemize}
 %   \item PRIORITÄTEN: FORSCHUNGSFRAGE UND HYPOTHESE, DESIGN, DARSTELLUNG, 
 %   MODELL/TEST

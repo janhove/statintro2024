@@ -35,7 +35,7 @@ werden (`main effect of Condition', `main effect of Time' und
 `Condition $\times$ Time interaction'), aber nur die Interaktion von
 Interesse ist: Interessant ist nur, ob sich die
 Leistung in der Experimentalgruppe mehr verbessert hat
-als jene in der Kontrollgruppe.
+als jene in der Kontrollgruppe:
 \begin{itemize}
  \item Dass die Posttestleistung über die beiden Gruppen hinweg
  besser ist als die Prätestleistung (`main effect of Time'), 
@@ -60,9 +60,11 @@ als jene in der Kontrollgruppe.
 Diese Analyse kann wesentlich vereinfacht werden, indem nicht
 die Rohdaten, sondern die \emph{Unterschiede} zwischen der
 Posttest- und dem Prätestleistung jeder Versuchsperson
-mit einem $t$-Test ausgewertet werden. Am Ergebnis würde
-sich nichts ändern, aber die Analyse ist jetzt besser
+mit einem $t$-Test ausgewertet werden. 
+Am Ergebnis würde sich nichts ändern, aber die Analyse ist jetzt besser
 nachvollziehbar und berichtet wird nur ein einziger (relevanter) Test.
+Statt eines $t$-Tests könnte man natürlich auch einen Wilcoxon- oder
+Randomisierungstest verwenden.
 
 Eine noch bessere Alternative besteht darin, ein lineares
 Modell zu konstruieren, in dem die Posttestergebnisse
@@ -201,7 +203,8 @@ mit einem $p$-Wert belegt werden sollte.
 
 \mypar{Aufgabe}
   Lesen Sie die Einführung eines quantitativen Forschungsartikels,
-  der für Ihr aktuelles Forschungsprojekt relevant ist.
+  der für Ihr aktuelles Forschungsprojekt relevant ist oder
+  den Sie im Rahmen eines Fachseminars gelesen haben.
   Schreiben Sie die aus Ihrer Sicht wichtigste(n) Forschungsfrage(n) auf,
   die die Studie zu beantworten versucht.
   Zählen Sie dann, wie viele Signifikanztests im Ergebnisabschnitt 
@@ -210,4 +213,6 @@ mit einem $p$-Wert belegt werden sollte.
   ohne dass dieser dann detailliert berichtet wird.)
   Wie viele unter diesen sind direkt relevant fürs Beantworten der von
   Ihnen identifizierten wichtigsten Forschungsfragen?
+  
+  Bemerkung: Siehe Abbildung 4 in \citet{Vanhove2020b}!
 \parend

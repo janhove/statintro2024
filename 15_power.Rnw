@@ -98,7 +98,7 @@ Der Simulationscode unten bewirkt Folgendes:
  des $t$-Tests ist, die für die Analyse verwendet wird.
  (Hier gehen wir von Zufallsstichproben aus Populationen aus;
  wir könnten die Simulation auch so gestalten, dass wir von einem Experiment
- mit zufälliger Zuordnung ausgingen, aber die praktischen Unterschiede sind unerheblich.)
+ mit zufälliger Zuordnung ausgingen, aber die praktischen Unterschiede sind gering.)
  
  \item Wir definieren den Unterschied zwischen den Mitteln der beiden
  Normalverteilungen. Hier $\mu_B - \mu_A = 0.7$.
