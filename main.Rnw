@@ -200,9 +200,10 @@ op <- par(no.readonly = TRUE)
 @
 
 \chapter{Gemischte Modelle}
+\label{ch:lmer}
 
-\chapter{Logistische Regression}
-\label{ch:logistic}
+<<Logistic, child = '18_logistic.Rnw'>>=
+@
 
 \chapter{Kontingenztafeln}
 

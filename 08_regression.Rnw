@@ -5,15 +5,6 @@ Prädiktor und einem kontinuierlichen Outcome erfasst
 werden kann. Als Beispiel dienen uns dabei wieder die
 GJT- und AOA-Daten im Datensatz von \citet{DeKeyser2010},
 die wir als kontinuierlich auffassen werden.
-% Eine \textbf{kontinuierliche} Variable ist eine
-% eher feinkörnige Variable, deren Werte geordnet werden können
-% (z.B.\ von klein nach gross oder von schlecht nach gut). Ausserdem
-% können Unterschiede auf der Skala sinnvoll miteinander verglichen
-% werden: Der Unterschied zwischen 15 und 20 °C ist gleich dem
-% Unterschied zwischen $-10$ und $-5$ °C,
-% und beide Unterschiede sind halb so gross wie jener
-% zwischen 50 und 60 °C. Diese Eigenschaften haben sowohl die
-% GJT- als auch die AOA-Variable im Datensatz von \citet{DeKeyser2010}.
 
 In den letzten zwei Kapiteln haben wir uns mit der zentralen Tendenz
 der GJT-Daten beschäftigt. Eigentlich interessierten sich \citet{DeKeyser2010}
@@ -170,10 +161,13 @@ ist die \term{Kovarianz}.
   Seien $X$ und $Y$ zwei Zufallsvariablen mit endlicher Varianz
   auf einem Wahrscheinlichkeitsraum $\Omega$.
   Dann definieren wir die Kovarianz von $X$ und $Y$ als
-  \[
-    \textrm{Cov}(X, Y) := \E\left(\left(X - \E(X)\right)\left(Y - \E(Y)\right)\right).
-  \]
-\parend
+  \begin{align*}
+    \textrm{Cov}(X, Y) 
+    &:= \E\left(\left(X - \E(X)\right)\left(Y - \E(Y)\right)\right) \\
+    &= \E\left(XY - X\E(Y) - \E(X)Y + \E(X)\E(Y)\right) \\
+    &= \E(XY) - \E(X)\E(Y) - \E(X)\E(Y) + \E(X)\E(Y) \\
+    &= \E(XY) - \E(X)\E(Y). \parendeq
+  \end{align*}
 
 \mypar{Beispiel}
   Wir greifen das Jass-Beispiel aus Kapitel \ref{ch:stochastik}
@@ -219,9 +213,9 @@ Zur Berechnung der Kovarianz holen wir tief Atem:
     & ~~~~~ \frac{1}{9}(8-4.22)(8-4.22) + \frac{1}{9}(10-4.22)(10-4.22) + \\
     & ~~~~~ \frac{1}{9}(2-4.22)(2-4.22) + \frac{1}{9}(3-4.22)(3-4.22) + \\
     & ~~~~~ \frac{1}{9}(4-4.22)(4-4.22) + \frac{1}{9}(11-4.22)(0-4.22) \\
-    &\approx 0.55.
+    &\approx 0.55. \parendeq
   \end{align*}
-\parend
+
 
 \mypar[Eigenschaften der Kovarianz]{Lemma}
   Seien $X, Y, Z$ drei Zufallsvariablen auf einem gemeinsamen Wahrscheinlichkeitsraum
@@ -248,7 +242,8 @@ Zur Berechnung der Kovarianz holen wir tief Atem:
 
 \mypar[keine Kovarianz, aber nicht unabhängig]{Beispiel}
   Sind zwei Zufallsvariablen unabhängig, so gilt $\textrm{Cov}(X, Y) = 0$.
-  Das Umgekehrte gilt jedoch nicht. Dazu betrachten wir den Grundraum
+  Das Umgekehrte gilt jedoch nicht. 
+  Um dies zu sehen, betrachten wir den Grundraum
   \[
     \Omega := \{(0, 0), (1, -1), (1, 1)\}
   \]
@@ -305,7 +300,7 @@ ist die Kovarianz negativ, dann gibt es einen negativen linearen
 Zusammenhang (je grösser $x$, desto kleiner $y$).
 Abgesehen von diesen zwei Richtschnuren ist das
 Kovarianzmass schwierig zu interpretieren, weshalb
-Sie es in der Literatur nur selten antreffen
+Sie es in der Forschungsliteratur nur selten antreffen
 werden. Aber Kovarianz ist ein wichtiges Konzept in der
 Mathe hinter komplexeren Verfahren,
 weshalb es sich trotzdem lohnt, zumindest zu wissen,
@@ -474,10 +469,7 @@ plot_r(n = 15, r = 0.9)
 plot_r(n = 80, r = 0.0)
 plot_r(n = 30, r = 0.4)
 @
-Die Funktionsdokumentation können Sie wie gehabt abrufen:
-<<eval = FALSE>>=
-?plot_r
-@
+Die Funktionsdokumentation können Sie wie gehabt mit \texttt{?plot\_r} abrufen.
 \parend
 
 \begin{framed}
@@ -556,6 +548,9 @@ weshalb ich sie hier nur in Worten zusammenfasse:
  \hat{\tau} = \frac{1 - 5}{6} = -0.67.
  \end{equation*}
 \end{enumerate}
+
+Wenn gewisse $x$- oder $y$-Werte einander gleich sind, 
+so wird die Berechnung angepasst, um mit diesen Bindungen umzugehen.
 
 <<>>=
 # Für unser kleines Beispiel
@@ -645,8 +640,7 @@ for (i in 1:n_bootstraps) {
 @
 
 <<eval = FALSE>>=
-# Histogramm mit den Bootstrap-Schätzungen
-# (nicht gezeigt)
+# Histogramm mit den Bootstrap-Schätzungen (nicht gezeigt)
 hist(bootstraps, breaks = 50)
 @
 
@@ -825,8 +819,8 @@ weshalb er als eine gerade Linie modelliert werden kann:
 
 Eine gerade Linie wird definiert durch
 einen Schnittpunkt ($\beta_0$; dies ist der $y$-Wert, wenn $x = 0$)
-und eine Steigung ($\beta_1$; diese sagt, um
-wie viele Punkte $y$ steigt, wenn $x$ um eine Einheit erhöht wird);
+und eine Steigung ($\beta_1$; diese sagt, wie viele Punkte $y$ höher liegt, 
+wenn $x$ eine Einheit mehr nach rechts liegt);
 siehe Abbildung \ref{fig:gerade}.
 
 <<echo = FALSE, fig.cap = "Schnittpunkt und Steigung einer Geraden.\\label{fig:gerade}", fig.width = 4, fig.height = 2.5, out.width = ".6\\textwidth", warning = FALSE>>=
@@ -848,7 +842,7 @@ text(x = 2.5, y = -3.2+0.7*1.5, expression(beta[1]), cex = 2)
 
 Egal, wie wir $\beta_0$ und $\beta_1$ wählen: Die Linie $y_i = \beta_0 + \beta_1 x_i$ wird die
 Daten nicht perfekt beschreiben: Es wird noch einen Restfehler ($\varepsilon$) geben.
-Jeder $y$-Wert ($y_1$, $y_2$ etc.) kann also umschrieben werden
+Jeder $y$-Wert ($y_1$, $y_2$, etc.) kann also umschrieben werden
 als die Kombination eines systematischen Teils ($\beta_0+\beta_1 x_i$)
 und eines Restfehlers:
 \begin{equation}\label{eq:simpleregression}
@@ -868,23 +862,23 @@ sodass die Gleichung aufgeht (wie Abbildung \ref{fig:differentregressions} illus
 aber uns interessieren nur die $\beta_0$- und $\beta_1$-Werte der optimalen Geraden.
 Um diese zu schätzen, müssen wir definieren, was `optimal' in diesem Kontext heisst.
 Wie im letzten Kapitel besprochen wurde, ist das am meisten verwendete Optimierungskriterion die Methode der kleinsten Quadrate, wonach die optimale Linie jene Gerade ist,
-die die Summe der quadrierten Restfehler ($\sum_{i = 1}^{n} \widehat{\varepsilon_i}^2$) minimiert.
+die die Summe der quadrierten Restfehler ($\sum_{i = 1}^{n} \widehat{\varepsilon}_i^2$) minimiert.
 Wir können diese Summe für unterschiedliche Kombinationen
-von $\widehat{\beta_0}$- und $\widehat{\beta_1}$-Werten berechnen.
+von $\widehat{\beta}_0$- und $\widehat{\beta}_1$-Werten berechnen.
 \begin{itemize}
-\item Sind  $\widehat{\beta_0} = 185$ und  $\widehat{\beta_1} = -2$,
+\item Sind  $\widehat{\beta}_0 = 185$ und  $\widehat{\beta}_1 = -2$,
 dann ist
-\[\sum_{i = 1}^{76} \widehat{\varepsilon_i}^2 = \sum_{i = 1}^{76} (y_i - (185 - 2x_i))^2 = 107121.
+\[\sum_{i = 1}^{76} \widehat{\varepsilon}_i^2 = \sum_{i = 1}^{76} (y_i - (185 - 2x_i))^2 = 107121.
 \]
 In R berechnet man dies so:
 <<>>=
 sum((d$GJT - (185 - 2*d$AOA))^2)
 @
 
-\item Sind  $\widehat{\beta_0} = 190$ und  $\widehat{\beta_1} = -1.5$,
+\item Sind  $\widehat{\beta}_0 = 190$ und  $\widehat{\beta}_1 = -1.5$,
 dann ist
 \[
-\sum_{i = 1}^{76} \widehat{\varepsilon_i}^2 = \sum_{i = 1}^{76} (y_i - (190 - 1.5x_i))^2 = 28810.
+\sum_{i = 1}^{76} \widehat{\varepsilon}_i^2 = \sum_{i = 1}^{76} (y_i - (190 - 1.5x_i))^2 = 28810.
 \]
 In R:
 <<>>=
@@ -895,7 +889,7 @@ sum((d$GJT - (190 - 1.5*d$AOA))^2)
 $\widehat{\beta} = (190, -1.5)$ ist also optimaler
 als $\widehat{\beta} = (180, -2)$.
 Abbildung \ref{fig:ols} zeigt die Summe der quadrierten Restfehler
-für unterschiedliche  $(\widehat{\beta_0}, \widehat{\beta_1})$-Kombinationen;
+für unterschiedliche  $(\widehat{\beta}_0, \widehat{\beta}_1)$-Kombinationen;
 Kombinationen nahe bei $(190, -1.2)$ haben die kleinste Summe der quadrierten Restfehler.
 
 <<cache = TRUE, echo = FALSE, fig.cap = "Die Summe der quadrierten Restfehler (geteilt durch 10'000) der GJT-Daten für unterschiedliche Parameterschätzungen. Diese Grafik kann wie eine topografische Karte gelesen werden; die Linien sind sozusagen Höhenlinien. Für Schnittpunkte nahe bei $190$ und Steigungen nahe bei $-1.2$ wird diese Summe minimiert; bei diesen Koordinaten gibt es sozusagen einen Kessel.\\label{fig:ols}", fig.height = 3.8, fig.width = 3.8, fig.pos="t", out.width = ".7\\textwidth">>=
@@ -929,15 +923,15 @@ um die optimale zu finden. Der Vorteil der Methode der kleinsten
 Quadrate ist, dass man die optimalen Parameterschätzungen schnell
 analytisch finden kann, und zwar so:
 \begin{equation*}
- \widehat{\beta_1} = r_{xy}\frac{s_y}{s_x},
+ \widehat{\beta}_1 = r_{xy}\frac{s_y}{s_x},
 \end{equation*}
 \begin{equation}\label{eq:intercept}
- \widehat{\beta_0} = \bar{y} - \widehat{\beta_1} \bar{x}.
+ \widehat{\beta}_0 = \overline{y} - \widehat{\beta}_1 \overline{x}.
 \end{equation}
 
 Hier steht $r_{xy}$ für die Pearsonkorrelation zwischen $x$ und $y$
 in der Stichprobe. $s_x, s_y$ stehen für die Stichprobenstandardabweichungen
-von $x$ bzw.\ $y$. $\bar{x}$ ist das Stichprobenmittel von $x$.
+von $x$ bzw.\ $y$. $\overline{x}$ ist das Stichprobenmittel von $x$.
 Der Beweis für diese Formeln wird hier nicht reproduziert.
 Für die Daten von \citet{DeKeyser2010} sieht das Ergebnis
 dieser Berechnungen so aus:
@@ -954,23 +948,28 @@ aoa.lm <- lm(GJT ~ AOA, data = d)
 aoa.lm
 @
 
-\texttt{(Intercept)} ist hier $\widehat{\beta_0}$, also
+\texttt{(Intercept)} ist hier $\widehat{\beta}_0$, also
 der Schnittpunkt der Regressionsgeraden mit der $y$-Achse.
-\texttt{AOA} ist $\widehat{\beta_1}$ und zeigt, um wie viele
+\texttt{AOA} ist $\widehat{\beta}_1$ und zeigt, um wie viele
 Einheiten die Gerade steigt oder senkt, wenn man entlang
 der \texttt{AOA}-Achse eine Einheit nach rechts geht.
+
+Die Maximum-Likelihood-Methode (Abschnitt \ref{sec:ml}) würde 
+dieselben $\beta$-Schätzungen liefern.
 
 \mypar[andere Optimalitätskriterien]{Bemerkung}
   Neben der Methode der kleinsten Quadrate gibt es weitere Methoden,
   um die Regressionsparameter zu schätzen. Eine Alternative ist,
   $\beta_0, \beta_1$ mit der Methode der kleinsten absoluten Abweichungen
   zu schätzen, also derart, dass $\sum_{i=1}^n |\varepsilon_i|$ minimiert wird
-  (\term{Median-Regression}). Es gibt auch Methoden, in denen gleichzeitig
+  (\term{Median-Regression}). Es gibt auch Methoden, um die $\beta$-Parameter
+  zu schätzen, beispielsweise solche, in denen gleichzeitig
   versucht wird, die quadrierten Abweichungen und die Grösse der $\beta$-Schätzungen
   zu minimieren. Je nach dem genauen Kriterium spricht man hier von \term{Lasso-Regularisierung},
   \term{Ridge-Regularisierung} oder vom \term{elastischen Netz}. Die Grundidee bei diesen drei
   Ansätzen ist, die $\beta$-Parameter absichtlich mit einer gewissen Verzerrung
   zu schätzen, dabei aber die Varianz der Schätzungen zu senken.
+  Siehe hierzu \citet[][Abschnitt 6.4]{Kuhn2013}.
 \parend
 
 \mypar{Aufgabe}
@@ -1043,15 +1042,15 @@ Aber was stellt diese Gerade genau dar?  Mit dem Regressionsmodell versuchten
 wir die GJT-Werte ($y_i$) als eine Funktion der AOA-Werte ($x_i$) und eines
 Restfehlers ($\varepsilon_i$) zu modellieren:
 \[
-y_i = \widehat{\beta_0} + \widehat{\beta_1}x_i + \widehat{\varepsilon_i}, ~~~~~ i = 1, \dots, n.
+y_i = \widehat{\beta}_0 + \widehat{\beta}_1x_i + \widehat{\varepsilon}_i, ~~~~~ i = 1, \dots, n.
 \]
 
-Auf der Regressionsgeraden ($\widehat{\beta_0} + \widehat{\beta_1}x_i$)
+Auf der Regressionsgeraden ($\widehat{\beta}_0 + \widehat{\beta}_1x_i$)
 liegen die $y_i$-Werte abzüglich des Restfehlers, also
 \[
-\widehat{y_i} = \widehat{\beta_0} + \widehat{\beta_1}x_i, ~~~~~ i = 1, \dots, n.
+\widehat{y}_i = \widehat{\beta}_0 + \widehat{\beta}_1x_i, ~~~~~ i = 1, \dots, n.
 \]
-Wie man diese $\widehat{y_i}$-Werte konzeptuell interpretieren
+Wie man diese $\widehat{y}_i$-Werte konzeptuell interpretieren
 kann, ist einfacher zu erklären, wenn wir uns zuerst anschauen, wie
 man die Unsicherheit in den Parameterschätzungen quantifizieren kann.
 Die Parameterschätzungen $\widehat{\beta} = (\widehat{\beta}_0, \widehat{\beta}_1)$ werden aufgrund
@@ -1071,13 +1070,13 @@ Zuerst wird hier die Methode aus Abschnitt \ref{bootstrapoverview}
 (semi-parametrischer Bootstrap)
 aufs lineare Modell mit einem Prädiktor angewandt:
 \begin{enumerate}\label{nonparametricbsregression}
- \item Man berechnet $\widehat{\beta}$ (also $\widehat{\beta_0}$ und $\widehat{\beta_1}$) und erhält dazu auch noch $\widehat{\varepsilon}$.
+ \item Man berechnet $\widehat{\beta}$ (also $\widehat{\beta}_0$ und $\widehat{\beta}_1$) und erhält dazu auch noch $\widehat{\varepsilon}$.
  \item Man zieht eine Bootstrap-Stichprobe aus $\widehat{\varepsilon}$.
  Nenne diese $\widehat{\varepsilon}^{*}$.
- \item Man kombiniert $\widehat{\beta_0}$, $\widehat{\beta_1}x_i$  und $\widehat{\varepsilon}^{*}$. Dies ergibt
+ \item Man kombiniert $\widehat{\beta}_0$, $\widehat{\beta}_1x_i$  und $\widehat{\varepsilon}^{*}$. Dies ergibt
  eine neue Reihe von $y$-Werten: 
  \[
- y_i^{*} = \widehat{\beta_0} + \widehat{\beta_1}x_i + \widehat{\varepsilon_i}^{*}, i = 1, \dots, n.
+ y_i^{*} = \widehat{\beta}_0 + \widehat{\beta}_1x_i + \widehat{\varepsilon}_i^{*}, i = 1, \dots, n.
  \]
  \item Auf der Basis von $y_i^{*}$ wird $\widehat{\beta}$ erneut geschätzt.
  \item Schritte 2--4 werden ein paar tausend Mal ausgeführt, sodass man die Verteilung der gebootstrappten $\beta$-Schätzungen erhält.
@@ -1158,6 +1157,7 @@ Standardfehler:
 <<>>=
 apply(bs_beta, 2, sd)
 @
+Wir haben somit $\widehat{\beta}_0 = 190 \pm 4, \widehat{\beta}_1 = -1.2 \pm 0.1$.
 
 Die Bootstrapschätzungen können auch verwendet werden,
 um die Unsicherheit in der Regressionsgeraden grafisch darzustellen.
@@ -1222,7 +1222,7 @@ Statt diese Regressionsgeraden einzeln darzustellen,
 färbt man in der Regel das Band, in das diese Geraden mehrheitlich fallen,
 ein. Analog zum Konfidenzintervall nennt man dieses dann ein
 \textbf{Konfidenzband}. Die nächste Bemerkung erklärt, wie man
-Konfidenzbänder mittels Bootstrapping konstruieren kann, aber diese
+Konfidenzbänder mit dem Bootstrap konstruieren kann, aber diese
 können Sie gerne überspringen.
 
 \mypar[Konfidenzbänder mit dem Bootstrap konstruieren]{Bemerkung}
@@ -1237,7 +1237,7 @@ neue_aoa <- seq(from = min(d$AOA), to = max(d$AOA), by = 1)
 @
 
 Man nimmt die Bootstrapschätzungen des Schnittpunkts
-($\widehat{\beta_0}^{*}$) und der Steigung ($\widehat{\beta_1}^{*}$)
+($\widehat{\beta}_0^{*}$) und der Steigung ($\widehat{\beta}_1^{*}$)
 und man berechnet für jedes Paar von Schätzungen
 den $\widehat{y}$-Wert für jeden $x$-Wert. Zum Beispiel
 ist (in meinem Fall) das erste Paar Bootstrapschätzungen:
@@ -1250,7 +1250,7 @@ von Bootstrapschätzungen ist daher:
 # 191.82 + (-1.29) * 5, 191.82 + (-1.29) * 6, usw.
 bs_beta[1, 1] + bs_beta[1, 2] * neue_aoa
 @
-Aufgrund der Zufälligkeit, die dem Bootstrap inhärent ist,
+Wegen der Zufälligkeit, die dem Bootstrap inhärent ist,
 wird das Ergebnis bei Ihnen natürlich anders aussehen.
 Diese Übung machen wir für alle Paare von
 Bootstrapschätzungen -- in unserem Fall also 20'000 Mal.
@@ -1268,6 +1268,9 @@ bs_y_hat <- matrix(nrow = runs,
 for (i in 1:runs) {
   bs_y_hat[i, ] <- bs_beta[i, 1] + bs_beta[i, 2] * neue_aoa
 }
+
+## Alternative mit Matrizenalgebra
+# bs_y_hat <- tcrossprod(bs_beta, cbind(1, neue_aoa))
 @
 
 Sie können diese Matrix mit etwa \texttt{head(bs\_y\_hat)} inspizieren.
@@ -1293,7 +1296,7 @@ oben_80 <- apply(bs_y_hat, 2, quantile, probs = 0.90)
 
 Man kann auch noch das Mittel jeder Spalte berechnen. Dies
 ergibt ungefähr die Regressionsgerade. Es ist jedoch sinnvoller,
-den genauen Wert der Regressionsgerade zu verwenden.
+den genauen Wert der Regressionsgeraden zu verwenden.
 <<>>=
 gerade <- predict(aoa.lm, newdata = data.frame(AOA = neue_aoa))
 @
@@ -1427,13 +1430,13 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
  sondern auch beim Verwenden des zentralen Grenzwertzsatzes oder von $t$-Verteilungen.
  Im Beispiel mit den [i:] könnten wir also nicht den Standardfehler
  der durchschnittlichen Vokallänge berechnen, indem wir die Streuung in den
- Produktionen teilen durch die Wurzel von 1'250 ($25 \cdot 50$).
+ Produktionen teilen durch die Wurzel von $25 \cdot 50 = 1250$.
 
  Typische Verletzungen der Unabhängigkeitsannahme können
- mit sog.\ \term{gemischten Modellen} behoben werden; siehe
- \textcolor{blue}{Ausblickskapitel} für Literaturvorschläge.
+ mit sog.\ \term{gemischten Modellen} behoben werden; 
+ siehe Kapitel \ref{ch:lmer}.
  Für Verletzungen der Homoskedastizitätsannahme bietet sich
- eine andere Schätzungsmethode als \textit{ordinary least squares},
+ eine andere Schätzungsmethode als \textit{ordinary least squares} an,
  die sog.\ \textit{generalised least squares}
  (siehe \citealp{Zuur2009}).
  Eine alternative Lösung ist, den Bootstrap so durchzuführen,
@@ -1444,20 +1447,20 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
 \mypar[punktweise vs.\ simultane Konfidenzbänder]{Bemerkung}
   Die hier besprochenen Konfidenzbänder sind sog.\ \term{punktweise Konfidenzbänder}.
   Ein gut kalibriertes punktweises $100(1-\alpha)$\%-Konfidenzband stellt für jeden 
-  $x$-Wert ein $(100(1-\alpha)$\%-Konfidenzintervall für den entsprechenden Wert
+  $x$-Wert ein $100(1-\alpha)$\%-Konfidenzintervall für den entsprechenden Wert
   $\beta_0 + \beta_1x$ dar.
   
   Ab und zu trifft man auch \term{simultane Konfidenzbänder} an. 
   Ein simultanes $100(1-\alpha)$\% Konfidenzband sollte für eine Menge
   von $x$-Werten $x_1, x_2, \dots, x_n$ garantieren, dass das Konfidenzband
-  zu einer Wahrscheinlichkeit von mindestens $100(1-\alpha)$ \emph{alle}
+  zu einer Wahrscheinlichkeit von mindestens $1-\alpha$ \emph{alle}
   entsprechenden $\beta_0 + \beta_1x_i, i = 1, \dots, n,$ umfasst.
   Dies ist eine viel strengere Bedingung als bei punktweisen Konfidenzbändern!
   Entsprechend sind simultane Konfidenzbänder breiter als punktweise Konfidenzbänder.
   
   In diesem Skript werden nur punktweise Konfidenzbänder behandelt.
   Werden in der Literatur Konfidenzbänder ohne weitere Angaben berichtet, 
-  so sollten Sie davon ausgehen, dass es sich um die punktweise Variante handelt.
+  so dürfen Sie davon ausgehen, dass es sich um die punktweise Variante handelt.
 \parend
 
 \subsubsection{Bootstrappen unter der Normalitätsannahme}
@@ -1469,17 +1472,17 @@ in Abschnitt \vref{semiparametricbootstrap} beschriebenen Methode.
 Unsere Annahmen können expliziter gemacht werden:
 \begin{align}\label{eq:annahmeregression}
  y_i &= \beta_0 + \beta_1 x_i + \varepsilon_i,\\
- \varepsilon_i &\sim N(0, \sigma_{\varepsilon}^2),\nonumber
+ \varepsilon_i &\sim \mathcal{N}(0, \sigma_{\varepsilon}^2),\nonumber
 \end{align}
 wobei die $\varepsilon_i$-Werte unabhängig sind 
 für $i = 1, \dots, n$.
 
-Der neue Teil $\varepsilon_i \sim N(0, \sigma_{\varepsilon}^2)$ macht klar,
+Der neue Teil $\varepsilon_i \sim \mathcal{N}(0, \sigma_{\varepsilon}^2)$ macht klar,
 dass wir annehmen, dass die Restfehler aus einer Normalverteilung
 mit Mittel 0 und Varianz $\sigma_{\varepsilon}^2$ stammen.
 $\sigma_{\varepsilon}^2$ ist ein einziger (obgleich unbekannter) Wert, sodass klar ist,
 dass wir davon ausgehen, dass die Streuung der Residuen nicht von $x$
-(und somit $\widehat{y}$ abhängt).
+(und somit $\widehat{y}$) abhängt.
 
 $\sigma_{\varepsilon}$ ist zwar unbekannt, aber wird anhand der Stichprobe geschätzt;
 siehe Gleichung \vref{eq:sigmap}. Der folgende Code zeigt, wie die Bootstrapschätzungen
@@ -1507,7 +1510,7 @@ können wir diese analog ins Bootstrapverfahren einbauen.
 
 \subsubsection{Mit $t$-Verteilungen}\label{sec:aoa}
 Wenn wir ohnehin davon ausgehen wollen, dass die Residuen
-(i.i.d.) normalverteilt sind, können wir den Standardfehler,
+i.i.d.\ normalverteilt sind, können wir den Standardfehler,
 die Konfidenzintervalle und das Konfidenzband auch algebraisch
 anhand der $t$-Verteilungen berechnen. Dadurch wird auch
 die Unterschätzung von $\sigma_{\varepsilon}$ durch $\widehat{\sigma_{\varepsilon}}$
@@ -1690,8 +1693,10 @@ predict(aoa.lm, newdata = tibble(AOA = mean(d$AOA)))
   Dies ist natürlich kein Zufall, sondern ein allgemeines Phänomen.
   Wenn wir Gleichung \ref{eq:intercept} in die Regressiongleichung
   einsetzen, erhalten wir ja Folgendes:
-  $$\widehat{y_i} = \underbrace{\bar{y} - \widehat{\beta_1} \bar{x}}_{= \widehat{\beta_0}} +  \widehat{\beta_1}x_i.$$
-  Für $x_i = \bar{x}$ erhalten wir also $\widehat{y_i} = \bar{y}$.
+  \[
+  \widehat{y}_i = \widehat{\beta}_0 + \widehat{\beta}_1x_i = \overline{y} - \widehat{\beta}_1\overline{x} +  \widehat{\beta}_1x_i.
+  \]
+  Für $x_i = \overline{x}$ erhalten wir also $\widehat{y}_i = \overline{y}$.
 \parend
 
 \mypar{Bemerkung}
@@ -1733,11 +1738,16 @@ summary(aoa.lm)$coefficients
 
 Achten Sie aber darauf, dass eine Versuchsperson mit einem AOA
 von 35 für das Modell eine Versuchsperson mit einem \texttt{c.AOA}
-von $35 - \bar{x}_{AOA} = 2.46$ ist:
+von $35 - \overline{x}_{AOA} = 2.46$ ist:
 <<>>=
 predict(aoa.lm, newdata = tibble(c.AOA = 35 - mean(d$AOA)),
         interval = "confidence", level = 0.80)
 @
+
+Man kann den Schnittpunkt manchmal auch interpretierbarer machen,
+indem man die Prädiktorwerte um einen anderen Wert als ihr Mittel zentriert.
+Beispielsweise kann es sich hier um den Median handeln, auch aber um irgendeinen
+anderen Wert, der im Kontext der Studie sinnvoll ist.
 \parend
 
 \section{Modellannahmen überprüfen}

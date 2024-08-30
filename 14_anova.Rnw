@@ -3,7 +3,7 @@ Mit einem Zweistichproben-$t$-Test kann man zwei Gruppen miteinander vergleichen
 Wenn wir statt zwei nun mehrere Gruppen
 mithilfe von Signifikanztests
 hinsichtlich eines outcomes vergleichen möchten,
-läge es auf der Hand, mehrere $t$-Tests (oder Alternative dazu, wie Randomisierungstests) einzusetzen.
+läge es auf der Hand, mehrere $t$-Tests (oder eine Alternative dazu, wie Randomisierungstests) einzusetzen.
 Wenn man zum Beispiel drei Gruppen vergleichen
 möchte, könnte man zuerst Gruppen A und B vergleichen,
 dann Gruppen A und C und zu guter Letzt Gruppen B und C.
@@ -11,7 +11,7 @@ Das Problem mit diesem Vorgehen ist, dass
 die Wahrscheinlichkeit, \emph{irgendeinen}
 signifikanten Unterschied zu finden, wenn die
 Nullhypothese tatsächlich stimmt, grösser als $\alpha$
-(in der Regel: $\alpha = 0.05$) ist.
+(oft $\alpha = 0.05$) ist.
 Die Simulationen weiter unten stellen
 dieses Problem unter Beweis. Danach folgen mögliche
 Lösungen.
@@ -62,7 +62,7 @@ die Daten zufällig generiert wurden.
 Was den R-Code betrifft, bemerke man die
 Verwendung von \texttt{\%in\%} sowie
 des Platzhalters \texttt{\_}.
-Mit dem letzteren übergibt man das tibble,
+Mit Letzterem übergibt man das tibble,
 das man vor dem vorigen \texttt{|>} kreiert hat,
 einem bestimmten Parameter in einer nächsten
 Funktion (hier dem \texttt{data}-Parameter
@@ -93,13 +93,13 @@ findet man ja einen $p$-Wert,
 der kleiner als $\alpha = 0.05$ ist ($p = 0.017$).
 Dies obwohl die Nullhypothese in dieser Simulation
 buchstäblich stimmt.
+
 Dass man Nullhypothesen, die tatsächlich stimmen,
 ab und zu zu Unrecht ablehnt, ist klar -- und das
 ist hier auch nicht das Problem. Vielmehr ist das Problem,
 dass diese Fehlerquote (Fehler der ersten Art) angeblich
 höchstens $\alpha = 0.05$ beträgt, aber eigentlich
 wesentlich höher ist.
-
 Diese Tatsache können wir mit einer Simulation illustrieren.
 Mit den folgenden Befehlen wird das gleiche Szenario wie oben
 (3 Gruppen mit je 20 Beobachtungen; Nullhypothese stimmt;
@@ -170,21 +170,21 @@ mean(min_pval <= 0.05)
  zum Beispiel, weil im Forschungsbericht nur eine Auswahl der ausgeführten Signifikanztests
  beschrieben wird. Siehe hierzu Kapitel \ref{ch:QRP}.
 
-<<echo = FALSE, warning = FALSE, message = FALSE, out.width="\\textwidth", fig.width = 6*1.4, fig.height = 1.5*1.4, fig.pos = "tp", fig.cap = "Wenn die Nullhypothese stimmt, sollte der $p$-Wert aus einer Gleichverteilung stammen. Für die $p$-Werte aus den einzelnen $t$-Tests ist dies auch der Fall: Die Wahrscheinlichkeit, dass man einen $p$-Wert kleiner als $\\alpha = 0.05$ beobachtet, liegt tatsächlich bei 5\\%, wenn die Nullhypothese stimmt. Wenn man aber auf der Basis des jeweils kleinsten der drei $p$-Werte schliesst, ob sich die Gruppen unterscheiden, dann sind die relevanten $p$-Werte nicht gleich- sondern rechtsschief verteilt: Die Wahrscheinlichkeit, dass man \\emph{irgendeinen} $p$-Wert kleiner als 0.05 beobachtet, ist erheblich höher als 5\\%, auch wenn die Nullhypothese stimmt.\\label{fig:anova_pvalues}">>=
+<<echo = FALSE, warning = FALSE, message = FALSE, out.width="\\textwidth", fig.width = 6*1.4, fig.height = 1.5*1.4, fig.pos = "tp", fig.cap = "Wenn die Nullhypothese stimmt, sollte die Wahrscheinlichkeit, einen $p$-Wert von höchstens $\\alpha$ anzutreffen, höchstens $\\alpha$ betragen, dies für jedes $\\alpha \\in (0,1)$. Für die $p$-Werte aus den einzelnen $t$-Tests ist dies auch der Fall: Die Wahrscheinlichkeit, dass man einen $p$-Wert kleiner als $\\alpha$ beobachtet, liegt tatsächlich bei $\\alpha$, wenn die Nullhypothese stimmt. Wenn man aber auf der Basis des jeweils kleinsten der drei $p$-Werte schliesst, ob sich die Gruppen unterscheiden, dann sind die relevanten $p$-Werte nicht gleich- sondern rechtsschief verteilt: Die Wahrscheinlichkeit, dass man \\emph{irgendeinen} $p$-Wert kleiner als beispielsweise $\\alpha = 0.05$ beobachtet, ist erheblich höher als 5\\%, auch wenn die Nullhypothese stimmt.\\label{fig:anova_pvalues}">>=
 cols <- RColorBrewer::brewer.pal(3, "Set1")
 par(mfrow = c(1, 4), las = 2, mar = c(4, 4, 3, 1) + 0.1)
 hist(pval_ab, main = "Vergleich AB", xlab = "p",
      col = cols[2], freq = TRUE, ylab = "Anzahl",
-     breaks = seq(0, 1, 0.1))
+     breaks = seq(0, 1, 0.05))
 hist(pval_ac, main = "Vergleich AC", xlab = "p",
      col = cols[2], freq = TRUE, ylab = "Anzahl",
-     breaks = seq(0, 1, 0.1))
+     breaks = seq(0, 1, 0.05))
 hist(pval_bc, main = "Vergleich BC", xlab = "p",
      col = cols[2], freq = TRUE, ylab = "Anzahl",
-     breaks = seq(0, 1, 0.1))
+     breaks = seq(0, 1, 0.05))
 hist(min_pval, main = "Jeweils kleinster\nder 3 p-Werte", xlab = "min p",
      col = cols[1], freq = TRUE, ylab = "Anzahl",
-     breaks = seq(0, 1, 0.1))
+     breaks = seq(0, 1, 0.05))
 par(op)
 @
 
@@ -292,7 +292,7 @@ for (i in 1:m) {
 }
 @
 
-<<fig.width = 1.2*3, fig.height = 1.2*2, echo = FALSE, fig.cap = "Die Verteilung der Varianzen der Stichprobenmittel, wenn die Beobachtungen zufällig den Gruppen neu zugeordnet werden. Die Proportion der Varianzen, die mindestens so gross wie die beobachtete Varianz sind, stellt ein gültiger $p$-Wert dar.\\label{fig:distributionvaranova}">>=
+<<fig.width = 1.2*3, fig.height = 1.2*2, echo = FALSE, fig.cap = "Die Verteilung der Varianzen der Stichprobenmittel, wenn die Beobachtungen zufällig den Gruppen neu zugeordnet werden.\\label{fig:distributionvaranova}">>=
 df_var_H0 <- tibble(var_mittel_H0) |> 
   add_row(var_mittel_H0 = 1.282355)
 ggplot(df_var_H0,
@@ -303,7 +303,7 @@ ggplot(df_var_H0,
   ylab("Anzahl") +
   geom_vline(xintercept = 1.282355,
              colour = "red", linetype = 2) +
-  annotate("text", x = 2, y = 1050, label = "s² > 1.28",
+  annotate("text", x = 2, y = 1050, label = "s² ≥ 1.28",
            angle = 0)
 @
 
@@ -313,7 +313,7 @@ Wir berechnen den entsprechenden $p_r$-Wert, also einen rechtsseitigen $p$-Wert.
 in dieser Situation recht selten berechnet, denn sie passt zur Alternativhypothese, 
 dass sich die Gruppenmittel \emph{weniger} voneinander 
 abweichen als unter der Nullhypothese zu erwarten wäre. Eine Anwendung
-des linksseitigen $p$-Wertes ist, Geschummel aufzudecken \citep{Simonsohn2013}.}
+eines solchen linksseitigen $p$-Wertes ist, Geschummel aufzudecken \citep{Simonsohn2013}.}
 
 <<>>=
 (sum(var_mittel_H0 >= 1.282355) + 1) / (m + 1)
@@ -351,8 +351,7 @@ Bei Ihnen werden diese Zahlen anders aussehen, da
 die Daten zufällig generiert wurden.
 <<>>=
 # Gesamtquadratsumme
-sq.total <- sum((d$ergebnis - mean(d$ergebnis))^2)
-sq.total
+(sq.total <- sum((d$ergebnis - mean(d$ergebnis))^2))
 @
 
 Um die Streuung innerhalb der Gruppen,
@@ -363,14 +362,12 @@ linearen Modell und berechnet die Quadratsumme der
 Residuen:
 <<>>=
 d.lm <- lm(ergebnis ~ gruppe, data = d)
-sq.rest <- sum((resid(d.lm))^2)
-sq.rest
+(sq.rest <- sum((resid(d.lm))^2))
 @
 
 Die vom Modell erfasste Quadratsumme beträgt also:
 <<>>=
-sq.gruppe <- sq.total - sq.rest
-sq.gruppe
+(sq.gruppe <- sq.total - sq.rest)
 @
 
 Wir haben, zusätzlich zum Intercept, zwei Parameter gebraucht,
@@ -378,8 +375,7 @@ um den Einfluss des Gruppenfaktors zu modellieren. Dies können
 Sie kontrollieren, indem Sie das Modell \texttt{d.lm} inspizieren.
 Im Schnitt beschreibt jeder zusätzliche Parameter also eine Quadratsumme von 25.6:
 <<>>=
-meanSq.gruppe <- sq.gruppe / 2
-meanSq.gruppe
+(meanSq.gruppe <- sq.gruppe / 2)
 @
 
 Es gibt 60 unabhängige Datenpunkte und das Modell schätzt
@@ -392,8 +388,7 @@ nur so viele Parameter schätzen als es Beobachtungen gibt.
 Im Schnitt würden diese 57 Parameter eine Quadratsumme
 von 8.87 erfassen:
 <<>>=
-meanSq.rest <- sq.rest / (60 - 2 - 1)
-meanSq.rest
+(meanSq.rest <- sq.rest / (60 - 2 - 1))
 @
 
 Die kritische Einsicht ist nun, dass wenn die Nullhypothese
@@ -402,16 +397,11 @@ Quadratsumme wie die 57 nicht-modellierten Parameter beschreiben
 können. Also: Wenn $H_0$ zutrifft, sollten \texttt{meanSq.gruppe}
 und \texttt{meanSq.rest} einander gleich sein. Eine andere
 Art und Weise, um dies auszudrücken, ist, dass das Verhältnis von
-\texttt{meanSq.gruppe} und \texttt{meanSq.rest} laut der Nullhypothese im Schnitt 1
-sein soll:
-\[
-H_0: \mathbb{E}\left(\frac{\texttt{meanSq.gruppe}}{\texttt{meanSq.rest}}\right) = 1.
-\]
+\texttt{meanSq.gruppe} und \texttt{meanSq.rest} laut der Nullhypothese 1 sein sollte.
 Dieses Verhältnis bezeichnet man als $F$.
 In unserem Fall beträgt $F$ 2.89.
 <<>>=
-f.wert <- meanSq.gruppe / meanSq.rest
-f.wert
+(f.wert <- meanSq.gruppe / meanSq.rest)
 @
 
 \subsection{Der $F$-Test}
@@ -450,7 +440,8 @@ ggplot(data.frame(x = c(0, 5)),
 
 Die Fläche unter der Kurve rechts von der Strichellinie
 ist die Wahrscheinlichkeit, dass man einen $F$-Wert von
-2.89 oder mehr beobachtet, wenn die Nullhypothese tatsächlich stimmt.
+2.89 oder mehr beobachtet, wenn die Nullhypothese tatsächlich stimmt -- unter
+Annahme eines normalverteilten Restfehlers.
 Sie kann so berechnet werden:
 <<>>=
 pf(f.wert, df = 2, df2 = 60 - 2 - 1, lower.tail = FALSE)
@@ -748,8 +739,8 @@ m.E.\ wiederum zwei paarweise Vergleiche.
 \end{itemize}
 
 Eine kurze Einführung mit vielen Referenzen ist \citet{Bender2001}.
-Konkrete Ratschläge finden Sie in \citet{Ruxton2008}. Diesen sind jedoch wohl
-schwierig zu folgen ist,
+Konkrete Ratschläge finden Sie in \citet{Ruxton2008}. 
+Diesen ist jedoch wohl schwierig zu folgen,
 wenn man noch keine konkrete Erfahrung mit derartigen
 Analysen hat.
 Ein Blogeintrage zum Thema ist \href{https://janhove.github.io/posts/2016-04-01-multiple-comparisons-scenarios/}{\textit{On correcting for multiple comparisons: Five scenarios}}
@@ -795,8 +786,7 @@ man die Zahlen rekonstruieren.
 anova(b11.lm1)
 meanSq.total <- (1.755 + 0.364 + 7.965) / 3
 meanSq.rest <- 105.786 / 151
-fwert <- meanSq.total / meanSq.rest
-fwert
+(fwert <- meanSq.total / meanSq.rest)
 @
 
 Den $p$-Wert kann man dann mit der $F(3, 151)$-Verteilung
@@ -820,8 +810,8 @@ Sie können ihn also ohne Weiteres ignorieren.
  Zufall zu Stande gekommen ist, sei dies wegen der zufälligen Zuordnung in
  einem Experiment oder wegen der Zufallsauswahl, wenn man mit Stichproben
  aus einer Population arbeitet. Interessiert man sich für Gruppenunterschiede,
- so entspricht dies in der Regel der Annahme, es eigentlich keine solchen Unterschied
- gibt.
+ so entspricht dies in der Regel der Annahme, 
+ dass es eigentlich keine solchen Unterschied gibt.
 
  \item $p$-Werte schätzen in der Regel die Wahrscheinlichkeit, mit der man das beobachtete
  Muster (z.B.\ einen Gruppenunterschied oder eine andere Parameterschätzung)

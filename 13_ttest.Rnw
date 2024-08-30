@@ -67,27 +67,27 @@ ist.
   \[
     \frac{-2.4 - 1}{5/\sqrt{7}} \approx -1.80.
   \]
-  Für einen zweiseitigen $t$-Test schlagen wir nach, wie häufig wir
-  bei einer $t(6)$-Verteilung Werte von $-1.80$ oder kleiner
-  und von $-1.80$ oder grösser antreffen; siehe auch Abbildung \ref{fig:t6}:
+  Für einen zweiseitigen $t$-Test berechnen wir zunächst den links- sowie
+  den rechtsseitigen $p$-Wert.
+  Dazu schlagen wir nach, wie häufig wir bei einer $t(6)$-Verteilung Werte von $-1.80$ oder kleiner
+  und von $-1.80$ oder grösser antreffen; siehe Abbildung \ref{fig:t6}.
+  Mit Lemma \ref{lemma:pvalue} erhalten wir den zweiseitigen $p$-Wert,
+  indem wir die kleinere der so erhaltenen Zahlen verdoppeln:
 <<>>=
 t0 <- (-2.4 - 1)/(5/sqrt(7))
-p_l <- pt(t0, df = 7 - 1)
-p_r <- pt(t0, df = 7 - 1, lower.tail = FALSE)
+(p_l <- pt(t0, df = 7 - 1))
+(p_r <- pt(t0, df = 7 - 1, lower.tail = FALSE))
 (p_z <- 2 * min(p_l, p_r))
 @
-  Das heisst, wir erhalten einen $p$-Wert von etwa $0.12$.
+  Das heisst, wir erhalten einen zweiseitigen $p$-Wert von etwa $0.12$.
 \parend
 
-<<echo = FALSE, fig.width = 2*2, fig.height = 2*1.3, fig.cap = "Die Wahrscheinlichkeitsdichte einer $t_6$-Verteilung. Die Strichellinien zeigen die Werte $\\pm 1.80$. Die eingefärbte Fläche unter der Wahrscheinlichkeitsdichte entspricht dem zweiseitigen $p$-Wert zu $t = \\pm 1.80$.\\label{fig:t6}", out.width = ".4\\textwidth">>=
+<<echo = FALSE, fig.width = 2*2, fig.height = 2*1.3, fig.cap = "Die Wahrscheinlichkeitsdichte einer $t_6$-Verteilung. Die Strichellinie zeigt den Wert $- 1.80$. Die eingefärbte Fläche unter der Wahrscheinlichkeitsdichte entspricht dem linksseitigen $p$-Wert zu $t = -1.80$.\\label{fig:t6}", out.width = ".4\\textwidth">>=
 ggplot(data = tibble(t = c(-7, 7)),
        aes(x = t)) +
   stat_function(fun = dt, args = list(df = 6)) +
   geom_vline(xintercept = t0, linetype = 2) +
-  geom_vline(xintercept = -t0, linetype = 2) +
   stat_function(fun = dt, args = list(df = 6), xlim = c(-7, t0), geom = "area",
-                fill = "steelblue") +
-  stat_function(fun = dt, args = list(df = 6), xlim = c(-t0, 7), geom = "area",
                 fill = "steelblue") +
   ylab("Wsk.-Dichte")
 @

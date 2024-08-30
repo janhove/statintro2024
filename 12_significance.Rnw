@@ -1,7 +1,7 @@
 \chapter{Die Logik des Signifikanztests}\label{ch:logik}
 Für viele Forschende scheint der Sinn und Zweck
 einer statistischen Analyse das Produzieren
-eines möglichst `signifikanten' $p$-Wertes zu sein.
+eines `signifikanten' $p$-Wertes zu sein.
 Meines Erachtens lässt sich dies dadurch erklären,
 dass solche Forschende die Bedeutung von $p$-Werten
 falsch verstehen. Um derartige Missverständnisse
@@ -17,7 +17,7 @@ Sechs Teilnehmende ist natürlich eine lächerlich kleine Anzahl,
 aber diese Erklärung bleibt dadurch übersichtlich.
 Nach dem Zufallsprinzip wird die Hälfte der Studierenden der Experimentalgruppe
 und die andere Hälfte der Kontrollgruppe zugeteilt.
-Die Versuchspersonen in der Experimentalgruppe müssen ein Videofragment
+Die Versuchspersonen in der Experimentalgruppe sollen ein Videofragment
 beschreiben, nachdem sie zuerst 5 Deziliter alkoholhaltiges
 Bier getrunken haben. Die Versuchspersonen in der Kontrollgruppe erledigen
 dieselbe Aufgabe, trinken statt alkoholhaltigem aber 5 Deziliter
@@ -105,10 +105,8 @@ der Versuchspersonen (\textit{subject-expectancy effect}, vgl.\ den
 Placebo-Effekt) oder vonseiten der Forschenden (\textit{observer-expectancy effect}) vor.
 
 Sicher hätten wir dieses Design verfeinern können, etwa indem wir
-die Herkunft der Versuchspersonen in den beiden Gruppen fixiert
-hätten (z.B.\ eine Bünderin, ein Zürcher und eine Bernerin in jeder
-Gruppe; wer sich für solche raffiniertere Designs interessiert,
-kann sich ausgewählte Kapitel in \citealp{Oehlert2010}, anschauen)
+die Herkunft der Versuchspersonen in den beiden Gruppen fixiert hätten 
+(z.B.\ eine Bünderin, ein Zürcher und eine Bernerin in jeder Gruppe)
 oder indem wir die Sprachgeschwindigkeit der Versuchspersonen auch
 vor dem Experiment gemessen hätten (`Prätest'), sodass wir diese
 in der Analyse hätten mitberücksichtigen können. Aber auch ohne solche
@@ -275,7 +273,7 @@ ggplot(df_diffs, aes(diffs, y = sample)) +
 @
 
 \mypar[$p$-Wert]{Definition}\label{def:pvalue}
-  Ein $p$-Wert ist eine Zufallsvariable $P$,
+  Ein (exakter) $p$-Wert ist eine Zufallsvariable $P$,
   die folgende Eigenschaft genügt: Falls die Nullhypothese stimmt, so
   gilt für alle $\alpha \in (0, 1)$, dass $\Prob(P \leq \alpha) \leq \alpha$.
 \parend
@@ -288,7 +286,7 @@ ggplot(df_diffs, aes(diffs, y = sample)) +
   \]
   für alle $\alpha \in (0,1)$. Sie ist jedoch überhaupt nicht nützlich als
   $p$-Wert, da sie immer die gleiche Verteilung hat -- egal, ob die Nullhypothese
-  stimmt. Auch eine Zufallsvariable $P \sim \textrm{Unif}((0,1))$ stellt
+  stimmt oder nicht. Auch eine Zufallsvariable $P \sim \textrm{Unif}((0,1))$ stellt
   ein gültiger $p$-Wert dar, denn
   \[
     \Prob(P \leq \alpha) = \alpha \leq \alpha,
@@ -325,22 +323,26 @@ für welche Grösse $X$ wir uns überhaupt interessieren.
 Im obigen Beispiel interessierten wir uns für
 den Unterschied zwischen den Stichprobenmitteln, aber wir werden uns bald
 mit anderen Grössen beschäftigten.
-\item Wir überlegen uns nun, wie denn diese Grösse $X$ verteilt wäre,
-wenn die Nullhypothese stimmen würde. So erhalten wir die Verteilungsfunktion
-$F_0$ von $X$. Im obigen Beispiel ermittelten wir $F_0$, indem wir
-alle möglichen Zuordnungen durchgeackerten. Der Wert $F_0(r)$ entspräche dann
-der Proportion der Zuordnungen, die zu einem Gruppenunterschied im Mittel
-von höchstens $r$ Einheiten für die Alkohol-Gruppe führten.
+
+\item Wir überlegen uns nun, wie denn diese Grösse $X$ verteilt wäre, 
+wenn die Nullhypothese stimmen würde. 
+So erhalten wir die Verteilungsfunktion $F_0$ von $X$. 
+Im obigen Beispiel ermittelten wir $F_0$, 
+indem wir alle möglichen Zuordnungen durchackerten. 
+Der Wert $F_0(r)$ entspräche dann der Proportion der Zuordnungen, 
+die zu einem Gruppenunterschied im Mittel von höchstens $r$ Einheiten 
+zugunsten der Alkohol-Gruppe führten.
+
 \item Laut dem Lemma können wir nun drei Arten von $p$-Werten berechnen
 ($p_{\ell}, p_r, p_z$).
 Auf den Unterschied zwischen diesen drei Berechnungsarten kommen wir in 
-Bemerkung \ref{bem:einzweiseitig} zurück, aber im obigen Beispiel 
-haben wir den $p$-Wert berechnet als die Proportion von 
-Zuordnungen, für die der Gruppenunterschied kleiner als $-0.73$ oder
-grösser als $0.73$ war. Da beide Proportionen in diesem Beispiel gleich waren,
-gilt
+Bemerkung \ref{bem:einzweiseitig} zurück, 
+aber im obigen Beispiel haben wir den $p$-Wert berechnet als die Proportion von 
+Zuordnungen, 
+für die der Gruppenunterschied höchstens $-0.73$ oder mindestens $0.73$ war. 
+Da beide Proportionen in diesem Beispiel gleich waren, gilt
 \[
-  F_0(-0.73) + (1 - F_0(-0.73 -)) = 2 \cdot F_0(-0.73) = 2 \cdot \min\{F_0(-0.73), 1 - F_0(-0.73 -)\}.
+  \underbrace{F_0(-0.73)}_{\textrm{Proportion $\leq -0.73$}} + \underbrace{1 - F_0(0.73 -)}_{\textrm{Proportion $\geq 0.73$}} = 2 \cdot F_0(-0.73) = 2 \cdot \min\{F_0(-0.73), 1 - F_0(-0.73 -)\}.
 \]
 Somit entspricht diese Gesamtproportion dem $p$-Wert $p_z$.
 Als Zufallsvariable $P$ in Definition \ref{def:pvalue} verwendeten wir also
@@ -367,12 +369,12 @@ Analyse berücksichtigen müssen, indem man die Randomisierungen
 mit Sandra in der `mit Alkohol'-Gruppe hätte ausser Acht lassen sollen.
 
 \item Wenn es so gewesen wäre, dass Michael
-und Nicole unbedingt in der gleichen Kondition getestet werden
-wollten, dann hätte es auch keine 20 möglichen Ergebnisse
-unter der Nullhypothese gegeben, sondern wiederum nur 10:
-Alle Permutationen mit Nicole und Michael in anderen Konditionen
-hätten nicht vorkommen können. Auch dies hätte man dann
-berücksichtigen müssen.
+und Nicole unbedingt in der gleichen Kondition hätten getestet werden wollen, 
+dann hätte es auch keine 20 möglichen Ergebnisse unter der Nullhypothese gegeben, 
+sondern wiederum nur 10:
+Alle Permutationen mit Nicole und Michael in anderen Konditionen hätten nicht 
+vorkommen können. 
+Auch dies hätte man dann berücksichtigen müssen.
 
 \item Wenn es so gewesen wäre, dass wir zwecks Ausgleichs
 der beiden Gruppen mindestens eine Frau und einen Mann
@@ -421,7 +423,7 @@ Manipulation zuzuschreiben?) und \term{externer Validität}
 Wer sich für
 die Effizienz didaktischer Methoden interessiert ist,
 muss wohl die externe Validität der Untersuchung berücksichtigen.
-Aber für etwa experimentelle Psychologen ist externe Validität nicht
+Aber für etwa experimentelle Psycholog:innen ist externe Validität nicht
 unbedingt so wichtig \citep{Mook1983}: Für sie kann es wichtiger sein, zu
 zeigen, dass eine Manipulation überhaupt einen Effekt erzeugen \emph{kann},
 ohne dass die Grenzen dieses Befunds schon erprobt werden müssen.
@@ -462,12 +464,13 @@ aus welchem Grund das Muster möglicherweise
 zu Stande gekommen ist.
 \end{framed}
 
-Weiter ist zu bemerken, dass die Alternativhypothese
-auch statistisch vage ist. Zum Beispiel besagt sie
-nicht, wie gross eine allfällige, von Alkohol ausgelöste
-Änderung der Sprechgeschwindigkeit sein könnte. Sie
-besagt nicht einmal, ob diese Änderung eine Beschleunigung
-oder eine Verlangsamung wäre.
+Weiter ist zu bemerken, 
+dass die Alternativhypothese auch statistisch vage ist. 
+Zum Beispiel besagt sie nicht, 
+wie gross eine allfällige, von Alkohol ausgelöste Veränderung der 
+Sprechgeschwindigkeit sein könnte. 
+Sie besagt nicht einmal, 
+ob diese Veränderung eine Beschleunigung oder eine Verlangsamung wäre.
 \parend
 
 \mypar[ein- und zweiseitige Tests]{Bemerkung}\label{bem:einzweiseitig}
@@ -488,19 +491,33 @@ können sinnvoll sein, wenn man \emph{im Vorhinein} klar spezifiziert hat, dass 
 in einer bestimmten Richtung mit der wissenschaftlichen Hypothese, die hinter
 der Arbeit steckt, kompatibel ist. Für eine kurze Übersicht, siehe \href{https://daniellakens.blogspot.com/2016/03/one-sided-tests-efficient-and-underused.html}{\textit{One-sided tests: Efficient and underused}} unter \url{https://daniellakens.blogspot.com}.
 Man sollte sich aber nicht zuerst die Daten anschauen und erst dann
- entscheiden, dass man einen einseitigen Test verwenden möchte -- etwa, weil der
- zweiseitige Test ein nicht-signifikantes Ergebnis produziert.
+entscheiden, dass man einen einseitigen Test verwenden möchte -- etwa, weil der
+zweiseitige Test ein nicht-signifikantes Ergebnis produziert.
+Dies hiesse nämlich, 
+dass man sich statt eines gültigen $p$-Werts wie $p_z$ oder $p_{\ell}$ aus 
+Lemma \ref{lemma:pvalue} die Zufallsvariable $\widetilde{p}$, definiert durch
+\[
+  \widetilde{p} :=
+  \begin{cases}
+    p_z, & \textrm{falls $p_z \leq 0.05$}, \\
+    p_{\ell}, & \textrm{sonst},
+  \end{cases}
+\]
+ausgedacht hat.
+Diese stellt im Allgemeinen jedoch keinen gültigen $p$-Wert im Sinne von
+Definition \ref{def:pvalue} dar.
 \parend
 
 \section{Zur Bedeutung des $p$-Werts}
-Wie das Beispiel zeigt, ist $p$ die Wahrscheinlichkeit,
-dass man das beobachtete Muster (hier: einen Gruppenunterschied von
-0.73 Silben pro Sekunde) \emph{oder ein noch extremeres Muster} feststellen
-würde, \emph{wenn die Nullhypothese tatsächlich stimmen würde}.
-Die alternativen Gruppenunterschiede haben wir ja unter der Annahme,
+Dank Lemma \ref{lemma:pvalue} erhalten wir einen gültigen $p$-Wert,
+indem wir die Wahrscheinlichkeit, dass man das beobachtete Muster
+(im Beispiel: einen Gruppenunterschied von 0.73 Silben pro Sekunde) 
+\emph{oder ein noch extremeres Muster} feststellen würde, 
+\emph{wenn die Nullhypothese tatsächlich stimmen würde}.
+Im Beispiel haben wir die alternativen Gruppenunterschiede ja unter der Annahme,
 dass der beobachtete Gruppenunterschied nur durch Zufall zu Stande gekommen ist, generiert.
-Sämtliche andere Definitionen und Interpretationen
-des $p$-Wertes sind schlicht und einfach falsch.
+Sämtliche andere Definitionen und Interpretationen des $p$-Wertes sind schlicht 
+und einfach falsch.
 Zur Vorbeugung einiger häufiger Missverständnisse:
 
 \begin{itemize}
@@ -520,7 +537,7 @@ Zur Vorbeugung einiger häufiger Missverständnisse:
 
 Solche -- und andere -- Missverständnisse trifft man geläufig an, sogar manchmal
 in Statistikeinführungen, die sich an Psychologie- und Linguistikstudierende richten!
-Für weitere Missverständnisse, siehe \citet{Goodman2008} und \citet{Greenland2016}.
+Weitere Missverständnisse besprechen \citet{Goodman2008} und \citet{Greenland2016}.
 
 Oft unterscheidet man zwischen `statistisch signifikanten' und
 `statistisch nicht-sig\-ni\-fi\-kan\-ten' $p$-Werten. Dabei gelten $p$-Werte
@@ -544,7 +561,7 @@ Versuchen Sie in Ihren eigenen Arbeiten, diese Zweideutigkeit zu vermeiden.
 \section{Fehlentscheide}
 Auch wenn man es sich wohl gerne anders wünschte, bieten
 Signifikanztests keine Sicherheit. Traditionellerweise
-spricht man beim Nullhypothesen testn (engl.: \textit{null hypothesis
+spricht man beim Nullhypothesen testen (engl.: \textit{null hypothesis
 significance testing} oder \textit{NHST}) von zwei Arten
 von Fehlentscheiden, die man treffen kann.
 
@@ -581,9 +598,8 @@ Die Wahrscheinlichkeit eines Fehlers der zweiten Art wird als
 $\beta$ bezeichnet (nicht zu verwirren mit den $\beta$s aus
 den Regressionsmodellen); das Komplement von $\beta$, also $1-\beta$,
 nennt man die statistische \textbf{power} eines Tests.
-Die Wahrscheinlickeit $\beta$ kann nicht ohne Weiteres
-festgelegt werden, denn diese Wahrscheinlichkeit hängt von
-vier Faktoren ab:
+Die Wahrscheinlichkeit $\beta$ kann nicht ohne Weiteres
+festgelegt werden, denn sie hängt von vier Faktoren ab:
 
 \begin{enumerate}
  \item wie stark das eigentliche Muster denn wäre, wenn die
@@ -610,7 +626,7 @@ Mittels Powerberechnung (siehe Kapitel \ref{ch:poweranalysis}) kann man die powe
  & $H_0$ stimmt & $H_0$ stimmt nicht\\
 \midrule
 $p\leq \alpha$ & Fehler der 1.\ Art (\textrm{max.\ $\alpha$}) & OK ($1-\beta$)\\
-$p>\alpha$ & OK ($1 - \alpha$) & Fehler der 2.\ Art ($\beta$)\\
+$p>\alpha$ & OK (\textrm{mind. $1 - \alpha$}) & Fehler der 2.\ Art ($\beta$)\\
 \midrule
 Total      & $\alpha + (1 - \alpha) = 100\%$            & $(1 - \beta) + \beta = 100\%$\\
 \bottomrule
@@ -757,6 +773,8 @@ r <- sum(mean_diffs_H0 >= mean_difference)
   Passen Sie nun den Codeabschnitt oben an, um diese Nullhypothese zu testen
   und berechnen Sie einen passenden $p$-Wert.
   
+  Hinweis: Verwenden Sie einen rechtsseitigen $p$-Wert. (Wieso?)
+  
   Übrigens könnte man für den Vergleich von bloss zwei Gruppen
   auch die Varianz (oder Standardabweichung) der zu vergleichenden Statistiken
   statt des Unterschieds zwischen diesen berechnen. 
@@ -789,7 +807,7 @@ r <- sum(mean_diffs_H0 >= mean_difference)
           
     \item Angenommen, die Nullhypothese lautet, dass
           sich die Konditionsmittel nur aufgrund von Zufall unterscheiden.
-          Erklären Sie in Worten, 
+          Erklären Sie in Worten (aber präzise!), 
           wie man diese Nullhypothese in einem Experiment mit 
           einem Blocking-Faktor mittels eines Randomisierungstests testen
           kann. \parend
@@ -844,9 +862,10 @@ r <- sum(mean_diffs_H0 >= mean_difference)
   durch. Wir berechnen dann die Proportion der Vergleiche, in denen der erste
   Wert höher als der zweite ist; bei einer Bindung (also bei Gleichstand) 
   zählen wir den Vergleich als
-  halben Erfolg. Die selbst gestrickte Funktion \texttt{cles()}
-  führt diese Berechnung aus; ihr Name verweist nach der Bezeichnung 
-  \textit{common-language effect size} \citep{McGraw1992}:
+  halben Erfolg.
+  Die selbst gestrickte Funktion \texttt{cles()} führt diese Berechnung aus; 
+  ihr Name verweist nach der Bezeichnung \textit{common-language effect size} \citep{McGraw1992},
+  aber diese Statistik wird auch \textit{probability of superiority} genannt:
 <<message = FALSE, warning = FALSE>>=
 # nur ufl-Daten; NAs ausser Acht lassen
 d <- read_csv(here("data", "Klein2014_gambler.csv")) |> 
@@ -870,7 +889,7 @@ ist, dass die in \texttt{cles()} implementierte Berechnung recht langsam
 ist: Wenn wir zig Rerandomisierungen durchführen und jeweils \texttt{cles()}
 auf diese anwenden würden, würden wir ewig auf das Ergebnis warten.
 
-Es stellt sich zum Glück heraus, dass wir eine wenige intuitive aber dafür
+Es stellt sich zum Glück heraus, dass wir eine weniger intuitive aber dafür
 effizientere Berechnung ausführen können, die unter dem Strich das gleiche
 Ergebnis liefert. Hierzu kombinieren wir die Beobachtungen der beiden
 Gruppen in einem Vektor, konvertieren diese zu Rängen und summieren
@@ -921,8 +940,8 @@ wilcox.test(x1, x2)
 Im Output erscheint eine Statistik $W$ (wie Wilcoxon), die jedoch \emph{nicht}
 die Rangsumme darstellt. Stattdessen handelt es sich tatsächlich um die Testgrösse
 des äquivalenten \term{Mann--Whitney-Test}, die in der Literatur in der Regel als
-$U$ bezeichnet wird. Diese steht in einem einfacheren Bezug zum 
-\texttt{cles}-Wert umrechnen:
+$U$ bezeichnet wird. 
+Diese steht in einem einfacheren Bezug zum \texttt{cles}-Wert:
 <<>>=
 cles(x1, x2) * (n1 * n2) # CLES zu U
 wilcox.test(x1, x2)$statistic / (n1 * n2) # U zu CLES
@@ -956,11 +975,10 @@ cor_poarch
 @
 
 Das Vorgehen beim Berechnen von $p$-Werten ist eigentlich
-immer gleich. Der $p$-Wert drückt aus, wie
-wahrscheinlich es denn wäre, ein Muster zu
-beobachten, dass mindestens so extrem wäre
-wie das tatsächlich beobachtete Muster,
-\emph{wenn die Nullhypothese stimmen würde}.
+immer gleich und folgt der Schablone, der wir uns dank Lemma \ref{lemma:pvalue}
+bedienen dürfen:
+Wir wählen eine Testgrösse, generieren die Verteilung dieser Testgrösse
+unter der Nullhypothese und berechnen dann $p_{\ell}, p_r$ oder $p_z$.
 Beim Berechnen eines $p$-Wertes für einen
 Korrelationskoeffizienten ist die Aufgabe
 also, die Wahrscheinlichkeit zu berechnen,
@@ -970,11 +988,11 @@ in der Stichprobe anzutreffen, wenn es in der Population gar keinen
 Zusammenhang zwischen den zwei Variablen gäbe.
 
 Um diese Wahrscheinlichkeit zu berechnen,
-müssen wir zuerst die Verteilung der
-Korrelationskoeffizienten generieren, die
+müssen wir zuerst die Verteilung des
+Korrelationskoeffizienten generieren, den
 wir in dieser Stichprobe feststellen würde,
 wenn die zwei Variablen (Flanker und Simon)
-unabhängig voneinander wären. Eine Möglichkeit,
+unabhängig voneinander wären (= $H_0$). Eine Möglichkeit,
 dies zu machen, besteht darin, die beobachteten
 Werte einer der Variablen zu permutieren, also durcheinanderzuschmeissen, 
 ohne die beobachteten Werte der anderen Variablen mitzupermutieren.
@@ -1075,7 +1093,7 @@ r <- sum(df_cor_H0$cor_H0 >= cor_poarch)
 (p_r <- (r + 1) / (m + 1))
 @
 
-Also 0.24\% ($p = 0.0024$). Wenn Sie diese Berechnungen
+Also 0.25\% ($p = 0.0025$). Wenn Sie diese Berechnungen
 nochmals selber ausführen, werden Sie ein leicht anderes Ergebnis
 feststellen. Das liegt daran, dass die 19'999 zufälligen Permutationen
 bei Ihnen dann eben nicht die gleichen sind wie bei mir.
@@ -1096,19 +1114,6 @@ anzutreffen, wenn die Nullhypothese tatsächlich stimmen
 würde, ist also recht klein.
 (Wir hätten hier natürlich auch auf die Berechnung von \texttt{p\_l})
 verzichten können, da dieser Wert klar grösser als \texttt{p\_r} ist.)
-% 
-% Mit der \texttt{independence\_test()}-Funktion
-% wird dieses Vorgehen erleichert. Aber wichtiger
-% ist eben vor allem die Logik hinter dem Vorgehen:
-% <<>>=
-% independence_test(Simon ~ Flanker, data = poarch,
-%                   distribution = approximate(nresample = 19999))
-% @
-% 
-% Das Ergebnis fällt hier leicht
-% anders aus als bei unseren manuellen Berechnungen,
-% aber das liegt lediglich an der Zufallsauswahl der
-% Permutationen.
 
 \mypar{Aufgabe}
   Berechnen Sie Kendalls $\tau$ für den Zusammenhang der Flanker- und Simondaten.
@@ -1123,7 +1128,7 @@ verzichten können, da dieser Wert klar grösser als \texttt{p\_r} ist.)
   und /\textipa{\ae}/ (wie in \textit{bat}) wahrnimmt.
   Zu diesem Zweck gleisen wir einen ABX-Test auf: Wir erstellen
   eine Liste mit 30 Minimalpaaren, dessen Komponenten sich nur 
-  durch in diesen Phonemen voneinander unterscheiden (\textit{bed}--\textit{bad},
+  in diesen Phonemen voneinander unterscheiden (\textit{bed}--\textit{bad},
   \textit{fed}--\textit{fad}, \textit{peck}--\textit{pack}, usw.).
   Die insgesamt 60 Wörter werden je zwei Mal von einem Muttersprachler aufgenommen.
   Dem Lerner spielen wir pro Minimalpaar eine Aufnahme des /\textipa{E}/-Wortes
@@ -1136,7 +1141,7 @@ verzichten können, da dieser Wert klar grösser als \texttt{p\_r} ist.)
   Dies könnte zwar darauf hindeuten, dass er gewissermassen den Unterschied
   zwischen /\textipa{E}/ und /\textipa{\ae}/ heraushört, 
   aber wir sollten uns auch mit der Möglichkeit befassen, 
-  dass er bloss geraten hat.
+  dass er bloss geraten hat ($= H_0$).
   
   Wenn der Lerner nur geraten hätte, so hätte er bei jedem Minimalpaar eine
   Wahrscheinlichkeit von $p_0 = 0.5$, um richtig zu liegen -- sei es, weil
@@ -1166,7 +1171,7 @@ verzichten können, da dieser Wert klar grösser als \texttt{p\_r} ist.)
 <<>>=
 1 - pbinom(20, 30, 0.5)
 @
-  Ein einseitiger Binomialtest liefert also einen $p$-Wert von etwa $0.02$.
+  Ein einseitiger Binomialtest liefert also einen rechtsseitigen $p$-Wert von etwa $0.02$.
   
 <<echo = FALSE, fig.cap = "Links: Wahrscheinlichkeit der Anzahl Erfolge bei der Binomial($30$, $0.5$)-Verteilung. Rechts: Verteilungsfunktion derselben Verteilung.\\label{fig:binomialtest}", fig.width = 7, fig.height = 3.3, out.width=".8\\textwidth">>=
 k <- 0:30
@@ -1195,7 +1200,9 @@ den zwei Phonemen gewissermassen wahrnimmt.
 
 Der Binomialtest aus dem obigen Beispiel ist ein exakter Test, mit dem
 man einen Binomialparameter mit einem hypothetischen Referenzwert (im Beispiel
-$p_0 = 0.5$) vergleichen kann. Im Beispiel wurde ein rechtseitiger Test
+$p_0 = 0.5$) vergleichen kann. 
+`Exakt' heisst hier, dass die Anforderung aus Definition \ref{def:pvalue} erfüllt wird.
+Im Beispiel wurde ein rechtseitiger Test
 verwendet, da wir uns nur für die Alternative interessieren, 
 dass die Erfolgswahrscheinlichkeit grösser als $p_0$ ist.
 Falls wir uns nur für die Alternative interessieren, dass die Erfolgswahrscheinlichkeit

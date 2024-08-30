@@ -62,7 +62,7 @@ durch Bezeichnungen wie
 \textit{Teilnahme an einem Kurs `Heimatsprache und -kultur'} (für $x$),
 \textit{Ergebnis bei einem französischen Lesetest} (für $y$)
 und \textit{sozioökonomischer Status des Elternpaars} (für $z$).
-Aber meines Erachtens ist es unter dem Strich sinnvoller, sich mit der
+Aber ich finde es unter dem Strich sinnvoller, sich mit der
 Abstraktion anzufreunden, denn die Lektionen, die man aus diesen abstrakten
 Szenarien ziehen kann, sind allgemeingültig.
 
@@ -166,8 +166,9 @@ Wir werden nun zwei Analysen miteinander vergleichen. Wenn wir
 echte Daten analysieren würden, würden wir dies übrigens nicht tun: Wir
 würden nur die sinnvollste Analyse ausführen. Aber das Ziel dieses
 Kapitels ist es, herauszufinden, welche Analyse in Szenarien
-wie diesem überhaupt die sinnvollste ist. Im ersten Modell
-wird der Störfaktor ignoriert:
+wie diesem überhaupt die sinnvollste ist.
+
+Im ersten Modell wird der Störfaktor ignoriert:
 <<>>=
 dag1.lm1 <- lm(y ~ x, data = d)
 summary(dag1.lm1)$coefficients
@@ -288,6 +289,25 @@ des kausalen Einflusses von $x$ auf $y$ liefert ($0.6$):
 apply(est_dag1, 2, mean)
 @
 
+\mypar{Aufgabe}
+  Wiederholen Sie die obige Simulation,
+  aber gehen Sie dabei von einem Datensatz mit $n = 50$ Beobachtungen 
+  und von den folgenden Gleichungen aus:
+ \begin{align*}
+    x_i &= 0 + 2.5\cdot z_i + \tau_i,\\
+    y_i &= 5.2 - 1.2\cdot x_i - 3 \cdot z_i + \varepsilon_i,\\
+    z_i &\sim \mathcal{N}(0, 1^2), \\
+    \tau_i &\sim \mathcal{N}(0, 1^2), \\
+    \varepsilon_i &\sim \mathcal{N}(0, 1^2),
+  \end{align*}
+für $i = 1, \dots, 50$.
+Für den ersten Schritt können erneut die \texttt{generate\_dag1()}-Funktion verwenden,
+ohne diese neu zu schreiben. Sie sollten lediglich die Funktion eben nicht mit
+den Defaulteinstellungen laufen lassen, sondern die Parameter passend definieren
+(z.B.\ \texttt{n = 50}).
+Zeichnen Sie auch eine ähnliche Grafik wie in Abbildung \ref{fig:schätzung_dag1}.
+\parend
+
 Das Fazit der obigen Betrachtungen scheint klar:
 Wenn man vermutet, dass Störfaktoren im Spiel sind,
 sollte man diese in der Analyse berücksichtigen,
@@ -363,12 +383,14 @@ aufgabe1.lm <- lm(y ~ x + z, data = d)
 summary(aufgabe1.lm)$coefficients
 @
 \begin{enumerate}
-  \item Erklären Sie haargenau, was die Parameterschätzung für \texttt{x} bedeutet.
+  \item Erklären Sie, was die Parameterschätzung für \texttt{x} buchstäblich bedeutet.
   \item Zeigen Sie anhand einer Simulation, dass das Modell \texttt{aufgabe1.lm} keine
   unverzerrte Schätzung des kausalen Einflusses von $x$ auf $y$ liefert, obwohl der Störfaktor $z$
-  berücksichtigt wurde.
+  berücksichtigt wurde. Hierzu sollten Sie eine neue Funktion \texttt{generate\_dag2()} schreiben,
+  die ähnlich funktioniert wie \texttt{generate\_dag1()}.
   \item Würde sich die Situation verbessern, wenn wir mit Datensätzen von 200 statt von 50 Beobachtungen
-  arbeiten würden? \parend
+  arbeiten würden? Verwenden Sie hierzu die Funktion \texttt{generate\_dag2()}, die Sie soeben
+  geschrieben haben; schreiben Sie diese \emph{nicht} erneut! \parend
 \end{enumerate}
 
 \mypar[Messfehler im Störfaktor]{Aufgabe}
@@ -435,7 +457,7 @@ summary(aufgabe2.lm)$coefficients
 @
 
 \begin{enumerate}
-  \item Erklären Sie haargenau, was die Parameterschätzung für \texttt{x} bedeutet.
+  \item Erklären Sie, was die Parameterschätzung für \texttt{x} buchstäblich bedeutet.
   \item Zeigen Sie anhand einer Simulation, dass das Modell \texttt{aufgabe2.lm} keine
   unverzerrte Schätzung des kausalen Einflusses von $x$ auf $y$ liefert, obwohl der Störfaktor $z$
   mit einem Indikator $z_m$ berücksichtigt wurde.
@@ -459,10 +481,9 @@ die Werte von $x$ nach dem Zufallsprinzip von den Forschenden manipuliert wurden
 In Abbildung \ref{fig:dag2} wird das $x$ daher als $x_r$ dargestellt ($r$ für \textit{randomised}).
 Ein typisches Beispiel für das hier betrachtete abstrakte Szenario ist die zufällige Zuordnung von Versuchspersonen
 zu den Konditionen eines Experiments.
-In diesem Fall wäre $x$ eine kategorielle
-Variable, aber ohne Beschränkung der Allgemeinheit werden wir uns hier für kontinuierliche
-$x$-Variablen interessieren. Das vereinfacht nur die Simulationen; an den Schlussfolgerungen
-ändert dies nichts.
+In diesem Fall wäre $x$ eine kategorielle Variable, 
+aber hier werden wir uns für kontinuierliche $x$-Variablen interessieren. 
+Das vereinfacht nur die Simulationen; an den Schlussfolgerungen ändert dies nichts.
 Die Variable $z$ wäre dann eine Variable, für die man sich zwar in erster Linie nicht interessiert,
 aber von der man vermutet, dass sie mit der abhängigen Variablen ($y$) korreliert ist.
 Das Paradebeispiel hierfür ist ein Prätest/Posttest-Experiment, wo $x$ die Rolle der Kondition übernimmt,
@@ -520,9 +541,8 @@ von $x$ auf $y$. Keines der Modelle ist also schlecht. Trotzdem ist das zweite M
 in dem die $z$-Variable mitberücksichtigt wird, das Modell, das man rechnen sollte,
 wenn man überhaupt über die $z$-Variable verfügt. Der Grund dafür wird klarer, wenn
 wir wieder ein paar tausend Datensätze generieren.
-Dafür könnten
-wir zwar eine neue Funktion \texttt{generate\_dag2()}
-schreiben. Aber wenn wir der Funktion \texttt{generate\_dag1()}
+Dafür könnten wir zwar eine neue Funktion schreiben. 
+Aber wenn wir der Funktion \texttt{generate\_dag1()}
 den Parameterwert 0 für \texttt{z\_x}
 übergeben, erhalten wir auch die gewünschten Datensätze:
 <<cache = TRUE>>=
@@ -561,8 +581,7 @@ Wir ziehen folgendes Fazit.
 Die Genauigkeit, mit der ein Modellparameter geschätzt
 wird, hängt von der Datenmenge und der Fehlervarianz ab.
 Dies zeigte sich bereits in der Formel zur Berechnung
-des Standardfehlers eines Mittels
-($\widehat{\textrm{SE}} = \frac{s}{\sqrt{n}}$).
+des Standardfehlers eines Mittels ($\widehat{\textrm{SE}} = s / \sqrt{n}$).
 Die Genauigkeit kann man also erhöhen, indem man
 mehr Daten sammelt (ohne dabei Abstriche bei der Qualität der Daten zu machen!) 
 oder indem man die Fehlervarianz senkt.
@@ -596,8 +615,8 @@ wenn die zusätzliche Variable leicht zu erheben ist.
 Der Grund ist nicht, dass man eine verzerrte Schätzung vorbeugen will -- 
 auch ohne Kontrollvariablen würde das Modell eine unverzerrte Schätzung liefern.
 Vielmehr ist der Grund, dass man die Genauigkeit der Schätzung dadurch erhöhen kann.
-Dieser Vorteil trifft übrigens auch dann zu, und sogar \emph{besonders} dann, wenn
-die Kontrollvariable ($z$) nicht mit der unabhängigen Variablen ($x$) korreliert ist.
+Dieser Vorteil trifft übrigens auch dann zu, 
+wenn die Kontrollvariable ($z$) nicht mit der unabhängigen Variablen ($x$) korreliert ist.
 
 Übertreiben Sie aber nicht mit der Anzahl Kontrollvariablen. Eine oder zwei Kontrollvariablen,
 von denen man im Vorfeld weiss, dass sie stark mit dem outcome, aber kaum miteinander,
@@ -696,7 +715,7 @@ die Forschungsfrage. Meines Erachtens muss im Forschungsbericht daher
 auch nicht auf diese Parameterschätzung eingegangen werden.
 \parend
 
-\mypar[cluster-randomised experiment]{Beispiel}
+\mypar[\textit{cluster-randomised experiment}]{Beispiel}
 Tatsächlich wurden die Kinder in der Studie von \citet{Hicks2021}
 aber nicht nach dem Zufallsprinzip und unabhängig voneinander
 den Konditionen zugeordnet. Stattdessen wurden sie per Schulklasse
@@ -767,7 +786,7 @@ hicks_per_class.lm2 <- lm(mean_T3 ~ Group*mean_T1, data = d_per_class)
 summary(hicks_per_class.lm2)$coefficients[, 1:2]
 @
 \begin{enumerate}
-  \item Erklären Sie die genaue Bedeutung von allen vier Parameterschätzungen.
+  \item Erklären Sie, was die buchstäbliche Bedeutung von allen vier Parameterschätzungen ist.
 
   \item Fügen Sie dem tibble \texttt{d\_per\_class} zwei neue Variablen hinzu.
   Die erste sollte eine summenkodierte Variante von \texttt{Group}
@@ -784,8 +803,8 @@ d_per_class$c.mean_T1 <- d_per_class$mean_T1 - mean(d_per_class$mean_T1)
 summary(lm(mean_T3 ~ n.Group*c.mean_T1, d_per_class))
 @
 
-  \item Erklären Sie die genaue Erklärung von allen vier Parameterschätzungen
-  im neuen Modell. Wie erklären Sie sich den Unterschied in den Schätzungen
+  \item Erklären Sie, was die buchstäbliche Bedeutung von allen vier Parameterschätzungen
+  im neuen Modell ist. Wie erklären Sie sich den Unterschied in den Schätzungen
   für die Gruppenvariable im ersten Modell ($16.4$) und im zweiten ($2.1$)?
 
   \item Berechnen Sie das vom Modell vorhergesagte durchschnittliche
@@ -1013,7 +1032,7 @@ siehe \href{https://janhove.github.io/posts/2016-04-22-r-squared/}{\textit{Why r
  Wer sich für die Vorhersagekraft des Modells
  interessiert, sollte sich ohnehin besser über die
  Prinzipien der prädiktiven Modellierung schlau machen.
- Siehe dazu die Literaturempfehlungen.
+ Siehe dazu die Literaturempfehlungen am Ende dieses Kapitels.
  
  Die nächste Aufgabe hat nicht direkt mit $R^2$ zu tun.
  Da sie sich aber ebenfalls auf den Datensatz von \citet{Vanhove2019} bezieht,
@@ -1037,13 +1056,13 @@ summary(mod1.lm)$coefficients
     sodass Texte mit höheren TTR-Werten
     im Schnitt bessere Beurteilungen erhalten als Texte mit niedrigeren TTR-Werten.
     \item Dem Modelloutput kann man entnehmen, dass ein höherer TTR-Wert
-    dazu führt, dass ein Text eine bessere Beurteilung erhält.
+    dazu führt, dass ein Text tendenziell eine bessere Beurteilung erhält.
    \end{enumerate}
 
    \item Zeichnen Sie eine Streudiagrammmatrix mit den drei im Modell vorhandenen Variablen.
    Wollen Sie Ihre Antwort auf die letzte Frage überarbeiten?
 
-   \item Erklären Sie haargenau, was die folgenden Zahlen im Modelloutput bedeuten:
+   \item Erklären Sie, was die folgenden Zahlen im Modelloutput buchstäblich bedeuten:
    \begin{enumerate}
     \item $-2.0$ (Schätzung für \texttt{(Intercept)});
     \item 1.0 (Schätzung für \texttt{log2.nTokens});
@@ -1100,7 +1119,7 @@ summary(mod2.lm)$coefficients
 Streudiagrammmatrix) der erste Schritt der Analyse sein,
 nicht ein Schritt, den man wie hier zwecks der Kontrolle ausführt.}
 
-   \item Erklären Sie haargenau, was die folgenden Zahlen im Modell\-output bedeuten:
+   \item Erklären Sie, was die folgenden Zahlen im Modell\-output buchstäblich bedeuten:
    \begin{enumerate}
     \item 5.8 (Schätzung für \texttt{(Intercept)});
     \item 0.3 (Schätzung für \texttt{Raven.Right});

@@ -39,20 +39,7 @@ mit sog.\ gemischten Modellen ausgewertet.
 Es ist jedoch oftmals möglich, Datensätze aus diesen Studien so umzugestalten,
 dass sie mit einfacheren Mitteln analysiert werden können.
 Dieses Kapitel zeigt, wie das geht.
-% 
-% % MEISTE EXPERIMENTE RELATIV SCHWIERIG AUFGEGLEIST:
-% % MEHRERE ITEMS PRO VPN. VARIIEREN ITEMS WITHIN ODER BETWEEN SUBJECTS? 
-% % ZUSÄTZLICHE FAKTOREN (WITHIN-ITEMS, WITHIN-SUBJECTS, BETWEEN-ITEMS, BETWEEN-SUBJECTS)
-% % HEUTZUTAGE MEISTENS ANALYSIERT MIT SOG. GEMISCHTEN MODELLEN
-% % HIER WERDEN TECHNISCH EINFACHERE ALTERNATIVEN VORGESTELLT, DIE MAN IN BESTIMMTEN FÄLLEN SINNVOLL EINSETZEN KANN
-% 
-% % Wir wollen uns nun anschauen, wie man die Daten von within-subjects-Experimenten
-% % auswerten kann. Wir behandeln dabei zunächst den einfachsten Fall, nämlich
-% % jenen eines Experiments mit zwei Konditionen.
-% % 
-% % \section{Zwei Konditionen vergleichen}
-% 
-% 
+
 \citet{VanDenBroek2018} untersuchten, ob Vokabeln in einer Fremdsprache
 besser gelernt werden, wenn die Lernenden diese mit kontextreichen oder
 mit kontextarmen Aufgaben einüben. An ihrem ersten Experiment nahmen
@@ -61,7 +48,7 @@ Sprache (Swahili) lernen sollten.
 Beim Einüben sollten die Lernenden die zu lernenden Wörter aus dem Swahili
 ins Niederländische übersetzen. Jeweils die Hälfte der Wörter wurde dabei
 mit semantisch nützlichem Kontext präsentiert (z.B.\ \textit{Ich gehe zur
-Bäckerei. Wir haben kein \emph{mkate} mehr,}, wo \emph{mkate} `Brot' heisst)
+Bäckerei. Wir haben kein \emph{mkate} mehr}, wo \emph{mkate} `Brot' heisst)
 und die Hälfte ohne solchen Kontext
 (z.B.\ \textit{Wir haben kein \emph{mkate} mehr.}).
 Je nach Versuchspersonen wurde ein Wort mit oder ohne hilfreichen Kontext eingeübt.
@@ -412,7 +399,7 @@ correspondences <- read_csv(here("data", "correspondencerules.csv")) |>
   filter(Category %in% c("oe cognate", "ij cognate"))
 @
 
-\mypar[gleiche Daten, andere Perspektive]{Bemerkung}
+\mypar[Gleiche Daten, andere Perspektive]{Bemerkung}
 Wir haben sowohl die Daten von \citet{VanDenBroek2018}\footnote{Jetzt wissen
 Sie auch, wie dieser Name auszusprechen ist.} als auch jene von \citet{Vanhove2016}
 aus der Perspektive der Teilnehmenden betrachtet.
@@ -440,7 +427,7 @@ d_items <- d |>
 ggplot(d_items,
        aes(x = (context + retrieval) / 2,
            y = Difference)) +
-  geom_point() +
+  geom_point(shape = 1) +
   geom_hline(yintercept = 0, linetype = "dashed") +
   geom_smooth(method = "lm", se = FALSE, formula = y ~ x) +
   xlab("(context + retrieval) / 2") +

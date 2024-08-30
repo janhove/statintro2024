@@ -212,9 +212,7 @@ meistens mit dieser Methode geschätzt
 (\textit{ordinary least squares}, OLS).
 Aber dies ist keine Notwendigkeit.
 In bestimmten Bereichen trifft man ab und zu Modellierungsverfahren an,
-die andere Optimierungskriterien hantieren, beispielsweise das \term{Lasso},
-\term{Ridge-Regression} und das \term{elastische Netz}; 
-siehe hierzu \citet[][Abschnitt 6.4]{Kuhn2013}.
+die andere Optimierungskriterien hantieren.
 
 \mypar[Mittel minimiert die Summe der Quadrate]{Bemerkung}
   Dass das Stichprobenmittel die Summe der Quadrate minimiert, lässt sich 
@@ -564,7 +562,7 @@ Warum wird bei der \texttt{summary()}-Funktion
 schon der Median aber nicht das Mittel der Residuen gezeigt?
 \parend
 
-\section{Exkurs: Maximum-Likelihood-Schätzung}
+\section{Exkurs: Maximum-Likelihood-Schätzung}\label{sec:ml}
 Bei der Methode der kleinsten Quadrate (und Varianten darauf) erhält man die
 Parameterschätzungen,
 indem man die resultierenden geschätzten Restfehler minimiert.
@@ -639,42 +637,6 @@ von i.i.d.\ normalverteilten Daten).
 Bei gewissen komplexeren Modellen kann man die Methode der kleinsten
 Quadrate nicht heranziehen, aber die Maximum-Likelihood-Methode schon.
 
-% \mypar[Maximum-Likelihood-Schätzer der Varianz]{Bemerkung}
-%   Die Maximum-Likelihood-Methode kann man auch einsetzen, um
-%   die Varianz $\sigma^2$ (oder die Standardabweichung $\sigma$) der Restfehler zu schätzen.
-%   Zu diesem Zweck fassen wir den Ausdruck in \ref{eq:mle} als Funktion
-%   von $\sigma^2$ (statt von $\mu$) auf und gehen ähnlich vor:
-%   \begin{align*}
-%   \widehat{\sigma}^2
-%   &= \argmax_{\sigma^2} \left(\prod_{i = 1}^n \frac{1}{\sqrt{2\pi} \sigma}\exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right)\right) \\
-%   &= \argmax_{\sigma^2} \log\left(\prod_{i = 1}^n \frac{1}{\sqrt{2\pi} \sigma}\exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right)\right) \\
-%   &= \argmax_{\sigma^2} \sum_{i=1}^n \left(\log\left(\frac{1}{\sqrt{2\pi}\sigma}\right) \exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right) \right) \\
-%   &= \argmax_{\sigma^2} \sum_{i=1}^n \left(\log\left(\frac{1}{\sqrt{2\pi}}\right) - \log\left((\sigma^2)^{1/2}\right) + \log\left(\exp\left(-\frac{(y_i - \mu)^2}{2\sigma^2}\right)\right)\right) \\
-%   &=  \argmax_{\sigma^2} \sum_{i=1}^n \left(-\frac{1}{2}\log(\sigma^2)  -\frac{(y_i - \mu)^2}{2\sigma^2}\right).
-% \end{align*}
-%   Wir berechnen die Ableitung dieses Ausdrucks (in $\widehat{\sigma}^2$):
-% \begin{align*}
-%   \frac{\df}{\df \widehat{\sigma}^2}  \sum_{i=1}^n \left(-\frac{1}{2}\log(\widehat{\sigma}^2)  -\frac{(y_i - \mu)^2}{2\widehat{\sigma}^2}\right)
-%   &= \sum_{i=1}^n \left(-\frac{1}{2\widehat{\sigma}^2} + \frac{(y_i - \mu)^2}{2\widehat{\sigma}^4}\right) \\
-%   &= -\frac{n}{2\widehat{\sigma}^2} + \frac{1}{2\widehat{\sigma}^4}\sum_{i=1}^n(y_i - \mu)^2.
-% \end{align*}
-%   Diese Ableitung beträgt $0$ genau dann, wenn
-%   \[
-%     \frac{n}{2\widehat{\sigma}^2} = \frac{1}{2\widehat{\sigma}^4}\sum_{i=1}^n(y_i - \mu)^2,
-%   \]
-%   also wenn
-%   \[
-%     \widehat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n(y_i - \mu)^2.
-%   \]
-%   Der Maximum-Likelihood-Schätzer der Varianz ist somit
-%   \[
-%     \widehat{\sigma}^2_{ML} = \frac{1}{n}\sum_{i=1}^n(y_i - \mu)^2.
-%   \]
-% \parend
-
-  % 
-  % & [\textrm{Produkt als Summe umschreiben}]
-
 \section{Fazit}
 \begin{itemize}
 \item Datenpunkte kann man als eine Kombination einer
@@ -692,20 +654,3 @@ ergibt die gleiche Lösung wie die Methode der kleinsten Quadrate.
 \item Die Unsicherheit in der Parameterschätzung kann
 mithilfe des Bootstraps oder anhand weiterer Annahmen geschätzt werden.
 \end{itemize}
-% 
-% % \section{Aufgaben}
-% % Diese Aufgaben haben zum Ziel 
-% % \begin{enumerate}
-% %     \item Wie würden Sie den parametrischen Bootstrap fürs \texttt{mod.lm}-Modell
-% %   anpassen, wenn Sie davon ausgehen würden, dass die Residuen in der Population
-% %   aus einer kontinuierlichen Gleichverteilung statt aus einer Normalverteilung stammten? 
-% %   
-% %   \item Wie würden Sie die \texttt{min}- und \texttt{max}-Parameter der 
-% %   \texttt{runif()}-Funktion bestimmen? Sehen Sie dabei Probleme?
-% %   
-% %   \item Führen Sie das Bootstrapping unter dieser Annahme aus. Welche Schätzung erhalten
-% %   Sie für $\widehat{\sigma}_{\bar{x}}$?
-% %   
-% %   \item Wäre eine diskrete Gleichverteilung hier sinnvoller als eine kontinuierliche
-% %   Gleichverteilung? Welche Werte würden in dieser diskreten Gleichverteilung vorkommen?
-% % \end{enumerate}

@@ -1214,7 +1214,7 @@ daten
 @
 \parend
 
-\subsection{Die Bernoulliverteilung}
+\subsection{Die Bernoulliverteilung}\label{sec:bernoulli}
 Die \term{Bernoulliverteilung} beschreibt den Ausgang $X$ eines Zufallsexperiments mit
 zwei möglichen Ergebnissen, die wir als $0$ und $1$ bezeichnen.
 Sie hat einen Parameter $p \in [0, 1]$, der die Wahrscheinlichkeit einer $1$
