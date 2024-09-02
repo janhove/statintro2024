@@ -1209,34 +1209,73 @@ Falls wir uns nur für die Alternative interessieren, dass die Erfolgswahrschein
 kleiner als $p_0$ ist, so bietet sich ein linksseitiger Test an.
 Für diesen würden wir $\Prob(X \leq x)$ berechnen, mit $x$ der beobachteten Anzahl Erfolge.
 
-Etwas mühsamer ist die Herleitung des zweiseitigen Tests, der sich anbietet,
-wenn wir uns für die Alternative interessieren, dass die Erfolgswahrscheinlichkeit
-nicht gleich $p_0$ ist -- egal, ob grösser oder kleiner.
-Ist die Nullhypothese, dass $X \sim \textrm{Binom}(n, p_0)$, so berechnen wir
-für alle $k = 0, \dots, n$ die Wahrscheinlichkeit
+Für den zweiseitigen Test können wir mit Lemma \ref{lemma:pvalue} einen gültigen
+$p$-Wert als
 \[
-  p_k := \Prob(X = k).
+  2 \cdot \min\{\Prob(X \leq x), \Prob(X \geq x)\}
 \]
-Für eine beobachtete Anzahl von Erfolgen $x$ berechnen wir den zweiseitigen $p$-Wert
-nun als die Summe aller $p_k$s, für welche $p_k \leq p_x$.
+berechnen.
+Es ist jedoch möglich, 
+einen anderen gültigen $p$-Wert für den zweiseitigen Test herzuleiten, 
+sodass dieser Test mehr \textit{power} hat.
+Sei $X$ die Zufallsvariable, welche die Anzahl Erfolge aus $n$ Versuchen darstellt,
+und sei $p_0$ die Erfolgswahrscheinlichkeit laut der Nullhypothese.
+Nun definieren wir die Zufallsvariable 
+\[
+  \widetilde{X} := \Prob(Y = X),
+\]
+wo $Y \sim \textrm{Binomial}(n, p_0)$.
+Für die beobachtete Anzahl Erfolge $x$ berechnen wir entsprechend 
+den Wert $\widetilde{x} := \Prob(Y = x)$.
+Mit Lemma \ref{lemma:pvalue} erhalten wir einen gültigen $p$-Wert,
+indem wir $F_0(\widetilde{x})$ berechnen.
+Hier ist $F_0$ die Verteilung der Zufallsvariable $\widetilde{X}$ unter
+der Nullhypothese.
+
+% Etwas mühsamer ist die Herleitung des zweiseitigen Tests, der sich anbietet,
+% wenn wir uns für die Alternative interessieren, dass die Erfolgswahrscheinlichkeit
+% nicht gleich $p_0$ ist -- egal, ob grösser oder kleiner.
+% Ist die Nullhypothese, dass $X \sim \textrm{Binom}(n, p_0)$, so berechnen wir
+% für alle $k = 0, \dots, n$ die Wahrscheinlichkeit
+% \[
+%   p_k := \Prob(X = k).
+% \]
+% Für eine beobachtete Anzahl von Erfolgen $x$ berechnen wir den zweiseitigen $p$-Wert
+% nun als die Summe aller $p_k$s, für welche $p_k \leq p_x$.
+% Auch diese Berechnung lässt sich mit Lemma \ref{lemma:pvalue} rechtfertigen:
+% Die Zufallsvariable, die wir betrachten, ist diesmal nicht länger die Anzahl Erfolge,
+% sondern die Wahrscheinlichkeit dieser Anzahl Erfolge in einer $\textrm{Binom}(n, p_0)$-Verteilung.
+% Die 
 
 \mypar[zweiseitiger Binomialtest]{Beispiel}
   Angenommen, die Nullhypothese lautet 
   \[
   X \sim \textrm{Binomial}(17, 1/3)
   \]
-  und wir beobachten 4 Erfolge. Wir berechnen $p_k$ für $k = 0, \dots, 17$:
+  und wir beobachten drei Erfolge.
+  Einen ersten gültigen zweiseitigen $p$-Wert können wir nun wie folgt berechnen:
 <<>>=
-p_k <- dbinom(0:17, 17, 1/3)
+p_l <- pbinom(3, 17, 1/3)
+p_r <- 1 - pbinom(2, 17, 1/3)
+(2 * min(p_l, p_r))
 @
-  Die Wahrscheinlichkeit $p_4$ ist der 5.\ Eintrag dieses Vektors.
-  Der zweiseitige $p$-Wert beträgt folglich
+  Dieser Test hat jedoch weniger statistische \textit{power} als die etwas
+  kompliziertere Alternative.
+  Für diese berechnen wir zunächst für jedes $k = 0, \dots, 17$ den Wert
+  $\Prob(Y = k)$:
 <<>>=
-sum(p_k[p_k <= p_k[5]])
+prob_k <- dbinom(0:17, 17, 1/3)
+@
+  Die Verteilungsfunktion $F_0$ der Zufallsvariable $\widetilde{X}$
+  bei einem Wert $r$ entspricht der Summe der Wahrscheinlichkeiten
+  $\Prob(Y = k)$ mit $\Prob(Y = k) \leq r$.
+  Wir interessieren uns für $F_0(\Prob(Y = 3))$ und erhalten somit
+<<>>=
+sum(prob_k[prob_k <= prob_k[4]])
 @
   Einfacher geht es mit \texttt{binom.test()}:
 <<>>=
-binom.test(4, 17, 1/3)
+binom.test(3, 17, 1/3)$p.value
 @
 \parend
 
@@ -1248,3 +1287,136 @@ das beobachtete Result oder noch extremere Resultate nach dieser Verteilung sind
 In den vorigen Abschnitten haben wir die Verteilungen unter der Nullhypothese
 durch stures Rechnen geschätzt; hier konnten wir mit gutem Gewissen eine 
 der klassischen Wahrscheinlichkeitsverteilungen einsetzen.
+
+\section{Der exakte Test nach Fisher}
+Zum Abschluss dieses Kapitels nehmen wir die Logik des sog.\ exakten Tests
+nach Fisher unter die Lupe.
+
+\mypar[Klassifikationsaufgabe]{Beispiel}
+  Wieder wollen wir untersuchen, ob ein Lerner des Englischen den Unterschied
+  zwischen den Phonemen /\textipa{E}/ (wie in \textit{bet})
+  und /\textipa{\ae}/ (wie in \textit{bat}) wahrnimmt.
+  Diesmal gleisen wir dazu ein anderes Experiment auf.
+  Wir stellen dem Lernenden insgesamt 30 Audiodateien zur Verfügung.
+  Zwanzig dieser Audiodateien sind Aufnahmen des Worts \textit{bet},
+  die restlichen zehn Audiodateien sind Aufnahmen des Worts \textit{bat}.
+  Die Aufgabe des Lernenden ist es, jene zwanzig Audiodateien auszuwählen,
+  die Aufnahmen von \textit{bet} sind.
+  Der Lernende \emph{muss} genau zwanzig Audiodateien auswählen.
+  Die Ergebnisse fassen wir in einer Kreuztabelle zusammen:
+
+\begin{center}
+\begin{tabular}{lcc|c}
+\toprule
+                  & klassifiziert als \textit{bet}  & klassifiziert als \textit{bat}   & Zeilensumme\\
+\midrule
+ist \textit{bet} & $n_{11} = 15$                    & $n_{12} = 5$                        & $n_{1+} = 20$ \\
+ist \textit{bat} & $n_{21} = 5$                     & $n_{22} = 5$                        & $n_{2+} = 10$ \\
+\midrule
+Spaltensumme      & $n_{+1} = 20$                   & $n_{+2} = 10$                       & $n_{++} = 30$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+  Eine wichtige Eigenschaft dieses Experiments ist, dass die Zeilen- und Spaltensummen
+  im Vorhinein festgelegt wurden: 
+  Genau $n_{1+} = 20$ der 30 Audiodateien sind Aufnahmen von \textit{bet} 
+  und genau $n_{+1} = 20$ der Audiodateien mussten als \textit{bet} klassifiziert werden.
+  Sobald wir einen der Einträge $n_{11}, n_{12}, n_{21}, n_{22}$ bekannt ist,
+  können wir die anderen drei Einträge bestimmen.
+  Die Zufallsvariable $X$, die wir betrachten, ist der $n_{11}$-Eintrag.
+  Unter der Nullhypothese, dass der Lernende aus den 30 Audiodateien
+  bloss 20 zufällige Dateien ausgewählt hat, 
+  ist diese Zufallsvariable \term{hypergeometrisch} verteilt mit Parametern
+  $n_{1+}, n_{2+}$ und $n_{+1}$:\footnote{Je nach Referenzwerk wird diese
+  Verteilung anders parametrisiert. Hier verwende ich die Parametrisierung,
+  die auch in R verwendet wird.}
+\[
+  X \sim \textrm{Hypergeometrisch}(n_{1+}, n_{2+}, n_{+1}).
+\]
+  Wenn der Lernende tatsächlich im Stande ist, \textit{bet} von \textit{bat}
+  zu unterscheiden, so erwarten wir, dass $n_{11}$ eher grösser als kleiner ist.
+  Entsprechend berechnen wir hier, ganz analog wie beim Binomialtest, hier 
+  einen rechtsseitigen $p$-Wert.
+  
+<<echo = FALSE, fig.cap = "Links: Wahrscheinlichkeit des ersten Tabelleneintrages unter einer Hypergeometrisch($20$, $10$, $20$)-Verteilung. Rechts: Verteilungsfunktion derselben Verteilung.\\label{fig:fishertest}", fig.width = 7, fig.height = 3.3, out.width=".8\\textwidth">>=
+k <- 0:20
+X <- 15
+n1plus <- 20
+n2plus <- 10
+nplus1 <- 20
+par(mfrow = c(1, 2))
+plot(k, dhyper(k, n1plus, n2plus, nplus1), pch = 16,
+     xlab = "k", ylab = "Prob(X = k)")
+abline(v = X, lty = "dashed", col = "blue")
+plot(k, phyper(k, n1plus, n2plus, nplus1), pch = 16, ylim = c(0, 1),
+     xlab = "k", ylab = "Prob(X ≤ k)")
+segments(k, phyper(k, n1plus, n2plus, nplus1), k + 1)
+segments(-1, phyper(X, n1plus, n2plus, nplus1), X, lty = "dashed", col = "blue")
+segments(X, -1, y1 = phyper(X, n1plus, n2plus, nplus1), lty = "dashed", col = "blue")
+par(op)
+@
+
+  Abbildung \ref{fig:fishertest} zeigt die Hypergeometrisch($20$, $10$, $20$)-Verteilung.
+  Wir können nun ablesen bzw.\ einfach berechnen, wie wahrscheinlich ein
+  $n_{11}$-Eintrag von mindestens 15 unter dieser Verteilung wäre:
+<<>>=
+1 - phyper(15 - 1, 20, 10, 20)
+@
+
+Das gleiche Ergebnis erhalten wir, wenn wir die beobachtete Tabelle der
+\texttt{fisher.test()}-Funktion übergeben:
+<<>>=
+fisher.test(
+  rbind(c(15, 5),
+        c(5, 5)),
+  alternative = "greater"
+)$p.value
+@
+
+Übrigens erhält man das gleiche Ergebnis, wenn wir uns auf die 
+Kategorisierung der \textit{bat}-Aufnahmen fokussieren würden
+und die Parameter der hypergeometrischen Verteilung entsprechend anpassen würden,
+denn es gilt
+\[
+  n_{22} \sim \textrm{Hypergeometrisch}(n_{2+},n_{1+}, n_{+2}):
+\]
+
+<<>>=
+1 - phyper(5 - 1, 10, 20, 10)
+fisher.test(
+  rbind(c(5, 5),
+        c(5, 15)),
+  alternative = "greater"
+)$p.value
+@
+\parend
+
+Für den zweiseitigen Test können wir ähnlich vorgehen wie beim Binomialtest:
+Wir definieren die Zufallsvariable
+\[
+  \widetilde{X} := \Prob(Y = X),
+\]
+wo $Y \sim \sim \textrm{Hypergeometrisch}(n_{1+}, n_{2+}, n_{+1})$,
+und berechnen $\widetilde{x} := \Prob(Y = n_{11})$.
+Als $p$-Wert verwendet man dann $F_0(\widetilde{x})$,
+wo $F_0$ die Verteilungsfunktion der Zufallsvariable $\widetilde{X}$ unter
+der Nullhypothese ist.
+Wenn man den \texttt{alternative}-Parameter der \texttt{fisher.test()}-Funktion
+unspezifiziert lässt, wird dieser Wert berechnet.
+
+Der exakte Test nach Fisher heisst `exakt', weil die von ihm generierten
+$p$-Werte die Bedingung in Definition \ref{def:pvalue} genau erfüllen.
+Sein eigentlicher Anwendungsbereich ist recht beschränkt,
+da es äusserst selten vorkommt, dass sowohl die Zeilen- als auch die Spaltensumme
+der Kreuztabelle schon vor der Datenerhebung festgelegt wurden.
+Öfters wird dieser Test jedoch eingesetzt, um Kreuztabellen auszuwerten,
+für die nur (zum Beispiel) die Zeilensummen im Vorfeld festgelegt wurden
+oder für die weder die Zeilen- noch die Spaltensummen im Vorfeld fixiert wurden.
+Der Test ist in solchen Fällen zwar nach wie vor exakt (im Sinne der Definition),
+kann aber recht konservativ sein: 
+Andere Tests (z.B.\ Boschloos Test) sind je nach Forschungsdesign auch exakt,
+aber haben mehr \textit{power}.
+Die Literatur zur Auswertung von augenscheinlich einfachen $2 \times 2$-Kreuztabellen ist 
+erstaunlich beträchtlich und zum Teil voller Kontroversen;
+für eine Übersicht, siehe \citet{Fagerland2017}.

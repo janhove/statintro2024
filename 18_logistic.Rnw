@@ -1,0 +1,568 @@
+\chapter{Logistische Regression}\label{ch:logistic}
+Bisher haben wir unsere outcome-Variablen als kontinuierlich betrachtet.
+In der Sprachforschung arbeiten wir jedoch öfters mit binären outcome-Variablen,
+also mit Variablen, die nur zwei Ausprägungen haben wie
+Korrektheit, An- oder Abwesendheit, usw.
+Solche outcome-Variablen kann man im allgemeinen linearen Modell auswerten,
+indem man eine Ausprägung als 1 kodiert und die andere als 0.
+Diese Strategie bezeichnet man als das \term{lineare Wahrscheinlichkeitsmodell}
+und kann insbesondere dann angebracht sein, wenn man Experimente mit kategorischen
+Prädiktoren auswertet \citep[siehe][]{Hellevik2009,Huang2019}.
+
+Forschende sollten sich jedoch einiger möglicher Probleme mit dem linearen
+Wahrscheinlichkeitsmodell bewusst sein \citep[siehe][]{Jaeger2008}.
+Das auffälligste Problem ist, dass lineare Wahrscheinlichkeitsmodelle mit
+kontinuierlichen Prädiktoren Vorhersagen generieren können, die ausserhalb
+des Intervalls $[0,1]$ liegen und somit keine Wahrscheinlichkeiten sind.
+Sogar wenn man nur kategorische Prädiktoren hat können solche Modelle 
+Konfidenzintervalle ergeben, die teils ausserhalb des Intervalls $[0,1]$ liegen.
+Letzteres Problem kann man zwar mithilfe des Bootstraps lösen,
+aber eine andere Möglichkeit ist, 
+dass man das allgemeine lineare Modell derart anpasst,
+dass es mit binären (und auch anderen) outcome-Variablen umgehen kann.
+Dies ergibt das \term{verallgemeinerte lineare Modell}.
+In unserem Forschungsgebiet ist, neben dem allgemeinen linearen Modell,
+das logistische Regressionsmodell die verbreiteste Erscheinungsform
+des verallgemeinerten linearen Modells, weshalb es hier vorgestellt wird.
+
+\section{Kategorische Prädiktoren}
+\citet{Tversky1981} legten ihren Versuchspersonen
+ein hypothetisches Szenario vor und baten sie,
+zwischen zwei möglichen Aktionen zu wählen:
+\begin{quote}
+ ``Imagine that the U.S. is preparing for the outbreak of a
+ an unusual Asian disease, which is expected to kill 600 people.
+ Two alternative programs to combat the disease have been proposed.
+ Assume that the exact scientific estimate of the consequences
+ of the programs are as follows:''
+\end{quote}
+
+Bei etwa der Hälfte der Versuchspersonen
+wurden die Konsequenzen der Programme wie folgt
+formuliert (\textit{gain framing}):
+\begin{quote}
+``If Program A is adopted, 200 people will be saved.
+
+If Program B is adopted, there is a 1/3 probability
+that 600 people will be saved, and a 2/3 probability
+that no people will be saved.''
+\end{quote}
+
+Bei den anderen Versuchspersonen war die Formulierung wie
+folgt (\textit{loss framing}):
+\begin{quote}
+``If Program A is adopted, 400 people will die.
+
+If Program B is adopted, there is a 1/3 probability
+that nobody will die, and a 2/3 probability
+that 600 people will die.''
+\end{quote}
+
+Die Konsequenz von Programm A ist, egal wie
+sie formuliert wird, identisch, und das gleiche gilt
+für Programm B. Ausserdem sind die Erwartungswerte
+von Programmen A und B einander gleich:
+Im Schnitt sterben jeweils 400 Leute.
+Die Frage ist nun, ob sich die Präferenzen
+der Versuchspersonen für Programm A oder B
+ändern, wenn diese Konsequenzen dieser
+Programme anders (aber logisch identisch)
+beschrieben werden.
+
+Wir rekonstruieren den Datensatz wie folgt:
+<<>>=
+d <- tibble(
+  Framing = c(rep("gain", 109 + 43),
+              rep("loss", 34 + 121)),
+  Wahl = c(rep("A", 109), rep("B", 43),
+           rep("A", 34), rep("B", 121))
+)
+d |> slice_sample(n = 8)
+xtabs(~ Framing + Wahl, data = d)
+@
+
+Wir berechnen die Proportion der Präferenz für Programm A (die sichere Option):
+<<>>=
+d |> 
+  group_by(Framing) |> 
+  summarise(proportion_sicher = mean(Wahl == "A"))
+@
+
+Mit dem linearen Wahrscheinlichkeitsmodell können wir den Unterschied
+zwischen diesen Proportionen abrufen und Unsicherheitsschätzungen für diesen
+Unterschied berechnen:
+<<>>=
+d <- d |> 
+  mutate(sicher = ifelse(Wahl == "A", 1, 0),
+         n.loss = ifelse(Framing == "loss", 1, 0)) # treatment coding
+tversky.lm <- lm(sicher ~ n.loss, data = d) # lin. Wsk.-Modell
+summary(tversky.lm)$coefficients
+confint(tversky.lm)
+@
+Das heisst, der Prozentsatz Präferenzen für das sichere Programm
+ist knapp $50 \pm 5$ Prozentpunkte niedriger in der loss-framing-Kondition
+als in der gain-framing-Kondition.
+Das 95\%-Konfidenzintervall spannt von $-60$ bis $-40$ Prozentpunkt.
+Sie können dieses Konfidenzintervall mit einem semiparametrischen Bootstrap
+ohne Homoskedastizitätsannahme überprüfen.
+
+Wie am Anfang dieses Kapitels erklärt,
+ist ein mögliches Problem mit dem linearen Wahrscheinlichkeitsmodell,
+dass es Vorhersagen und Konfidenzintervalle generiert, die teils
+ausserhalb des Intervalls $[0,1]$ liegen.
+Hier ist dies zwar nicht der Fall, aber irgendeine Lösung müssen
+wir für den Notfall trotzdem herausarbeiten.
+Eine solche Lösung ist, dass wir nicht direkt mit Proportionen und
+Wahrscheinlichkeiten arbeiten, sondern mit sogenannten \textit{log-odds}.
+Um diese zu verstehen, müssen wir uns zunächst \textit{odds} (Chancen)
+und \textit{odds ratios} (Chancenverhältnis) anschauen.
+
+Statt zu sagen, dass die Proportion Präferenzen fürs sichere Programm
+in der gain-framing-Kondition $0.7171$ war, können wir auch sagen,
+dass es für jede Wahl fürs unsichere Programm $2.53$ Wahlen fürs sichere
+Programm gab:
+\[
+  \frac{109}{43} = \frac{109 \Big / (109+43)}{43 \Big / (109+43)}= \frac{0.7171}{1 - 0.7171} \approx 2.53.
+\]
+Die \term{odds} (oder \term{Chancen}) 
+einer Wahl fürs sichere Programm in der gain-framing-Kondition betragen folglich
+2.53 zu 1.
+Analog betragen die odds einer Wahl fürs sichere Programm in der loss-framing-Kondition
+\[
+  \frac{34}{121} = \frac{0.2194}{1 - 0.2194} \approx 0.28,
+\]
+das heisst, für jede Wahl fürs unsichere Programm gab es $0.28$ Wahlen 
+fürs sichere Programm.
+
+Um eine Proportion $p$ zu odds $\varphi$ zu konvertieren können wir also
+die Formel
+\[
+  \varphi = \frac{p}{1-p}
+\]
+verwenden.
+Wenn wir die odds $\varphi$ kennen, so können wir anhand der Formel
+\[
+  p = \frac{\varphi}{1 + \varphi}
+\]
+die entsprechende Proportion $p$ berechnen.
+
+Um auszudrücken, wie sich die Präferenz für die sichere Wahl je nach
+Kondition unterscheidet, können wir ein \term{odds ratio} (\term{Chancenverhältnis})
+berechnen. Dies zeigt, dass die odds einer sicheren Wahl in der loss-framing-Kondition
+\[
+  \frac{34\Big/121}{109\Big/43} = \frac{0.28}{2.53} = 0.11
+\]
+so gross sind wie in der gain-framing-Kondition.
+Äquivalent kann man auch sagen, dass die odds einer sicheren Wahl
+etwa 9 Mal grösser sind in der gain-framing-Kondition als in der loss-framing-Kondition.
+large as in the gain framing condition. Equivalently, the odds of a sure
+
+Odds und odds ratios können nicht negativ sein.
+Aber indem wir ihren (natürlichen) Logarithmus nehmen, können wir sie
+so transformieren, dass ihr theoretischer Definitionsbereich die ganze
+Zahlengerade ist.\footnote{Für $a > 1, c > 0$ gilt, dass wenn $a^b = c$, dann $\log_a c = b$. Der natürliche Logarithmus, geschrieben $\ln$, verwendet die Eulersche Zahl $\textrm{e} \approx 2.718$ für $a$. Bemerken Sie, dass $a^0 = 1$, also $\log_a 1 = \ln 1 = 0$. Weiter ist zu bemerken, dass
+\[
+  a^{\log_a c} = c.
+\]}
+Der natürliche Logarithmus von odds oder odds ratios wird als \term{log-odds}
+bezeichnet.
+In unserem Beispiel betragen die log-odds einer sicheren Wahl in der 
+gain-framing-Kondition
+\[
+  \ln 2.53 \approx 0.93,
+\]
+verglichen mit
+\[
+  \ln 0.28 \approx -1.27
+\]
+in der loss-framing-Kondition.
+Dank der Eigenschaften von Logarithmen 
+($\log a/b = \log a - \log b$) ist die Differenz zwischen diesen log-odds
+gleich dem Logarithmus der odds ratio:
+\[
+  \ln 0.28 - \ln 2.53 = \ln \frac{0.28}{2.53} = \ln 0.11 \approx -2.21.
+\]
+
+Wie diese Berechnungen zeigen kann eine Proportion oder Wahrscheinlichkeit $p$
+wie folgt zu log-odds $\eta$ konvertiert werden:
+\[
+  \eta = \ln \varphi = \ln \frac{p}{1-p}.
+\]
+Diese Funktion, die Proportionen auf log-odds abbildet, nennt man die
+\term{logit-Funktion} ([\textipa{'l@UdZIt}] ausgesprochen).
+Um log-odds zu Proportionen oder Wahrscheinlichkeiten zu konvertieren,
+müssen wir ihre Umkehrfunktion finden:
+\begin{align*}
+  &            & \eta &= \ln \frac{p}{1-p} \\
+  &\Rightarrow & \exp(\eta) &= \frac{p}{1-p} \\
+  &\Rightarrow & \exp(\eta) - p\exp(\eta) &= p \\
+  &\Rightarrow & \exp(\eta) &= p(1 + \exp(\eta)) \\
+  &\Rightarrow & p &= \frac{\exp(\eta)}{1 + \exp(\eta)} = \frac{1}{1/(\exp(\eta)) + 1} = \frac{1}{1 + \exp(- \eta)}.
+\end{align*}
+
+Wollen wir zum Beispiel log-odds von $0.93$ zu einer Proportion oder
+Wahrscheinlichkeit konvertieren,
+so können wir dies wie folgt machen:
+<<>>=
+1 / (1 + exp(-0.93))
+@
+Die Funktion, die log-odds zu Wahrscheinlichkeiten konvertiert, nennt
+man die \term{logistische Funktion}. Sie ist in der R-Funktion \texttt{plogis()}
+implementiert:
+<<>>=
+plogis(0.93)
+@
+Abbildung \ref{fig:logodds} zeigt, wie diese logistische Funktion aussieht.
+<<echo = FALSE, out.width=".5\\textwidth",fig.width = 0.6*7, fig.height = 0.6*5, fig.cap = "Die logistische Funktion konvertiert log-odds zu Wahrscheinlichkeiten.\\label{fig:logodds}">>=
+p_to_odds <- function(x) {
+  x/(1-x)
+}
+
+p_to_logodds <- function(x) {
+  log(x/(1-x))
+}
+
+p3 <- ggplot(data.frame(x = c(-5, 5)),
+       aes(x = x)) +
+  stat_function(fun = plogis) +
+  ylab("Probability (p)") +
+  xlab("Log-odds"  ~ "(ln" ~ frac(p, 1-p) ~ ")")
+
+p3
+@
+
+In unserem Beispiel bezeichnenwir mit $p_i$ die Wahrscheinlichkeit,
+dass die $i$-te Versuchsperson das sichere Programm $i = 1, \dots, 307$.
+Dann können wir die Entscheidung jeder Versuchsperson als 
+Bernoulliexperiment auffassen (siehe Abschnitt \vref{sec:bernoulli}).
+Formaler modellieren wir die Entscheidung der $i$-ten Versuchsperson
+als eine Zufallsvariable $X_i$, die einer $\textrm{Bernoulli}(p_i)$-Verteilung
+folgt. Dies heisst, dass
+\[
+  \Prob(X_i = x) =
+  p_i^x(1-p_i)^{1-x} =
+  \begin{cases}
+    1 - p_i, & \textrm{falls $x = 0$}, \\
+    p_i, & \textrm{falls $x = 1$}.
+  \end{cases}
+\]
+(Falls $x \notin \{0, 1\}$, so $\Prob(X_i = x) = 0$.)
+Unser Ziel ist es, die $p_i$-Werte zu schätzen.
+Dies tun wir, indem wir diese Werte zu log-odds konvertieren,
+sie mit einem linearen Modell modellieren
+und sie dann wieder zu Wahrscheinlichkeiten konvertieren:
+\begin{align*}
+  X_i &\sim \textrm{Bernoulli}(p_i), \nonumber \\
+  p_i &= \frac{1}{1 + \exp(- \eta_i)}, \nonumber \\
+  \eta_i &= \beta_0 + \beta_1x_i, \nonumber \\
+\end{align*}
+wo $x_i = 1$, falls die $i$-te Versuchsperson der loss-framing-Kondition
+zugeordnet wurde und $x_i = 0$ sonst und wo ausserdem
+$X_1, \dots X_{307}$ unabhängig sind.
+
+Die Modellparameter $\beta_0, \beta_1$ können anhand der Maximum-Likelihood-Methode
+geschätzt werden (Abschnitt \ref{sec:ml}):
+\[
+  (\widehat{\beta}_0, \widehat{\beta}_1)
+  = \argmax_{(\beta_0, \beta_1)} \prod_{i=1}^{307} p_i^{X_i}(1-p_i)^{1-X_i},
+\]
+wo
+\[
+  p_i = \frac{1}{1+ \exp(-(\beta_0 + \beta_1x_i))}.
+\]
+Abbildung \ref{fig:mle} zeigt, dass ein $\widehat{\beta}_0$-Wert nahe bei $1$
+und ein $\widehat{\beta}_1$-Wert nahe bei $-2$ die Likelihood dieser Daten
+maximieren:
+<<cache = TRUE, echo = FALSE, fig.cap = "Die (log-)Likelihood der Daten für unterschiedliche Werte von $\\widehat{\\beta}_0$ und $\\widehat{\\beta}_1$.\\label{fig:mle}", fig.height = 1.5*3.8, fig.width = 1.5*3.8, fig.pos="t", out.width = ".65\\textwidth">>=
+parameter_grid <- expand.grid(beta0 = seq(-2, 3, 0.02),
+                              beta1 = seq(-5, 1, 0.02))
+parameter_grid$log_likelihood <- NA
+
+for (i in 1:nrow(parameter_grid)) {
+  mu <- parameter_grid$beta0[i] + parameter_grid$beta1[i] * d$n.loss
+  p <- plogis(mu)
+  parameter_grid$log_likelihood[[i]] <-
+    sum(d$sicher * log(p) + (1 - d$sicher)*log(1-p))
+}
+
+log_likelihood <- matrix(parameter_grid$log_likelihood,
+             nrow = length(unique(parameter_grid$beta0)),
+             ncol = length(unique(parameter_grid$beta1)),
+             byrow = FALSE)
+
+par(las = 1, col = "black", oma = c(0, 0, 0, 0), mar = c(5, 5, 1, 1),
+    tck = -0.005, cex = 0.6)
+contour(x = unique(parameter_grid$beta0),
+        y = unique(parameter_grid$beta1),
+        z = log_likelihood,
+        levels = c(seq(-600, -180, by = 10), seq(-180, 0, by = 3)),
+        xlab = expression(widehat(beta)[0]),
+        ylab = expression(widehat(beta)[1]))
+@
+
+Das gleiche Resultat erhält man schneller mit der \texttt{glm()}-Funktion.
+Diese funktioniert ähnlich wie die \texttt{lm()}-Funktion,
+mit dem Unterschied, dass wir eine Verteilungsfamilie und eine sogenannt
+Linkfunktion angeben müssen.
+Wie erwähnt betrachten wir die Entscheidungen der Versuchspersonen als
+Bernoulliexperimente, und die Bernoulliverteilung stellt einen Spezialfall
+der Binomialverteilung dar.
+Die Linkfunktion in unserem Fall ist die Logitfunktion, da wir mit log-odds arbeiten.
+<<>>=
+tversky.glm <- glm(sicher ~ n.loss, data = d,
+                   family = binomial(link = "logit"))
+summary(tversky.glm)$coefficients
+@
+
+Die geschätzten Parameter können wie folgt interpretiert werden:
+\begin{itemize}
+  \item Die log-odds einer sicheren Wahl, wenn der \texttt{n.loss}-Wert 0 ist,
+  betragen etwa $0.93$. 
+  Dies entspricht odds von etwa $2.53$ und einer Wahrscheinlichkeit von etwa $0.72$:
+<<>>=
+exp(0.93)
+plogis(0.93)
+@
+
+  \item Der Unterschied zwischen den log-odds einer sicheren Wahl, wenn der \texttt{n.loss}-Wert 1, und den log-odds, wenn er 0 ist, ist $-2.2$. 
+  Dies entspricht einer odds ratio von etwa $0.11$:
+<<>>=
+exp(-2.2)
+@
+
+\item Um die modellierte Wahrscheinlichkeit einer sicheren Wahl in der loss-framing-Kondition zu berechnen, berechnen wir zuerst die entsprechenden log-odds und konvertieren diese dann mithilfe der logistischen Funktion:
+<<>>=
+plogis(0.93 - 2.2)
+@
+\end{itemize}
+
+All diese Zahlen hatten wir bereits von Hand berechnet.
+Der Mehrwert des Modells besteht darin, dass wir mit ihm Unsicherheitsschätzungen
+berechnen können, nämlich geschätzte Standardfehler sowie auch approximative
+Konfidenzintervalle. Diese werden, wie auch die Parameterschätzungen selbst,
+in log-odds ausgedrückt.
+<<>>=
+confint(tversky.glm)
+@
+Diese Konfidenzintervalle können wir auf der odds-Skala ausdrücken,
+indem wir die Intervallsgrenzen exponenzieren:
+<<>>=
+exp(confint(tversky.glm))
+@
+Das heisst, das 95\%-Konfidenzintervall der geschätzten
+odds ratio von $0.11$ ist etwa $[0.065, 0.184]$.
+
+Während man \emph{odds} zu Wahrscheinlichkeiten konvertieren kann,
+kann man dies \emph{nicht} mit odds \emph{ratios}!
+Wenn Sie den framing-Effekt in Prozentpunkten schätzen wollen und ein
+entsprechendes Konfidenzintervall erhalten wollen, so sollten Sie sich überlegen,
+das lineare Wahrscheinlichkeitsmodell zu verwenden.
+
+Verallgemeinerte lineare Modelle können mit mehreren Prädiktoren umgehen,
+wie in der folgenden Aufgabe.
+
+\mypar[Interaktionen im logistischen Modell]{Aufgabe}
+\citet{Keysar2012} erweiterten das Experiment von \citet{Tversky1981},
+indem sie ihre Versuchspersonen die Aufgabe in ihrer Muttersprache (Englisch)
+oder in einer Sprache, die sie gerade am Lernen waren (Japanisch), erledigen
+liessen.
+Die Forschenden interessierten sich dafür, ob der Framingeffekt, den 
+\citet{Tversky1981} belegt hatten, auch in einer Fremdsprache so ausgeprägt ist.
+Das heisst, sie interessierten sich für die Interaktion zwischen der
+Framingskondition und Sprache.
+
+Lesen wir die Daten ein und fassen wir sie zusammen:
+<<message = FALSE, warning = FALSE>>=
+d <- read_csv(here("data", "Keysar2012.csv"))
+@
+<<>>=
+d |>
+  group_by(language, framing) |>
+  summarise(
+    anzahl_sicher = sum(sure_choice == 1),
+    anzahl_unsicher = sum(sure_choice == 0),
+    .groups = "drop"
+  )
+@
+
+ 
+\begin{enumerate}
+  \item (Mit R.) Kreieren Sie eine Dummy-Variable für \texttt{Sprache},
+  die den Wert 0 hat, falls \texttt{Sprache} Englisch ist,
+  und 1, falls \texttt{Sprache} Japanisch ist.
+  Kreieren Sie ebenfalls eine Dummy-Variable für \texttt{Formulierung},
+  die den Wert 0 hat bei gain-Framing (Gewinn) und 1 bei loss-Framing (Verlust).
+  
+  \item (Mit R.) Modellieren Sie die Daten in einem logistischen Regressionsmodell,
+  das diese beiden Dummy-Variablen sowie auch das punktweise Produkt (Interaktion)
+  zwischen ihnen als Prädiktoren enthält.
+
+  \item Sie sollten die folgenden Parameterschätzung
+  erhalten haben:
+<<echo = FALSE>>=
+d <- d |> 
+  mutate(n.language = ifelse(d$language == "Japanese", yes = 1, no = 0),
+         n.framing = ifelse(d$framing == "loss", yes = 1, no = 0),
+         interaction = n.language*n.framing)
+keysar.glm <- glm(sure_choice ~ n.language + n.framing + interaction,
+                  data = d,
+                  family = binomial(link = "logit"))
+summary(keysar.glm)$coefficients[, 1:2]
+@
+  \begin{enumerate}
+    \item (Stift und Papier.) Erklären Sie, was jede Parameterschätzung \emph{buchstäblich} bedeutet.
+
+    \item (Stift und Papier.) Verwenden Sie diese Parameterschätzungen, um die modellierte 
+          Wahrscheinlichkeit zu berechnen, dass eine Versuchsperson,
+          die das Dilemma in der loss-framing-Kondition und auf Englisch
+          gelesen hat, die sichere Alternative wählt.
+          Überprüfen Sie Ihre Antwort anhand der numerischen Zusammenfassung,
+          die wir vorher berechnet haben.
+
+    \item (Stift und Papier.) Verwenden Sie diese Parameterschätzungen, um die modellierte
+          Wahrscheinlichkeit zu berechnen, dass eine Versuchsperson,
+          die das Dilemma in der loss-framing-Kondition und auf Japanisch
+          gelesen hat, die sichere Alternative wählt.
+          Überprüfen Sie Ihre Antwort anhand der numerischen Zusammenfassung,
+          die wir vorher berechnet haben.
+    
+    \item (Mit R.) Berechnen Sie ein 95\%-Konfidenzintervall für die
+          Wahrscheinlichkeit, die Sie soeben berechnet haben.\\
+          Hinweis: Eine Möglichkeit ist, dass Sie das Modell neu fitten und
+          zwar so, dass die Kombination von loss-framing und Japanisch
+          dem Intercept entspricht. Dann können Sie das Konfidenzintervallsgrenzen
+          fürs Intercept zu Wahrscheinlichkeiten konvertieren.
+  \end{enumerate}
+
+  \item (Mit R.) 
+        Berechnen Sie ein 95\%-Konfidenzintervall für den Interaktionsparameter.
+        Drücken Sie dieses auf der odds-Skala aus.
+
+  \item (Stift und Papier.) Beantworten Sie die 
+        Forschungsfrage von \citet{Keysar2012}.\parend
+\end{enumerate}
+   
+\mypar[sum-coding]{Aufgabe}
+Diesmal fitten wir die Daten von \citet{Keysar2012} in einem Modell,
+in dem die Prädiktoren mit sum-coding kodiert wurden.
+<<>>=
+d <- d |>
+  mutate(n.language = ifelse(d$language == "Japanese", yes = 0.5, no = -0.5),
+         n.framing = ifelse(d$framing == "loss", yes = 0.5, no = -0.5),
+         interaction = n.language*n.framing)
+keysar.glm <- glm(sure_choice ~ n.language + n.framing + interaction,
+                  data = d,
+                  family = binomial(link = "logit"))
+summary(keysar.glm)$coefficients[, 1:2]
+@
+
+Die Schätzung für den Interaktionsparameter ist die gleiche wie vorher,
+aber die Schätzungen für die anderen Parameter haben sich geändert.
+Erklären Sie, was die Parameterschätzungen für \texttt{(Intercept)},
+\texttt{n.language} und \texttt{n.framing} buchstäblich bedeuten.
+\parend
+
+\section{Kontinuierliche Prädiktoren}
+Auch kontinuierliche Prädiktoren können ins verallgemeinerte lineare Modell
+aufgenommen werden.
+Um das Vorgehen zu illustrieren, werden wir untersuchen, 
+wie gut eine der Versuchspersonen von \citet{Vanhove2013b} 181 Wörter aus
+Sprachen, die sie nicht kannte, übersetzen konnte je nach dem Grad 
+der orthographischen Überlappung zwischen diesen Wörtern und ihren Übersetzungen
+(ausgedrückt auf einer Skala zwischen 0 bis 10).
+
+Wir lesen die Daten ein und zeichnen ein Streudiagramm mit einem 
+\textit{scatterplot smoother} (Abbildung \ref{fig:continuouslogistic}). 
+Obwohl dieser \textit{smoother} nicht berücksichtigt, dass die Daten binär sind
+-- man bemerke, dass der \textit{smoother} teils ausserhalb des Intervalls $[0,1]$
+liegt --, zeigt er, dass es einen monotonen Zusammenhang zwischen orthographischer
+Überlappung und Übersetzungserfolg gibt.
+<<warning = FALSE, message = FALSE, fig.width = 1.4*3.3, fig.height = 1.4*2, out.width = "0.5\\textwidth", fig.cap = "Es scheint einen monotonen Zusammenhang zwischen dem Grad der orthographischen Überlappung und der Richtigkeit der Übersetzungen gibt.\\label{fig:continuouslogistic}">>=
+d <- read_csv(here("data", "VanhoveBerthele2013_eineVpn.csv")) |> 
+  mutate(Richtig = ifelse(Korrekt == "richtig", 1, 0))
+
+ggplot(data = d,
+       aes(x = OrthOverlap,
+           y = Richtig)) +
+  geom_point(shape = 1,
+             # etwas vertikales Jittering, um die Punkte besser zu unterscheiden
+             position = position_jitter(width = 0, height = 0.02)) +
+  # Smoother ohne Konfidenzband
+  geom_smooth(se = FALSE) +
+  xlab("orthographische Überlappung (0-10)") +
+  ylab("Richtigkeit")
+@
+
+Wir modellieren diese Daten wie folgt:
+<<>>=
+translation.glm <- glm(Richtig ~ OrthOverlap, data = d,
+                       family = binomial(link = "logit"))
+summary(translation.glm)$coefficients
+@
+Abgesehen davon, dass die Parameterschätzungen in log-odds ausgedrückt werden,
+sind sie so zu interpretieren wie jene im allgemeinen linearen Modell:
+\begin{itemize}
+  \item Das \texttt{(Intercept)} schätzt die log-odds einer richtigen Übersetzung,
+  falls der Grad der orthographischen Überlappung 0 beträgt.
+  Diese entsprechen odds von etwa 0.037--zu--1 für eine richtige Übersetzung
+  mit so wenig orthographischer Überlappung, oder einer Wahrscheinlichkeit von
+  etwa $0.035$.
+<<>>=
+exp(-3.31)
+plogis(-3.31)
+@
+  Es gibt jedoch keine Wörter in diesem Datensatz mit einer orthographischer
+  Überlappung von 0.
+  Um diese Schätzung informativer zu machen, könnten wir die Überlappungsvariable
+  allenfalls zentrieren.
+
+  \item Das geschätzte Chancenverhältnis einer richtigen Übersetzung für Wörter mit
+  einer orthographischen Überlappung von 1 vs.\ für Wörter mit einer 
+  orthographischen Überlappung von 0 beträgt etwa 1.8.
+  Dies heisst, dass die geschätzten Chancen einer richtigen Übersetzung bei 
+  Wörtern mit einer
+  orthographischen Überlappung von 1 etwa 1.8 so gross sind wie die geschätzten
+  Chancen einer richtigen Übersetzung bei Wörtern mit einer orthographischen 
+  Überlappung von 0.
+<<>>=
+exp(0.59)
+@
+
+  \item Um die geschätzte Wahrscheinlichkeit einer richtigen Übersetzung 
+  bei Wörtern mit einem bestimmten Grad der orthographischen Überlappung zu
+  berechnen, berechnen wir zunächst die relevanten log-odds und konvertieren
+  diese zu einer Wahrscheinlichkeit. Beispielsweise beträgt die geschätzte
+  Wahrscheinlichkeit einer richtigen Übersetzung bei Wörtern mit
+  einer orthographischen Überlappung von 7.23 etwa 73\%.
+<<>>=
+plogis(-3.313 + 0.594*7.23)
+@
+\end{itemize}
+ 
+Zu guter Letzt zeichnen wir eine Grafik, die die durch das Modell
+geschätzten Wahrscheinlichkeiten darstellt (Abbildung \ref{fig:modelfit}). 
+Zu bemerken ist, dass dies keine Gerade, sondern eine Kurve ergibt.
+Dies liegt daran, dass wir die Daten linear modelliert haben, aber eben 
+auf der log-odds-Skala.
+Indem wir das Ergebnis mit der logistischen Funktino zu Wahrscheinlichkeiten 
+konvertieren, wird aus der Geraden eine Kurve.
+Mit anderen Worten konnten wir nicht \emph{nicht} eine (nichtlineare) Kurve
+gefunden haben.
+Ausführlichere Anweisungen zum Darstellen von Modellvorhersagen finden sich
+unter \url{https://janhove.github.io/visualise_uncertainty/}.
+
+<<warning = FALSE, message = FALSE, fig.width = 1.4*3.3, fig.height = 1.4*2, out.width = "0.5\\textwidth", fig.cap = "Die gleichen Daten, aber diesmal auch mit einer modellbasierten Trendlinie.\\label{fig:modelfit}">>=
+# Funktion, um modellierte Wsk. zu berechnen
+model_to_prob <- function(x, model) {
+  plogis(coef(model)[[1]] + coef(model)[[2]]*x)
+}
+
+ggplot(data = d,
+       aes(x = OrthOverlap,
+           y = Richtig)) +
+  geom_point(shape = 1,
+             position = position_jitter(width = 0, height = 0.02)) +
+  stat_function(fun = model_to_prob, args = list(model = translation.glm)) +
+  xlab("orthographische Überlappung (0-10)") +
+  ylab("Richtigkeit")
+@

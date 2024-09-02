@@ -1,0 +1,114 @@
+\chapter{Weiterbildung und Tipps}\label{ch:weiterbildung}
+
+\section{Bücher}
+Anstatt die Literaturempfehlungen aus den letzten 300 Seiten nochmals zu wiederholen,
+beschränke ich mich hier auf drei Buchempfehlungen:
+\begin{itemize}
+ \item Bodo Winters \textit{Statistics for linguists: An introduction using R}
+schliesst von der Philosophie her gut bei diesem Skript an.
+\citet{Winter2019} bespricht auch das verallgemeinerte lineare Modell und sog.\
+\textbf{gemischte Modelle}, die zum Beispiel sehr nützlich sind, wenn man
+eine Studie analysieren möchte, in der unterschiedliche Versuchspersonen
+auf mehrere Stimuli reagieren.
+
+ \item \textit{Regression and other stories} von
+ Andrew Gelman, Jennifer Hill und Aki Vehtari stellt
+ eine ausführliche, zugängliche Einführung in
+ die Arbeit mit Regressionsmodellen dar.
+ Dabei scheut es realistischere, aber
+ dafür komplexere Beispiele jedoch nicht.
+ Das Buch ist frei verfügbar unter \url{https://avehtari.github.io/ROS-Examples/}.
+
+ \item Richard McElreaths
+ \textit{Statistical rethinking: A Bayesian course with examples in R and Stan} (2.\ Herausgabe)
+ ist eine gelungene Einführung in die sog.\ \textbf{bayessche Statistik},
+ die sich m.E.\ besonders empfiehlt, wenn man schon etwas Erfahrung im Umgang mit
+ quantitativen Daten gesammelt hat \citep{McElreath2020}.
+\end{itemize}
+
+\section{Abschliessende Tipps}
+\begin{itemize}
+  \item Ihre erste Priorität sollte sein, eine deutliche Forschungsfrage 
+  bzw.\ ein klares Ziel zu formulieren.
+  Vermeiden Sie hierbei technischen Wortschatz 
+  (z.B.\ Signifikanz, Regressionkoeffizient, Interaktion, Korrelation), 
+  der bereits eine bestimmte Analysemethode voraussetzt.
+  Entwickeln Sie dann ein Forschungsdesign und wählen Sie eine Analysemethode,
+  mit denen sich Ihre Frage beantworten lässt.
+  Sie sollten im Idealfall im Vorhinein wissen, wie Sie je nach dem Output
+  der Analyse die Forschungsfrage beantworten werden.
+  Insbesondere sollten Sie wissen, wie sich der Zusammenhang oder das Phänomen,
+  wofür Sie sich interessieren, in den Daten und im Output der Analyse 
+  abspiegeln würde -- und wie solche Muster sonst noch zu Stande kommen könnten
+  (z.B.\ Einfluss von Drittvariablen, alternative theoretische Erklärungen, usw.).
+  Siehe \url{https://www.the100.ci/2024/08/27/lets-do-statistics-the-other-way-around/}
+  und dort zitierte Literatur.
+
+  \item Planen Sie regelmässig Zeit fürs Selbststudium ein.
+  Auch wenn es nur jede zweite Woche zwei Stunden am Freitagnachmittag sind, 
+  hilft Ihnen das mehr, 
+  als wenn Sie erst in den letzte Monaten Ihres Doktorats 
+  volle Pulle Statistik lernen. 
+  Mit den Buchempfehlungen oben und den Literaturempfehlungen
+  in den vorigen Kapiteln sollten Ihnen die Quellen nicht ausgehen.
+
+  \item Statistische Verfahren tragen öfters irreführende Namen.
+  Sogenannte kausale Modelle erlauben es einem zum Beispiel nicht,
+  kausale Zusammenhänge zu belegen; diese sind eine Annahme des Modells,
+  kein Ergebnis von ihm. Ebenso wird `konfirmatorische' Faktoranalyse in der Praxis
+  wohl häufiger für exploratorische als für konfirmatorische Zwecke
+  verwendet.
+  Und dass ein `signifikanter' Befund komplett tautologisch
+  oder irrelevant sein kann, haben wir ja bereits diskutiert.
+  Lassen Sie sich bei der Wahl Ihrer Werkzeuge also nicht zu stark
+  von deren Namen leiten.
+
+  \item Gehen Sie \emph{nicht} davon aus, 
+  dass publizierte Analysen viel Sinn ergeben. \textbf{(!!!)}
+  In vielen Artikeln ist dies nämlich nicht der Fall.
+  Ausserdem werden viele Analysen schlecht berichtet.
+  Oft wird zu viel irrelevante und daher ablenkende Information
+  im Text berichtet und werden zu viele Signifikanztests berichtet;
+  siehe \citet{Vanhove2020b}.
+  Folglich sollten Sie keine Analysen ausführen oder berichten,
+  die in der Literatur zwar gängig sind, aber die im Kontext Ihrer Studie
+  Ihres Erachtens keinen Mehrwert haben. Und es ist nicht, weil eine
+  Analyse irgendwelche Zahlen ausspuckt, dass all diese Zahlen auch für
+  Sie oder Ihre Leserschaft relevant sind.
+
+  \item Gehen Sie sparsam mit Signifikanztests um.
+  Im Idealfall sollten meines Erachtens die getesteten statistischen
+  Hypothesen derart auf die wissenschaftlichen Hypothesen,
+  die der Arbeit zu Grunde liegen, massgeschneidert sein,
+  dass pro wissenschaftliche Hypothese höchstens ein Signifikanztest
+  durchgeführt und berichtet wird.
+  Diese Tests sollten im Idealfall präregistriert werden;
+  siehe hierzu \url{https://help.osf.io/article/330-welcome-to-registrations}
+  und \url{https://datacolada.org/64}.
+
+  \item Verwenden Sie reichlich Grafiken und nicht nur Tabellen,
+  sowohl beim Analysieren als auch in Ihren Berichten.
+  Zeigen Sie dabei möglichst die Variabilität der Daten
+  (Streudiagramme, Boxplots) und die Unsicherheit Ihrer
+  Schätzungen (z.B.\ Konfidenzintervalle).
+
+  \item Machen Sie nach Möglichkeit Ihre Daten und R-Code online verfügbar.
+  Einerseits brauchen Sie so Details,
+  die Sie für irrelevant halten, nicht in den Bericht aufzunehmen:
+  Interessierte Lesende können die Details selber im Anhang nachschlagen.
+  Andererseits ist es durchaus möglich, 
+  dass in den nächsten Jahren statistische Verfahren entwickelt werden, 
+  mit denen man Ihre Daten besser auswerten kann. 
+  Wenn Ihre Daten frei zugänglich sind, 
+  können Sie entsprechend reanalysiert werden und vermeiden Sie, 
+  dass Ihre Studie irrelevant wird.
+  Eine praktische Plattform, um Daten und Skripts zu teilen,
+  ist \url{https://osf.io/}.
+
+  \item Ob eine Analyse vertretbar ist,
+  hängt in erster Linie davon ab, ob sie Ihnen dabei hilft,
+  Ihre Fragen zu beantworten oder etwas über die Daten zu lernen. 
+  Gehen Sie nicht nach einem Flowchart vor,
+  sondern überlegen Sie sich, was Sie eigentlich herausfinden
+  möchten und ob die Zahlen im Output dafür relevant sind.
+\end{itemize}
