@@ -132,7 +132,9 @@ op <- par(no.readonly = TRUE)
 \frontmatter
 \maketitle
 
-\chapter{Vorwort}
+<<Preface, child='01_ziele.Rnw'>>=
+@
+
 \setcounter{tocdepth}{1}
 \tableofcontents
 

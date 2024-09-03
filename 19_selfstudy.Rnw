@@ -5,25 +5,26 @@ Anstatt die Literaturempfehlungen aus den letzten 300 Seiten nochmals zu wiederh
 beschränke ich mich hier auf drei Buchempfehlungen:
 \begin{itemize}
  \item Bodo Winters \textit{Statistics for linguists: An introduction using R}
-schliesst von der Philosophie her gut bei diesem Skript an.
-\citet{Winter2019} bespricht auch das verallgemeinerte lineare Modell und sog.\
-\textbf{gemischte Modelle}, die zum Beispiel sehr nützlich sind, wenn man
-eine Studie analysieren möchte, in der unterschiedliche Versuchspersonen
-auf mehrere Stimuli reagieren.
+       schliesst von der Philosophie her gut bei diesem Skript an.
+       \citet{Winter2019} bespricht auch das verallgemeinerte lineare Modell 
+       und sog.\ \textbf{gemischte Modelle}, 
+       die zum Beispiel nützlich sind, 
+       wenn man die Daten einer Studie analysieren möchte, 
+       in der unterschiedliche Versuchspersonen auf mehrere Stimuli reagieren.
 
  \item \textit{Regression and other stories} von
- Andrew Gelman, Jennifer Hill und Aki Vehtari stellt
- eine ausführliche, zugängliche Einführung in
- die Arbeit mit Regressionsmodellen dar.
- Dabei scheut es realistischere, aber
- dafür komplexere Beispiele jedoch nicht.
- Das Buch ist frei verfügbar unter \url{https://avehtari.github.io/ROS-Examples/}.
+ Andrew Gelman, Jennifer Hill und Aki Vehtari stellt eine ausführliche, 
+ zugängliche Einführung in die Arbeit mit Regressionsmodellen dar.
+ Dabei scheut es realistischere, aber dafür komplexere Beispiele jedoch nicht.
+ Das Buch ist frei verfügbar unter \url{https://avehtari.github.io/ROS-Examples/}
+ \citep{Gelman2020}.
 
  \item Richard McElreaths
  \textit{Statistical rethinking: A Bayesian course with examples in R and Stan} (2.\ Herausgabe)
  ist eine gelungene Einführung in die sog.\ \textbf{bayessche Statistik},
- die sich m.E.\ besonders empfiehlt, wenn man schon etwas Erfahrung im Umgang mit
- quantitativen Daten gesammelt hat \citep{McElreath2020}.
+ die sich m.E.\ besonders empfiehlt, 
+ wenn man schon etwas Erfahrung im Umgang mit quantitativen Daten gesammelt hat 
+ \citep{McElreath2020}.
 \end{itemize}
 
 \section{Abschliessende Tipps}

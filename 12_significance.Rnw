@@ -1173,7 +1173,7 @@ verzichten können, da dieser Wert klar grösser als \texttt{p\_r} ist.)
 @
   Ein einseitiger Binomialtest liefert also einen rechtsseitigen $p$-Wert von etwa $0.02$.
   
-<<echo = FALSE, fig.cap = "Links: Wahrscheinlichkeit der Anzahl Erfolge bei der Binomial($30$, $0.5$)-Verteilung. Rechts: Verteilungsfunktion derselben Verteilung.\\label{fig:binomialtest}", fig.width = 7, fig.height = 3.3, out.width=".8\\textwidth">>=
+<<echo = FALSE, fig.cap = "Links: Wahrscheinlichkeit der Anzahl Erfolge $k$ bei der Binomial($30$, $0.5$)-Verteilung. Rechts: Verteilungsfunktion derselben Verteilung.\\label{fig:binomialtest}", fig.width = 7, fig.height = 3.3, out.width=".8\\textwidth">>=
 k <- 0:30
 p0 <- 0.5
 X <- 21
@@ -1332,11 +1332,11 @@ Spaltensumme      & $n_{+1} = 20$                   & $n_{+2} = 10$             
   Verteilung anders parametrisiert. Hier verwende ich die Parametrisierung,
   die auch in R verwendet wird.}
 \[
-  X \sim \textrm{Hypergeometrisch}(n_{1+}, n_{2+}, n_{+1}).
+  H_0 : X \sim \textrm{Hypergeometrisch}(n_{1+}, n_{2+}, n_{+1}).
 \]
   Wenn der Lernende tatsächlich im Stande ist, \textit{bet} von \textit{bat}
   zu unterscheiden, so erwarten wir, dass $n_{11}$ eher grösser als kleiner ist.
-  Entsprechend berechnen wir hier, ganz analog wie beim Binomialtest, hier 
+  Entsprechend berechnen wir hier, ganz analog wie beim Binomialtest, 
   einen rechtsseitigen $p$-Wert.
   
 <<echo = FALSE, fig.cap = "Links: Wahrscheinlichkeit des ersten Tabelleneintrages unter einer Hypergeometrisch($20$, $10$, $20$)-Verteilung. Rechts: Verteilungsfunktion derselben Verteilung.\\label{fig:fishertest}", fig.width = 7, fig.height = 3.3, out.width=".8\\textwidth">>=
@@ -1377,9 +1377,9 @@ fisher.test(
 Übrigens erhält man das gleiche Ergebnis, wenn wir uns auf die 
 Kategorisierung der \textit{bat}-Aufnahmen fokussieren würden
 und die Parameter der hypergeometrischen Verteilung entsprechend anpassen würden,
-denn es gilt
+denn es gilt auch
 \[
-  n_{22} \sim \textrm{Hypergeometrisch}(n_{2+},n_{1+}, n_{+2}):
+  H_0 : n_{22} \sim \textrm{Hypergeometrisch}(n_{2+},n_{1+}, n_{+2}):
 \]
 
 <<>>=
@@ -1397,7 +1397,7 @@ Wir definieren die Zufallsvariable
 \[
   \widetilde{X} := \Prob(Y = X),
 \]
-wo $Y \sim \sim \textrm{Hypergeometrisch}(n_{1+}, n_{2+}, n_{+1})$,
+wo $Y \sim \textrm{Hypergeometrisch}(n_{1+}, n_{2+}, n_{+1})$,
 und berechnen $\widetilde{x} := \Prob(Y = n_{11})$.
 Als $p$-Wert verwendet man dann $F_0(\widetilde{x})$,
 wo $F_0$ die Verteilungsfunktion der Zufallsvariable $\widetilde{X}$ unter
